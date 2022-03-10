@@ -16,7 +16,7 @@ class User(db.Model):
     name = db.Column(db.String, unique=True)
     max_temperature = db.Column(db.Integer)
 
-db.init_app()
+# db.init_app()
 
 @app.route("/")
 def index():
@@ -24,4 +24,3 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True)
-    
