@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 import os
 
-app = Flask(__name__, template_folder='static')
+app = Flask(__name__, template_folder='templates')
 app.config['SECRET KEY']='secret'
 app.config['SQLALCHEMY_DATABASE_URI']= os.environ.get("DATABASE_URL")
 
