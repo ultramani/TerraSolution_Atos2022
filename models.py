@@ -6,6 +6,7 @@ db = SQLAlchemy()
 
 def setup_db(app):
     db.app = app
+    db.create_all()
     db.init_app(app)
 
 def db_drop_and_create_all():
