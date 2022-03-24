@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>TerraSolutions</title>
+      <!-- Estilo -->
+      <link rel="stylesheet" href="/static/css/base.css">
+      <!-- Leaflet -->
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@latest/dist/geosearch.css"/>
+      <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"/>
+      {% block style %} {% endblock %}
+  </head>
+  <body>
+
+      <main>
+        {% block content %} {% endblock %}
+      </main>
+      <!-- JQuery-->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <!-- Leaflet -->
+      <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+      <script src="https://unpkg.com/leaflet-geosearch@latest/dist/geosearch.umd.js"></script>
+      <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+      <!-- Scripts -->   
+      <script src="/static/js/main.js" type="text/javascript"></script>
+      {% block script %} {% endblock %}
+  </body>
+  <footer>
+  </footer>
+</html>
