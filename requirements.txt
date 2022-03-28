@@ -10,6 +10,8 @@ Flask-Migrate==2.5.3
 Flask-Script==2.0.6
 Flask-SQLAlchemy==2.5.1
 Flask==2.0.3
+Flask-Login
+flask-wtf
 greenlet==1.1.2
 gunicorn
 itsdangerous==2.1.1
@@ -29,3 +31,4 @@ SQLAlchemy==1.4.32
 urllib3==1.26.8
 Werkzeug==2.0.3
 xacro==1.13.3
+WTForms
