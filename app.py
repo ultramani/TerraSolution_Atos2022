@@ -4,6 +4,8 @@ from models import setup_db, User, db_drop_and_create_all, db
 from config import APP_CONFIG
 from flask_cors import CORS
 import config
+import json
+from algorithm import *
 
 import os
 
@@ -43,6 +45,15 @@ def create_app(test_config=None):
         else:
             return 'Not a valid request method for this route'
     
+    
+    @app.route("/polygon", methods=['POST'])
+    def polygon():
+        #Parse Json
+        data = parse_obj(json.loads(request.data))['Data']
+        #Obtain circumscribed rectangle
+        coords = getRectangle(data)
+        return json.dumps(coords)
+
     return app
 
 app = create_app()
