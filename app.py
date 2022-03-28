@@ -18,6 +18,7 @@ def create_app(test_config=None):
     setup_db(app)
     #Añade protecion contra ataques CORS
     CORS(app)
+    #Login manager, manages the login requests
     login_manager = LoginManager()
     login_manager.init_app(app)
     #Comentar si se quiere persistencia
