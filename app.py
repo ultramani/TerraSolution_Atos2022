@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from models import setup_db, User, db_drop_and_create_all, db
 from config import APP_CONFIG
 from flask_cors import CORS
+from forms import LoginForm
 import config
 
 import os
@@ -17,9 +18,10 @@ def create_app(test_config=None):
     setup_db(app)
     #Añade protecion contra ataques CORS
     CORS(app)
-    login_manager = LoginManager(app)
+    login_manager = LoginManager()
+    login_manager.init_app(app)
     #Comentar si se quiere persistencia
-    # db_drop_and_create_all()
+    db_drop_and_create_all()
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -30,10 +32,14 @@ def create_app(test_config=None):
             return user
 
     @app.route("/")
-    def index():
+    def home():
+        return render_template('home.html')
+    
+    @app.route("/map")
+    def mapTool():
         return render_template('index.html')
 
-    @app.route("/signup", methods=['GET','POST'])
+    @app.route("/register", methods=['GET','POST'])
     def signup():
         #This if/elif decides what to do depending of the request method
         if request.method == 'POST':

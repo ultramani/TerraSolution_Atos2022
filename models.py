@@ -14,7 +14,7 @@ def db_drop_and_create_all():
     db.create_all()
 
 
-class User(db.Model,    UserMixin):
+class User(db.Model,UserMixin):
     __tablename__='tbl_users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -52,5 +52,5 @@ class Role(db.Model):
 class UserRoles(db.Model):
     __tablename__ = 'tbl_user_roles'
     id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
-    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
+    user_id = db.Column(db.Integer(), db.ForeignKey('tbl_users.id', ondelete='CASCADE'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('tbl_roles.id', ondelete='CASCADE'))
