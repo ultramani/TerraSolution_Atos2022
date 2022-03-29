@@ -15,7 +15,7 @@ def create_app(test_config=None):
 
     app = Flask(__name__, template_folder='templates')
     #Nos permite cambiar la configuracion con solo cambiar el string
-    app.config.from_object(APP_CONFIG["development"])
+    app.config.from_object(APP_CONFIG["deploy"])
     #Inicializa la bbdd
     setup_db(app)
     #Añade protecion contra ataques CORS
