@@ -25,8 +25,12 @@
         <li><a href="/">Home</a></li>
         <li><a href="/map">Generic</a></li>
         <li><a href="/">Elements</a></li>
-        <li><a href="/login">Log In</a></li>
-        <li><a href="/register">Sign Up</a></li>
+        {% if current_user.is_anonymous %}
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+        <li><a href="{{ url_for('register') }}">Sign Up</a></li>
+        {% else %}
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% endif %}
       </ul>
       <a href="#" class="close">Close</a>
     </div>
@@ -34,9 +38,19 @@
   <main>
     {% block content %} {% endblock %}
   </main>
-  {% block script %} {% endblock %}
+    <!-- JQuery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Scripts -->
+  {% block script %} {% endblock %}
+  <script src="../static/js/jquery.min.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../static/js/jquery.scrollex.min.js"></script>
+  <script src="../static/js/browser.min.js"></script>
+  <script src="../static/js/breakpoints.min.js"></script>
+  <script src="../static/js/util.js"></script>
   <script src="../static/js/main.js" type="text/javascript"></script>
+
+
 </body>
 <footer>
 </footer>

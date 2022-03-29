@@ -11,7 +11,12 @@
             <section id="banner">
                 <div class="inner">
                     <div class="logo"><img src="static/image/logo.png" alt="logo" style="height: 200px; width: 200px;" /></div>
-                    <h2>This is TerraSolution</h2>
+
+                    {% if current_user.is_anonymous %}
+                    <h2>Wellcome to TerraSolution</h2>
+                    {% else %}
+                    <h2>Hello {{ current_user.username }} to TerraSolution</h2>
+                    {% endif %}
                     <p>A web service for crop monitoring , land analisys and more. </p>
                 </div>
             </section>
@@ -139,10 +144,10 @@
     </div>
 {% endblock %}
 {% block script %}
-<script src="static/js/jquery.min.js"></script>
+<script src="../static/js/jquery.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="static/js/jquery.scrollex.min.js"></script>
-<script src="static/js/browser.min.js"></script>
-<script src="static/js/breakpoints.min.js"></script>
-<script src="static/js/util.js"></script>
+<script src="../static/js/jquery.scrollex.min.js"></script>
+<script src="../static/js/browser.min.js"></script>
+<script src="../static/js/breakpoints.min.js"></script>
+<script src="../static/js/util.js"></script>
 {% endblock %}
