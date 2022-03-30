@@ -13,8 +13,9 @@ def home():
     return render_template('home.html')
     
 @app.route("/map")
+@login_required
 def maptool():
-        return render_template('index.html')
+        return render_template('map.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -53,3 +54,9 @@ def login():
 def logout():
         logout_user()
         return redirect('/')
+
+        
+@app.route('/report')
+@login_required
+def reportpage():
+    return render_template('dataReport.html')

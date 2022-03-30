@@ -1,0 +1,55 @@
+{% extends 'min_baseTemplate.html' %}
+
+{% block style %}
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin="" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@latest/dist/geosearch.css" />
+<link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+{% endblock %}
+{% block navbar %} 
+<header id="header" class="alt" >
+  <nav style="left:0 !important;">
+    <a href="#menu">Menu</a>
+  </nav>
+</header>
+
+<nav id="menu">
+  <div class="inner">
+    <h2>Menu</h2>
+    <ul class="links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/map">Web App</a></li>
+      {% if current_user.is_anonymous %}
+      <li><a href="{{ url_for('login') }}">Login</a></li>
+      <li><a href="{{ url_for('register') }}">Sign Up</a></li>
+      {% else %}
+      <li><a href="{{ url_for('logout') }}">Logout</a></li>
+      {% endif %}
+    </ul>
+    <a href="#" class="close">Close</a>
+  </div>
+</nav>
+
+{% endblock %}
+{% block content %}
+
+
+<div id="map" ></div>
+
+
+{% endblock %}
+
+{% block script %}
+
+
+<!-- Leaflet -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+<script src="https://unpkg.com/leaflet-geosearch@latest/dist/geosearch.umd.js"></script>
+<script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+<script src="../static/js/map.js"></script>
+{% endblock %}
