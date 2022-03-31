@@ -19,7 +19,6 @@ class User(db.Model,UserMixin):
     # #Lista de roles del usuario, por si deseamos tener roles premium o admins
     # roles = db.relationship('Role', secondary='user_roles')
 
-
     #Función que indica a python como imprimir los objetos d e esta clase
     def __repr__(self):
         return '<User {}>'.format(self.username)
