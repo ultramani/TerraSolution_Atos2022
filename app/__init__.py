@@ -1,8 +1,10 @@
 from flask_login import LoginManager
-from .databaseManager import setup_db, db_drop_and_create_all
+from .databaseManager import setup_db, db_drop_and_create_all,db
 from .config import APP_CONFIG
 from flask_cors import CORS
 from flask import Flask
+from flask_migrate import Migrate
+
 
 
 
@@ -18,7 +20,8 @@ setup_db(app)
 #Añade protecion contra ataques CORS
 CORS(app)
 #Comentar si se quiere persistencia
-db_drop_and_create_all()
+# db_drop_and_create_all()
+migrate = Migrate(app, db)
 
 from .views import *
 
