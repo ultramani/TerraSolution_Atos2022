@@ -1,5 +1,5 @@
 from flask_login import LoginManager
-from .databaseManager import setup_db, db_drop_and_create_all, db
+from .databaseManager import setup_db, db_drop_and_create_all
 from .config import APP_CONFIG
 from flask_cors import CORS
 from flask import Flask
