@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TerraSolutions</title>
+  {% block style %} {% endblock %}
+  <!-- Estilo -->
+  <link rel="stylesheet" href="../static/css/base.css">
+</head>
+
+<body>
+  <header id="header" class="alt">
+    <h1><a href="/">Solid State</a></h1>
+    <nav>
+      <a href="#menu">Menu</a>
+    </nav>
+  </header>
+  <nav id="menu">
+    <div class="inner">
+      <h2>Menu</h2>
+      <ul class="links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/map">Web App</a></li>
+        {% if current_user.is_anonymous %}
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+        <li><a href="{{ url_for('register') }}">Sign Up</a></li>
+        {% else %}
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% endif %}
+      </ul>
+      <a href="#" class="close">Close</a>
+    </div>
+  </nav>
+  <main>
+    {% block content %} {% endblock %}
+     <!-- Footer -->
+     <section id="footer">
+      <div class="inner">
+          <h2 class="major">Get in touch</h2>
+          <p>Cras mattis ante fermentum, malesuada neque vitae, eleifend erat. Phasellus non pulvinar erat. Fusce tincidunt, nisl eget mattis egestas, purus ipsum consequat orci, sit amet lobortis lorem lacus in tellus. Sed ac elementum arcu. Quisque placerat auctor laoreet.</p>
+          <form method="post" action="#">
+              <div class="fields">
+                  <div class="field">
+                      <label for="name">Name</label>
+                      <input type="text" name="name" id="name" />
+                  </div>
+                  <div class="field">
+                      <label for="email">Email</label>
+                      <input type="email" name="email" id="email" />
+                  </div>
+                  <div class="field">
+                      <label for="message">Message</label>
+                      <textarea name="message" id="message" rows="4"></textarea>
+                  </div>
+              </div>
+              <ul class="actions">
+                  <li><input type="submit" value="Send Message" /></li>
+              </ul>
+          </form>
+          <ul class="contact">
+              <li class="icon solid fa-home">
+                  Untitled Inc<br />
+                  1234 Somewhere Road Suite #2894<br />
+                  Nashville, TN 00000-0000
+              </li>
+              <li class="icon solid fa-phone">(000) 000-0000</li>
+              <li class="icon solid fa-envelope"><a href="#">information@untitled.tld</a></li>
+              <li class="icon brands fa-twitter"><a href="#">twitter.com/untitled-tld</a></li>
+              <li class="icon brands fa-facebook-f"><a href="#">facebook.com/untitled-tld</a></li>
+              <li class="icon brands fa-instagram"><a href="#">instagram.com/untitled-tld</a></li>
+          </ul>
+          <ul class="copyright">
+              <li>&copy; Untitled Inc. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+          </ul>
+      </div>
+  </section>
+  </main>
+    <!-- JQuery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Scripts -->
+  {% block script %} {% endblock %}
+  <script src="../static/js/jquery.min.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="../static/js/jquery.scrollex.min.js"></script>
+  <script src="../static/js/browser.min.js"></script>
+  <script src="../static/js/breakpoints.min.js"></script>
+  <script src="../static/js/util.js"></script>
+  <script src="../static/js/main.js" type="text/javascript"></script>
+
+
+</body>
+<footer>
+</footer>
+
+</html>

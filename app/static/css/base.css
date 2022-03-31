@@ -1,7 +1,15 @@
 @import url(fontawesome-all.min.css);
 @import url("https://fonts.googleapis.com/css?family=Raleway:200,700|Source+Sans+Pro:300,600,300italic,600italic");
+    
 
-
+    #map{
+        height:100vh;
+        width: 100%;
+        background-color: #222;
+        color: #eee;
+        font-family: monospace;
+        z-index: 100;
+    }
 
   /* Base style to use in all pages */
   html, body, div, span, applet, object,
@@ -29,6 +37,7 @@
   body {
       line-height: 1;
   }
+  
   
   ol, ul {
       list-style: none;
@@ -3265,6 +3274,7 @@
           top: 0;
           visibility: hidden;
           width: 100%;
+          z-index: 1000000;
       }
   
           #menu .inner {
@@ -3362,6 +3372,7 @@
           pointer-events: auto;
           opacity: 1;
           visibility: visible;
+          z-index: 100;
       }
   
           body.is-menu-visible #menu .inner {
@@ -3370,6 +3381,7 @@
               -ms-transform: translateY(0);
               transform: translateY(0);
               opacity: 1;
+              z-index: 101;
           }
   
   /* Banner */
