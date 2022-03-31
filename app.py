@@ -6,6 +6,8 @@ from config import APP_CONFIG
 from flask_cors import CORS
 from forms import LoginForm
 import config
+import json
+from algorithm import *
 
 import os
 
@@ -13,7 +15,7 @@ def create_app(test_config=None):
 
     app = Flask(__name__, template_folder='templates')
     #Nos permite cambiar la configuracion con solo cambiar el string
-    app.config.from_object(APP_CONFIG["development"])
+    app.config.from_object(APP_CONFIG["deploy"])
     #Inicializa la bbdd
     setup_db(app)
     #Añade protecion contra ataques CORS
@@ -63,7 +65,14 @@ def create_app(test_config=None):
         else:
             return 'Not a valid request method for this route'
 
-    
+    @app.route("/polygon", methods=['POST'])
+    def polygon():
+        #Parse Json
+        data = parse_obj(json.loads(request.data))['Data']
+        #Obtain circumscribed rectangle
+        coords = getRectangle(data)
+        return json.dumps(coords)
+
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         if current_user.is_authenticated:
