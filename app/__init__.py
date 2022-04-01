@@ -20,7 +20,7 @@ setup_db(app)
 #Añade protecion contra ataques CORS
 CORS(app)
 #Comentar si se quiere persistencia
-# db_drop_and_create_all()
+#db_drop_and_create_all()
 migrate = Migrate(app, db)
 
 from .views import *
