@@ -1,7 +1,7 @@
 @import url(fontawesome-all.min.css);
 @import url("https://fonts.googleapis.com/css?family=Raleway:200,700|Source+Sans+Pro:300,600,300italic,600italic");
     
-
+    /* Base style to use for the map                                                                                                                                                                                                 */
     #map{
         height:100vh;
         width: 100%;
@@ -37,6 +37,8 @@
   body {
       line-height: 1;
   }
+
+
   
   
   ol, ul {
@@ -3581,6 +3583,17 @@
               line-height: 2;
               text-transform: uppercase;
           }
+        
+          
+            .form-inner{
+            width: 100%;
+            border: 1px solid #2d2d2d;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+            align-items: center;
+        }
   
       @media screen and (max-width: 1280px) {
   
@@ -3915,6 +3928,7 @@
                   .wrapper.spotlight.style6:after {
                       box-shadow: inset 0 -1px 0 0 #2d3a69, 0 1px 0 0 #2d3a69;
                   }
+
   
           @media screen and (max-width: 980px) {
   

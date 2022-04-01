@@ -1,8 +1,9 @@
 {% extends 'baseTemplate.html' %}
 
 {% block content %}
-    <div class="content">
-        <h1>Sign In</h1>
+<div class="form wrapper">
+    <div class="form-inner">
+        <h1>LogIn</h1>
         <form action="{{ url_for('login') }}" method="POST" novalidate>
             {{ form.hidden_tag() }}
             <p>
@@ -24,6 +25,8 @@
         </form>
         <p>New User? <a href="/register">Click to Register!</a></p>
     </div>
+</div>
+
 {% endblock %}
 
 {% block script %} 
