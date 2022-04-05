@@ -1,11 +1,13 @@
 from app import app
-from flask import  render_template, request, url_for, redirect
+from flask import  render_template, request, url_for, redirect, Response
 from flask_login import  current_user, login_user, logout_user, login_required
 from flask import request, flash
 from werkzeug.urls import url_parse
 from .forms import LoginForm,RegistrationForm
 from .models import User
 from .databaseManager import db
+import json
+from  .algorithm import *
 
 @app.route("/")
 @app.route("/home")
@@ -60,3 +62,25 @@ def logout():
 @login_required
 def reportpage():
     return render_template('dataReport.html')
+
+@app.route("/polygon", methods=['POST'])
+def polygon():
+    #Parse Json
+    data = parse_obj(json.loads(request.data))['Data']
+    #Obtain circumscribed rectangle
+    coords = getRectangle(data)
+    return json.dumps(coords)
+
+@app.route("/nasa", methods=['POST'])
+def solarData():
+    if request.method == "POST":
+        data = parse_obj(json.loads(request.data))['Data']
+        parsed_data = {}
+        for item in data:
+            for key in item:
+                parsed_data[key]=item[key]
+        print(parsed_data)
+        solarData= getSolarData('1', '2')
+        return json.dumps(solarData)
+    else:
+        return Response('Error')

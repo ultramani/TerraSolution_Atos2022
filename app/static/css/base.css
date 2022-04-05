@@ -39,7 +39,18 @@
   }
 
 
-  
+  .btnPrueba{
+      z-index: 999999999999999999;
+      text-align: center;
+      background-color: black;
+      margin-left: 200px;
+  }
+
+  #findbox{
+      z-index: 999999999;
+      text-align: center;
+      color: black;
+  }
   
   ol, ul {
       list-style: none;
