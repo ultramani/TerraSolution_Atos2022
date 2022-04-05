@@ -1,105 +1,231 @@
 {% extends 'baseTemplate.html' %}
 
-{% block style %} 
+{% block style %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
 {% endblock %}
 {% block content %}
-	<!-- Page Wrapper -->
-    <div id="page-wrapper">
+<!-- Page Wrapper -->
+<div id="page-wrapper">
 
-        <!-- Banner -->
-            <section id="banner">
-                <div class="inner">
-                    <div class="logo"><img src="static/image/logo.png" alt="logo" style="height: 200px; width: 200px;" /></div>
-                    {% if current_user.is_anonymous %}
-                    <h2>Wellcome to TerraSolution</h2>
-                    {% else %}
-                    <h2>Hello {{ current_user.username }} to TerraSolution</h2>
-                    {% endif %}
-                    <p>A web service for crop monitoring , land analisys and more. </p>
+    <!-- Banner -->
+
+    <section class="hero-image" id="banner" style="text-align: center; ">
+        <div class="inner">
+            <h2>Hello {{ current_user.username }} to TerraSolution</h2>
+            <p>A web service for crop monitoring , land analisys and more. </p>
+        </div>
+    </section>
+
+
+    <!-- Wrapper -->
+    <section id="wrapper">
+
+        <!-- Summary -->
+        <section id="summary" class="wrapper alt style1">
+            <div class="inner">
+                <h2 class="major">Summary of the analisys</h2>
+                <p>Cras mattis ante fermentum, malesuada neque vitae, eleifend erat. Phasellus non pulvinar erat. Fusce
+                    tincidunt, nisl eget mattis egestas, purus ipsum consequat orci, sit amet lobortis lorem lacus in
+                    tellus. Sed ac elementum arcu. Quisque placerat auctor laoreet.</p>
+                <p>For more details read below.</p>
+            </div>
+        </section>
+
+
+        <!-- One -->
+        <section id="one" class="wrapper spotlight style4">
+            <div class="inner">
+                <a href="" class="image"><img src="static/image/pic01.jpg" alt="" /></a>
+                <div class="content">
+                    <h2 class="major">Temperature analisys</h2>
+                    <p>Lorem ipsum dolor sit amet, etiam lorem adipiscing elit. Cras turpis ante, nullam sit amet turpis
+                        non, sollicitudin posuere urna. Mauris id tellus arcu. Nunc vehicula id nulla dignissim dapibus.
+                        Nullam ultrices, neque et faucibus viverra, ex nulla cursus.</p>
+                    <!-- Rotar la flecha al abrir el collapse -->
+                    <button class="btn shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1"
+                        aria-expanded="false" aria-controls="collapse1">
+                        <a class="special">Learn More</a>
+                    </button>
+                    <div class="content collapse" id="collapse1">
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                    </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-        <!-- Wrapper -->
-            <section id="wrapper">
+        <!-- Two -->
+        <section id="two" class="wrapper alt spotlight style5">
+            <div class="inner">
+                <a href="#" class="image"><img src="static/image/pic02.jpg" alt="" /></a>
+                <div class="content">
+                    <h2 class="major">Precipitation analisys</h2>
+                    <p>Lorem ipsum dolor sit amet, etiam lorem adipiscing elit. Cras turpis ante, nullam sit amet turpis
+                        non, sollicitudin posuere urna. Mauris id tellus arcu. Nunc vehicula id nulla dignissim dapibus.
+                        Nullam ultrices, neque et faucibus viverra, ex nulla cursus.</p>
+                    <button class="btn shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse12"
+                        aria-expanded="false" aria-controls="collapse12">
+                        <a class="special">Learn More</a>
+                    </button>
+                    <div class="content collapse" id="collapse12">
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                <!-- One -->
-                    <section id="one" class="wrapper spotlight style4">
-                        <div class="inner">
-                            <a href="#" class="image"><img src="static/image/pic01.jpg" alt="" /></a>
-                            <div class="content">
-                                <h2 class="major">Magna arcu feugiat</h2>
-                                <p>Lorem ipsum dolor sit amet, etiam lorem adipiscing elit. Cras turpis ante, nullam sit amet turpis non, sollicitudin posuere urna. Mauris id tellus arcu. Nunc vehicula id nulla dignissim dapibus. Nullam ultrices, neque et faucibus viverra, ex nulla cursus.</p>
-                                <a href="#" class="special">Learn more</a>
-                            </div>
-                        </div>
-                    </section>
+        <!-- Three -->
+        <section id="three" class="wrapper spotlight style6">
+            <div class="inner">
+                <a href="#" class="image"><img src="static/image/pic03.jpg" alt="" /></a>
+                <div class="content">
+                    <h2 class="major">Light analisys</h2>
+                    <p>Lorem ipsum dolor sit amet, etiam lorem adipiscing elit. Cras turpis ante, nullam sit amet turpis
+                        non, sollicitudin posuere urna. Mauris id tellus arcu. Nunc vehicula id nulla dignissim dapibus.
+                        Nullam ultrices, neque et faucibus viverra, ex nulla cursus.</p>
+                        <button class="btn shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse123"
+                        aria-expanded="false" aria-controls="collapse123">
+                        <a class="special">Learn More</a>
+                    </button>
+                    <div class="content collapse" id="collapse123">
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                <!-- Two -->
-                    <section id="two" class="wrapper alt spotlight style5">
-                        <div class="inner">
-                            <a href="#" class="image"><img src="static/image/pic02.jpg" alt="" /></a>
-                            <div class="content">
-                                <h2 class="major">Tempus adipiscing</h2>
-                                <p>Lorem ipsum dolor sit amet, etiam lorem adipiscing elit. Cras turpis ante, nullam sit amet turpis non, sollicitudin posuere urna. Mauris id tellus arcu. Nunc vehicula id nulla dignissim dapibus. Nullam ultrices, neque et faucibus viverra, ex nulla cursus.</p>
-                                <a href="#" class="special">Learn more</a>
-                            </div>
-                        </div>
-                    </section>
 
-                <!-- Three -->
-                    <section id="three" class="wrapper spotlight style6">
-                        <div class="inner">
-                            <a href="#" class="image"><img src="static/image/pic03.jpg" alt="" /></a>
-                            <div class="content">
-                                <h2 class="major">Nullam dignissim</h2>
-                                <p>Lorem ipsum dolor sit amet, etiam lorem adipiscing elit. Cras turpis ante, nullam sit amet turpis non, sollicitudin posuere urna. Mauris id tellus arcu. Nunc vehicula id nulla dignissim dapibus. Nullam ultrices, neque et faucibus viverra, ex nulla cursus.</p>
-                                <a href="#" class="special">Learn more</a>
-                            </div>
-                        </div>
-                    </section>
 
-                <!-- Four -->
-                    <section id="four" class="wrapper alt style1">
-                        <div class="inner">
-                            <h2 class="major">Vitae phasellus</h2>
-                            <p>Cras mattis ante fermentum, malesuada neque vitae, eleifend erat. Phasellus non pulvinar erat. Fusce tincidunt, nisl eget mattis egestas, purus ipsum consequat orci, sit amet lobortis lorem lacus in tellus. Sed ac elementum arcu. Quisque placerat auctor laoreet.</p>
-                            <section class="features">
-                                <article>
-                                    <a href="#" class="image"><img src="static/image/pic04.jpg" alt="" /></a>
-                                    <h3 class="major">Sed feugiat lorem</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus ultrices.</p>
-                                    <a href="#" class="special">Learn more</a>
-                                </article>
-                                <article>
-                                    <a href="#" class="image"><img src="static/image/pic05.jpg" alt="" /></a>
-                                    <h3 class="major">Nisl placerat</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus ultrices.</p>
-                                    <a href="#" class="special">Learn more</a>
-                                </article>
-                                <article>
-                                    <a href="#" class="image"><img src="static/image/pic06.jpg" alt="" /></a>
-                                    <h3 class="major">Ante fermentum</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus ultrices.</p>
-                                    <a href="#" class="special">Learn more</a>
-                                </article>
-                                <article>
-                                    <a href="#" class="image"><img src="static/image/pic07.jpg" alt="" /></a>
-                                    <h3 class="major">Fusce consequat</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus ultrices.</p>
-                                    <a href="#" class="special">Learn more</a>
-                                </article>
-                            </section>
-                            <ul class="actions">
-                                <li><a href="#" class="button">Browse All</a></li>
-                            </ul>
-                        </div>
-                    </section>
-            </section>
+        <!-- Two -->
+        <section id="two" class="wrapper alt spotlight style4">
+            <div class="inner">
+                <a href="#" class="image"><img src="static/image/pic02.jpg" alt="" /></a>
+                <div class="content">
+                    <h2 class="major">Wind analisys</h2>
+                    <p>Lorem ipsum dolor sit amet, etiam lorem adipiscing elit. Cras turpis ante, nullam sit amet turpis
+                        non, sollicitudin posuere urna. Mauris id tellus arcu. Nunc vehicula id nulla dignissim dapibus.
+                        Nullam ultrices, neque et faucibus viverra, ex nulla cursus.</p>
+                    <button class="btn shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse124"
+                        aria-expanded="false" aria-controls="collapse124">
+                        <a class="special">Learn More</a>
+                    </button>
+                    <div class="content collapse" id="collapse124">
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-       
+        <!-- Three -->
+        <section id="three" class="wrapper spotlight style5">
+            <div class="inner">
+                <a href="#" class="image"><img src="static/image/pic03.jpg" alt="" /></a>
+                <div class="content">
+                    <h2 class="major">Soil analisys</h2>
+                    <p>Lorem ipsum dolor sit amet, etiam lorem adipiscing elit. Cras turpis ante, nullam sit amet turpis
+                        non, sollicitudin posuere urna. Mauris id tellus arcu. Nunc vehicula id nulla dignissim dapibus.
+                        Nullam ultrices, neque et faucibus viverra, ex nulla cursus.</p>
+                        <button class="btn shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse125"
+                        aria-expanded="false" aria-controls="collapse125">
+                        <a class="special">Learn More</a>
+                    </button>
+                    <div class="content collapse" id="collapse125">
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    </div>
+        <!-- Four -->
+        <section id="four" class="wrapper alt style1">
+            <div class="inner">
+                <h2 class="major">Image analisys</h2>
+                <p>Cras mattis ante fermentum, malesuada neque vitae, eleifend erat. Phasellus non pulvinar erat. Fusce
+                    tincidunt, nisl eget mattis egestas, purus ipsum consequat orci, sit amet lobortis lorem lacus in
+                    tellus. Sed ac elementum arcu. Quisque placerat auctor laoreet.</p>
+                <section class="features">
+                    <article>
+                        <a href="#" class="image"><img src="static/image/pic04.jpg" alt="" /></a>
+                        <h3 class="major">Sed feugiat lorem</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
+                            ultrices.</p>
+                        <a href="#" class="special">Learn more</a>
+                    </article>
+                    <article>
+                        <a href="#" class="image"><img src="static/image/pic05.jpg" alt="" /></a>
+                        <h3 class="major">Nisl placerat</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
+                            ultrices.</p>
+                        <a href="#" class="special">Learn more</a>
+                    </article>
+                    <article>
+                        <a href="#" class="image"><img src="static/image/pic06.jpg" alt="" /></a>
+                        <h3 class="major">Ante fermentum</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
+                            ultrices.</p>
+                        <a href="#" class="special">Learn more</a>
+                    </article>
+                    <article>
+                        <a href="#" class="image"><img src="static/image/pic07.jpg" alt="" /></a>
+                        <h3 class="major">Fusce consequat</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
+                            ultrices.</p>
+                        <a href="#" class="special">Learn more</a>
+                    </article>
+                </section>
+            </div>
+        </section>
+    </section>
+
+
+
+</div>
 {% endblock %}
 {% block script %}
 <script src="../static/js/jquery.min.js"></script>
@@ -108,4 +234,8 @@
 <script src="../static/js/browser.min.js"></script>
 <script src="../static/js/breakpoints.min.js"></script>
 <script src="../static/js/util.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
 {% endblock %}
