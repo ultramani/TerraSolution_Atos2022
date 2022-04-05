@@ -1,23 +1,87 @@
-html{
-    height: 100%;
+  /* Base style to use in all pages */
+  html, body, div, span, applet, object,
+  iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
+  pre, a, abbr, acronym, address, big, cite,
+  code, del, dfn, em, img, ins, kbd, q, s, samp,
+  small, strike, strong, sub, sup, tt, var, b,
+  u, i, center, dl, dt, dd, ol, ul, li, fieldset,
+  form, label, legend, table, caption, tbody,
+  tfoot, thead, tr, th, td, article, aside,
+  canvas, details, embed, figure, figcaption,
+  footer, header, hgroup, menu, nav, output, ruby,
+  section, summary, time, mark, audio, video {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: 100%;
+      font: inherit;
+      vertical-align: baseline;}
+  
+  article, aside, details, figcaption, figure,
+  footer, header, hgroup, menu, nav, section {
+      display: block;}
+  
+  body {
+      line-height: 1;
+  }
+
+  body {
+    -webkit-text-size-adjust: none;
 }
 
-body{
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-nav{
-    height: 5vh;
-}
- 
 #map{
-    height:95vh;
+    height:100vh;
     width: 100%;
     background-color: #222;
     color: #eee;
     font-family: monospace;
+    z-index: 100;
+}
+
+  /* Basic */
+  
+  @-ms-viewport {
+    width: device-width;
+}
+
+body {
+    -ms-overflow-style: scrollbar;
+}
+
+@media screen and (max-width: 480px) {
+
+    html, body {
+        min-width: 320px;
+    }
 
 }
 
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    background-color: #2e3141;
+    background-image: linear-gradient(to top, rgba(46, 49, 65, 0.8), rgba(46, 49, 65, 0.8)), url("../image/bg.jpg");
+    background-size: auto,
+cover;
+    background-attachment: fixed,
+fixed;
+    background-position: center,
+center;
+}
+
+    body.is-preload *, body.is-preload *:before, body.is-preload *:after {
+        -moz-animation: none !important;
+        -webkit-animation: none !important;
+        -ms-animation: none !important;
+        animation: none !important;
+        -moz-transition: none !important;
+        -webkit-transition: none !important;
+        -ms-transition: none !important;
+        transition: none !important;
+    }
