@@ -117,7 +117,12 @@ function prueba(){
 
 function GetCoordinates(lat,lon){
     console.log(lat,lon);
+    clearLayer();
     var data = [{'latitude': lat},{'longitude': lat}];
+    map.setView([lat,lon],17,{
+        animate: true,
+    });
+    L.marker([lat, lon], { pmIgnore: false }).addTo(map);
     $.ajax({
         url: "nasa", 
         headers: {'X-CSRFToken': csrftoken},
@@ -132,4 +137,10 @@ function GetCoordinates(lat,lon){
           alert('An error occured');
         }
     });
+}
+
+function clearLayer(){
+    for(; Object.keys(map._layers).length > 1;) {
+        map.removeLayer(map._layers[Object.keys(map._layers)[1]]);
+      }
 }
