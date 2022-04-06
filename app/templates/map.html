@@ -40,13 +40,14 @@
 {% endblock %}
 {% block content %}
 <div id="map"></div>
+
 <div class="toolbox-wrapper">
   <div class="accordion accordion-flush" id="accordionFlushExample">
     <div class="accordion-item">
       <h2 class="accordion-header" id="flush-headingOne">
         <button class="accordion-button collapsed" id="accordion-title" type="button" data-bs-toggle="collapse"
           data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
-          Select your adress:
+          Select the desired location.
         </button>
       </h2>
       <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne"
@@ -72,8 +73,12 @@
           <div class="collapse collapse-horizontal" id="collapseCoords">
             <div class="card card-body" style="width: 100%;">
               <label for="" style="color: black !important;">Type the desired coordinates.</label>
-              <input class="blackfont" type="number" id="latitude" placeholder="latitude" />
-              <input class="blackfont" type="number" id="longitude" placeholder="longitude" />
+              <div class="input-shadow-box">
+                <input class="blackfont" type="number" id="latitude" placeholder="latitude" />
+              </div>
+              <div class="input-shadow-box">
+                <input class="blackfont" type="number" id="longitude" placeholder="longitude" />
+              </div>
               <button class="btnblackDesign" onclick="GetCoordinates(document.getElementById('latitude').value,document.getElementById('longitude').value)">Accept</button>
             </div>
           </div>
@@ -98,7 +103,7 @@
       <h2 class="accordion-header" id="flush-headingThree">
         <button class="accordion-button collapsed" id="accordion-title" type="button" data-bs-toggle="collapse"
           data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-          Accordion Item #3
+          Select the desired paramaters:
         </button>
       </h2>
       <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"

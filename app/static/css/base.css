@@ -3545,11 +3545,11 @@ body.is-menu-visible #menu .inner {
     position: absolute;
     top: 12vh;
     left: 2vh;
-    background-color: #ffffff;
+    background-color: transparent ;
     text-align: center;
     border-radius: 5px;
     z-index: 1000;
-
+    
 
 }
 
@@ -3560,16 +3560,44 @@ body.is-menu-visible #menu .inner {
 
 .btnblackDesign {
     text-align: center;
-    background-color: black;
+    background-color: rgba(42, 194, 138, 0.8) !important;
     height: 4.9vh;
     width: 15vh;
     margin-top: 1vh;
     margin-bottom: 1vh;
     align-self: center;
+    color: white !important;
+}
+
+.btnblackDesign:hover {
+    color: black !important;
+    background-color: rgba(42, 194, 138, 1) !important;
+
+}
+
+.accordion {
+    border-radius: 5px;
+    background-color: transparent ;
+}
+
+.accordion-header {
+    background-color: transparent ;
+}
+
+.accordion-item {
+    background-color: rgba(42, 194, 138, 0.4) !important;
+    opacity: 1;
 }
 
 #accordion-title {
-    color: black !important;
+    color: white !important;
+    font-size:medium !important;
+    font-family: Raleway, Helvetica, sans-serif !important;
+}
+    
+
+.card.card-body {
+    background-color: rgba(255, 255, 255,0.9);
 }
 
 ::placeholder {
@@ -3579,9 +3607,41 @@ body.is-menu-visible #menu .inner {
     text-align: center;
 }
 
-.blackfont {
-    color: black !important;
+.input-shadow-box {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 32vh;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    padding: 0;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 65%);
 }
+
+.accordion-button {
+    background-color: rgba(42, 194, 138, 0.7) !important;
+}
+
+.blackfont {
+    width: 31vh;
+    color: black !important;
+    font: inherit;
+    font-size: 12px;
+    height: 26px;
+    margin: 1vh;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    text-indent: 8px;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.025);
+    display: block;
+    line-height: inherit;
+    font-weight: 300;
+    box-sizing: border-box;
+}
+
+/* Accordion */
+
 
 /* Banner */
 
