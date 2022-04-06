@@ -79,8 +79,7 @@ def solarData():
         for item in data:
             for key in item:
                 parsed_data[key]=item[key]
-        print(parsed_data)
-        solarData= getSolarData('1', '2')
+        solarData= getSolarData(parsed_data['latitude'], parsed_data['longitude'])
         return json.dumps(solarData)
     else:
         return Response('Error')

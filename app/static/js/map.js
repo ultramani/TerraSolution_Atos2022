@@ -104,7 +104,6 @@ map.on('geosearch/showlocation', function(e) {
         success: function (returned_data) { 
             data = JSON.parse(returned_data);
             console.log(data);
-            // loadData(data[0]); 
         },
         error: function () {
           alert('An error occured');
@@ -114,4 +113,23 @@ map.on('geosearch/showlocation', function(e) {
 
 function prueba(){
     console.log('aaa');
+}
+
+function GetCoordinates(lat,lon){
+    console.log(lat,lon);
+    var data = [{'latitude': lat},{'longitude': lat}];
+    $.ajax({
+        url: "nasa", 
+        headers: {'X-CSRFToken': csrftoken},
+        method: "POST",
+        data : JSON.stringify({Data: data}),
+        contentType: 'application/json',
+        success: function (returned_data) { 
+            data = JSON.parse(returned_data);
+            console.log(data);
+        },
+        error: function () {
+          alert('An error occured');
+        }
+    });
 }
