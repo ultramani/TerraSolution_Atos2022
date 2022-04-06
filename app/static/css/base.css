@@ -4361,3 +4361,7 @@ body.is-preload #banner p {
     }
 
 }
+
+.leaflet-bar a, .leaflet-bar a:hover{
+    color: black !important;
+}
