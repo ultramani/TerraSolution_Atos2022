@@ -3563,6 +3563,10 @@ body.is-menu-visible #menu .inner {
     text-align: center;
 }
 
+.blackfont {
+    color: black !important;
+}
+
 /* Banner */
 
 #banner {
