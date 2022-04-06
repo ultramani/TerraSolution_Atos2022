@@ -1,3 +1,5 @@
+import requests
+
 def parse_obj(obj):
     for key in obj:
         if isinstance(obj[key], str):
@@ -16,3 +18,10 @@ def getRectangle(geoJson):
     minLong = min(long)
     minLat = min(lat)
     return coords
+
+def getSolarData(lat, lon):
+    # URL = ("https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=T2M,PS,WS10M&community=AG&longitude=%s&latitude=%s&format=CSV&start=2010&end=2020" %(lat,lon))
+    URL = ("https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=T2M,PS,WS10M&community=AG&longitude=%s&latitude=%s&format=JSON" %(lat,lon))
+    r = requests.get(URL)
+    data = r.json()
+    return data
