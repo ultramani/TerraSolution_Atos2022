@@ -3542,13 +3542,14 @@ body.is-menu-visible #menu .inner {
 
 }
 
-.btnObtenerLatLong {
+.btnblackDesign {
     text-align: center;
     background-color: black;
     height: 4.9vh;
     width: 15vh;
     margin-top: 1vh;
     margin-bottom: 1vh;
+    align-self: center;
 }
 
 #accordion-title {
