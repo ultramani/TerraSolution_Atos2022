@@ -29,5 +29,5 @@ def getSolarData(lat, lon):
     for para in data['parameters']:
         parsed_data.append([para, data['parameters'][para]['longname'], data['parameters'][para]['units']])
     for e in parsed_data:
-        e.extend(list(data['properties']['parameter'][para].values())[0:12])
+        e.extend(list(data['properties']['parameter'][e[0]].values())[0:13])
     return parsed_data
