@@ -95,6 +95,8 @@ $.ajaxSetup({
 
 map.on('geosearch/showlocation', function(e) {
     var data = [{'latitude': e.location.y},{'longitude': e.location.x},{'name': e.location.label}];
+    clearLayer();
+    L.marker([e.location.y, e.location.x], { pmIgnore: false }).addTo(map);
     $.ajax({
         url: "nasa", 
         headers: {'X-CSRFToken': csrftoken},
