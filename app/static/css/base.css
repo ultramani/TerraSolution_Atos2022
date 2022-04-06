@@ -3556,6 +3556,13 @@ body.is-menu-visible #menu .inner {
     color: black !important;
 }
 
+::placeholder {
+    color: grey !important;
+    opacity: 1; 
+    font:inherit ;
+    text-align: center;
+}
+
 /* Banner */
 
 #banner {
