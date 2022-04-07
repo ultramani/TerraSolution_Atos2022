@@ -1,8 +1,11 @@
 from enum import unique
 from math import fabs
+
 from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from app import login_manager
+
 from .databaseManager import db
 
 
@@ -20,8 +23,9 @@ class User(db.Model,UserMixin):
     password_hash = db.Column(db.String(128))
     # #Lista de roles del usuario, por si deseamos tener roles premium o admins
     # roles = db.relationship('Role', secondary='user_roles')
+    reportid = db.Column(db.Integer, db.ForeignKey('tbl_reports.id'))
 
-    #Función que indica a python como imprimir los objetos d e esta clase
+    #Función que indica a python como imprimir los objetos de esta clase
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
@@ -53,89 +57,59 @@ class User(db.Model,UserMixin):
 #     user_id = db.Column(db.Integer(), db.ForeignKey('tbl_users.id', ondelete='CASCADE'))
 #     role_id = db.Column(db.Integer(), db.ForeignKey('tbl_roles.id', ondelete='CASCADE'))
 
-# class temperature(db.model):
-#     __tablename__='tbl_average_temperature_past7years'
+class report(db.Model):
+     __tablename__ = 'tbl_reports'
+     id = db.Column(db.Integer(), primary_key=True)
 
-#     id = db.Column(db.Integer, primary_key=True)
-#     comunidad = db.Column(db.String(128),unique=True)
-#     January = db.Column(db.integer, nullable = False)
-#     February = db.Column(db.integer, nullable = False)
-#     March = db.Column(db.integer, nullable = False)
-#     April = db.Column(db.integer, nullable = False)
-#     May = db.Column(db.integer, nullable = False)
-#     June = db.Column(db.integer, nullable = False)
-#     July = db.Column(db.integer, nullable = False)
-#     August = db.Column(db.integer, nullable = False)
-#     September = db.Column(db.integer, nullable = False)
-#     October = db.Column(db.integer, nullable = False)
-#     November = db.Column(db.integer, nullable = False)
-#     December = db.Column(db.integer, nullable = False)
+     name = db.Column(db.String(128),nullable=False)
+     date  = db.Column(db.Date(), nullable=False)
+     location  = db.Column(db.ARRAY(db.Integer, dimensions=4),nullable=False)
+     #Monthly
+     avgMonthlytemperature = db.Column(db.ARRAY(db.Integer, dimensions=12))
+     avgMonthlyprecipitation = db.Column(db.ARRAY(db.Integer, dimensions=12))
+     avgMonthlyhumidity = db.Column(db.ARRAY(db.Integer, dimensions=12))
+     avgMonthlysoilmoisture = db.Column(db.ARRAY(db.Integer, dimensions=12))
+     avgMonthlyradiation = db.Column(db.ARRAY(db.Integer, dimensions=12))
+     #Annual
+     avgAnnualtemperature = db.Column(db.ARRAY(db.Integer, dimensions=12))
+     avgAnnualprecipitation = db.Column(db.ARRAY(db.Integer, dimensions=12))
+     avgAnnualhumidity = db.Column(db.ARRAY(db.Integer, dimensions=12))
+     avgAnnualsoilmoisture = db.Column(db.ARRAY(db.Integer, dimensions=12))
+     avgAnnualradiation = db.Column(db.ARRAY(db.Integer, dimensions=12))
 
-#     def __init__(self,comunidad,j,f,m,a,ma,ju,jul,au,s,o,n,d):
-#             self,comunidad = comunidad
-#             self.January = j
-#             self.February = f
-#             self.March = m
-#             self.April = a
-#             self.May = ma
-#             self.June = ju
-#             self.July = jul
-#             self.August = au
-#             self.September = s
-#             self.October = o
-#             self.November = n
-#             self.December = d
+     def insert(self):
+        db.session.add(self)
+        db.session.commit()
 
-#     def insert(self):
-#         db.session.add(self)
-#         db.session.commit()
-
-#     def delete(self):
-#         db.session.delete(self)
-#         db.session.commit()
+     def delete(self):
+        db.session.delete(self)
+        db.session.commit()
         
-#     def update(self):
-#         db.session.commit()
+     def update(self):
+        db.session.commit()
 
-# class precipitation(db.model):
-#     __tablename__='tbl_average_precipitation_past7years'
 
-#     id = db.Column(db.Integer, primary_key=True)
-#     comunidad = db.Column(db.String(128),unique=True)
-#     January = db.Column(db.integer, nullable = False)
-#     February = db.Column(db.integer, nullable = False)
-#     March = db.Column(db.integer, nullable = False)
-#     April = db.Column(db.integer, nullable = False)
-#     May = db.Column(db.integer, nullable = False)
-#     June = db.Column(db.integer, nullable = False)
-#     July = db.Column(db.integer, nullable = False)
-#     August = db.Column(db.integer, nullable = False)
-#     September = db.Column(db.integer, nullable = False)
-#     October = db.Column(db.integer, nullable = False)
-#     November = db.Column(db.integer, nullable = False)
-#     December = db.Column(db.integer, nullable = False)
+class crop(db.Model):
+    __tablename__ = 'tbl_crops'
+    id = db.Column(db.Integer(), primary_key=True)
 
-#     def __init__(self,j,f,m,a,ma,ju,jul,au,s,o,n,d):
-#             self.January = j
-#             self.February = f
-#             self.March = m
-#             self.April = a
-#             self.May = ma
-#             self.June = ju
-#             self.July = jul
-#             self.August = au
-#             self.September = s
-#             self.October = o
-#             self.November = n
-#             self.December = d
+    name = db.Column(db.String(128),nullable=False)
+    #Add a custom domain [tree, bush , grass]
+    cropType = db.Column(db.String(128),nullable=False)
+    #First array element will be the min value and the second one the max value and the third optimal value
+    temperatureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
+    humidityRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
+    soilmoistureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
+    precipitationRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
+    radiationRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
 
-#     def insert(self):
-#         db.session.add(self)
-#         db.session.commit()
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
 
-#     def delete(self):
-#         db.session.delete(self)
-#         db.session.commit()
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
         
-#     def update(self):
-#         db.session.commit()
+    def update(self):
+        db.session.commit()
