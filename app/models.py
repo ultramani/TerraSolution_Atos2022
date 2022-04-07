@@ -89,3 +89,27 @@ class report(db.Model):
         db.session.commit()
 
 
+class crop(db.Model):
+    __tablename__ = 'tbl_crops'
+    id = db.Column(db.Integer(), primary_key=True)
+
+    name = db.Column(db.String(128),nullable=False)
+    #Add a custom domain [tree, bush , grass]
+    cropType = db.Column(db.String(128),nullable=False)
+    #First array element will be the min value and the second one the max value
+    temperatureRange = db.Column(db.ARRAY(db.Integer, dimensions=2))
+    humidityRange = db.Column(db.ARRAY(db.Integer, dimensions=2))
+    soilmoistureRange = db.Column(db.ARRAY(db.Integer, dimensions=2))
+    precipitationRange = db.Column(db.ARRAY(db.Integer, dimensions=2))
+    radiationRange = db.Column(db.ARRAY(db.Integer, dimensions=2))
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        
+    def update(self):
+        db.session.commit()
