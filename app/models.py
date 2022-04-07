@@ -88,6 +88,27 @@ class report(db.Model):
      def update(self):
         db.session.commit()
 
+class parameters(db.model):
+    __tablename__ = 'tbl_parameters'
+    id = db.Column(db.Integer(), primary_key=True)
+
+    shortname = db.Column(db.String(32))
+    comunity = db.Column(db.String(3))
+    longname = db.Column(db.String(64))
+    unit = db.Column(db.String(16))
+    
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        
+    def update(self):
+        db.session.commit()
+
+
 
 class crop(db.Model):
     __tablename__ = 'tbl_crops'
