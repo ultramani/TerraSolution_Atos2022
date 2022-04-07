@@ -96,12 +96,12 @@ class crop(db.Model):
     name = db.Column(db.String(128),nullable=False)
     #Add a custom domain [tree, bush , grass]
     cropType = db.Column(db.String(128),nullable=False)
-    #First array element will be the min value and the second one the max value
-    temperatureRange = db.Column(db.ARRAY(db.Integer, dimensions=2))
-    humidityRange = db.Column(db.ARRAY(db.Integer, dimensions=2))
-    soilmoistureRange = db.Column(db.ARRAY(db.Integer, dimensions=2))
-    precipitationRange = db.Column(db.ARRAY(db.Integer, dimensions=2))
-    radiationRange = db.Column(db.ARRAY(db.Integer, dimensions=2))
+    #First array element will be the min value and the second one the max value and the third optimal value
+    temperatureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
+    humidityRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
+    soilmoistureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
+    precipitationRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
+    radiationRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
 
     def insert(self):
         db.session.add(self)
