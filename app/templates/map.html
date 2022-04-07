@@ -45,7 +45,7 @@
   <div class="accordion accordion-flush" id="accordionFlushExample">
     <div class="accordion-item">
       <h2 class="accordion-header" id="flush-headingOne">
-        <button class="accordion-button collapsed" id="accordion-title" type="button" data-bs-toggle="collapse"
+        <button class="accordion-button collapsed" id="step-1" type="button" data-bs-toggle="collapse"
           data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
           Select the desired location
         </button>
@@ -87,7 +87,7 @@
     </div>
     <div class="accordion-item">
       <h2 class="accordion-header" id="flush-headingTwo">
-        <button class="accordion-button collapsed" id="accordion-title" type="button" data-bs-toggle="collapse"
+        <button class="accordion-button collapsed" id="step-2" type="button" data-bs-toggle="collapse"
           data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
           Draw the desired area for the study
         </button>
@@ -97,14 +97,14 @@
         <div class="accordion-body">
           <div class="card card-body" style="width: 100%;">
               <label for="" style="color: black !important; ">Use the tools in the upper right corner</label>
-            <button class="btnblackDesign" onclick="console.log('Done')">Done</button>
+            <button class="btnblackDesign" onclick="getParcel()">Done</button>
           </div>
         </div>
       </div>
     </div>
     <div class="accordion-item">
       <h2 class="accordion-header" id="flush-headingThree">
-        <button class="accordion-button collapsed" id="accordion-title" type="button" data-bs-toggle="collapse"
+        <button class="accordion-button collapsed" id="step-3" type="button" data-bs-toggle="collapse"
           data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
           Select the desired paramaters
         </button>
@@ -113,22 +113,25 @@
         data-bs-parent="#accordionFlushExample">
         <div class="accordion-body">
           <div class="card card-body" style="width: 100%;">
-            <div>
-              <input type="checkbox" id="T2mM" name="Temperature" checked>
-              <label for="scales">T2M</label>
-            </div>
-            <div>
-              <input type="checkbox" id="RH2M" name="RH2M" checked>
-              <label for="horns">RH2M</label>
-            </div>
-            <div>
-              <input type="checkbox" id="GWETPROF" name="GWETPROF" checked>
-              <label for="horns">GWETPROF</label>
-            </div>
-            <div>
-              <input type="checkbox" id="ALLSKY_SFC_SW_DNI" name="ALLSKY_SFC_SW_DNI" checked>
-              <label for="horns">ALLSKY_SFC_SW_DNI</label>
-            </div>
+            <form id="params">
+              <div>
+                <input type="checkbox" id="T2M" name="T2M" checked>
+                <label for="T2M" style="color: black !important; ">T2M</label>
+              </div>
+              <div>
+                <input type="checkbox" id="RH2M" name="RH2M" checked>
+                <label for="RH2M" style="color: black !important; ">RH2M</label>
+              </div>
+              <div>
+                <input type="checkbox" id="GWETPROF" name="GWETPROF" checked>
+                <label for="GWETPROF" style="color: black !important; ">GWETPROF</label>
+              </div>
+              <div>
+                <input type="checkbox" id="ALLSKY_SFC_SW_DNI" name="ALLSKY_SFC_SW_DNI" checked>
+                <label for="ALLSKY_SFC_SW_DNI" style="color: black !important; ">ALLSKY_SFC_SW_DNI</label>
+              </div>
+            </form>
+            <button class="btnblackDesign" onclick="finish()">Finish</button>
           </div>
         </div>
       </div>

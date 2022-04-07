@@ -80,11 +80,7 @@ def polygon():
 def solarData():
     if request.method == "POST":
         data = parse_obj(json.loads(request.data))['Data']
-        parsed_data = {}
-        for item in data:
-            for key in item:
-                parsed_data[key]=item[key]
-        solarData= getSolarData(parsed_data['latitude'], parsed_data['longitude'])
+        solarData= getSolarData(data[0], data[1], data[2])
         return json.dumps(solarData)
     else:
         return Response('Error')

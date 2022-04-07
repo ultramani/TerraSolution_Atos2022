@@ -12,32 +12,14 @@ map.pm.addControls({
     drawMarker: false,
     drawPolyline: false,
     drawCircle: false,
-    // drawRectangle: false,
-    drawPolygon: false,
+    drawRectangle: false,
+    // drawPolygon: false,
     drawCircleMarker: false,
 }); 
-
-function getParcela(){
-    $.ajax({
-        url: "polygon", 
-        method: "POST",
-        data : JSON.stringify({Data: window.geoJson}),
-        contentType: 'application/json',
-        success: function (returned_data) { 
-            data = JSON.parse(returned_data);
-            console.log(data);
-        },
-        error: function () {
-          alert('An error occured');
-        }
-    });
-
-}
 
 map.on('pm:create', function(e){
     // last polygon drawn
     window.geoJson = e.layer.toGeoJSON();
-    getParcela();
 });
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -93,56 +75,78 @@ $.ajaxSetup({
     }
 });
 
+//--------------------------------------------------------------------------------------------------------------------------------------------
+//funciones steps
+
 map.on('geosearch/showlocation', function(e) {
-    var data = [{'latitude': e.location.y},{'longitude': e.location.x},{'name': e.location.label}];
-    clearLayer();
-    L.marker([e.location.y, e.location.x], { pmIgnore: false }).addTo(map);
-    $.ajax({
-        url: "nasa", 
-        headers: {'X-CSRFToken': csrftoken},
-        method: "POST",
-        data : JSON.stringify({Data: data}),
-        contentType: 'application/json',
-        success: function (returned_data) { 
-            data = JSON.parse(returned_data);
-            console.log(data);
-        },
-        error: function () {
-          alert('An error occured');
-        }
-    });
+    passData(e.location.y, e.location.x, e.location.label);
+    
 });
 
-function prueba(){
-    console.log('aaa');
-}
-
 function GetCoordinates(lat,lon){
-    console.log(lat,lon);
-    clearLayer();
-    var data = [{'latitude': lat},{'longitude': lat}];
     map.setView([lat,lon],17,{
         animate: true,
     });
+    passData(lat,lon,-1);
+}
+
+function passData(lat, lon, location){
+    var data = [lat,lon];
+    if (location!=-1){
+        data.push(location);
+    }
+    window.geoData = data;
+    clearLayer();
     L.marker([lat, lon], { pmIgnore: false }).addTo(map);
-    $.ajax({
-        url: "nasa", 
-        headers: {'X-CSRFToken': csrftoken},
-        method: "POST",
-        data : JSON.stringify({Data: data}),
-        contentType: 'application/json',
-        success: function (returned_data) { 
-            data = JSON.parse(returned_data);
-            console.log(data);
-        },
-        error: function () {
-          alert('An error occured');
-        }
-    });
+    document.getElementById('step-2').click();
 }
 
 function clearLayer(){
     for(; Object.keys(map._layers).length > 1;) {
         map.removeLayer(map._layers[Object.keys(map._layers)[1]]);
       }
+}
+
+function getParcel(){
+    $.ajax({
+        url: "polygon", 
+        method: "POST",
+        data : JSON.stringify({Data: window.geoJson}),
+        contentType: 'application/json',
+        success: function (returned_data) { 
+            data = JSON.parse(returned_data);
+            console.log(data);
+        },
+        error: function () {
+          alert('An error occured');
+        }
+    });
+    document.getElementById('step-3').click();
+}
+
+function finish(){
+    form = document.getElementById('params');
+    params = []
+    for (var i = 0; i < form.length; i++) {
+        if(form[i].checked){
+            params.push(form[i].name)
+        }
+    }
+    data =JSON.parse(JSON.stringify(window.geoData));
+    data.push(params);
+    console.log(data);
+    $.ajax({
+        url: "nasa", 
+        headers: {'X-CSRFToken': csrftoken},
+        method: "POST",
+        data : JSON.stringify({Data: data}),
+        contentType: 'application/json',
+        success: function (returned_data) { 
+            data = JSON.parse(returned_data);
+            console.log(data);
+        },
+        error: function () {
+          alert('An error occured');
+        }
+    });
 }
