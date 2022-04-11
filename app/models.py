@@ -64,19 +64,32 @@ class report(db.Model):
      name = db.Column(db.String(128),nullable=False)
      date  = db.Column(db.Date(), nullable=False)
      location  = db.Column(db.ARRAY(db.Integer, dimensions=4),nullable=False)
-     #Monthly
+     areaSquareHectare = db.Column(db.Integer())
+
+     #Monthly data
      avgMonthlytemperature = db.Column(db.ARRAY(db.Integer, dimensions=12))
      avgMonthlyprecipitation = db.Column(db.ARRAY(db.Integer, dimensions=12))
      avgMonthlyhumidity = db.Column(db.ARRAY(db.Integer, dimensions=12))
      avgMonthlysoilmoisture = db.Column(db.ARRAY(db.Integer, dimensions=12))
      avgMonthlyradiation = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     #Annual
-     avgAnnualtemperature = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgAnnualprecipitation = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgAnnualhumidity = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgAnnualsoilmoisture = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgAnnualradiation = db.Column(db.ARRAY(db.Integer, dimensions=12))
-
+     #Annual data
+     avgAnnualtemperature = db.Column(db.Integer())
+     avgAnnualprecipitation = db.Column(db.Integer())
+     avgAnnualhumidity = db.Column(db.Integer())
+     avgAnnualsoilmoisture = db.Column(db.Integer())
+     avgAnnualradiation = db.Column(db.Integer())
+     #Money wise data
+     avgTotalIncome = db.Column(db.Integer())
+     avgHectareIncome = db.Column(db.Integer())
+     avgPricePerKg = db.Column(db.Integer())
+     avgKgPerHectare = db.Column(db.Integer())
+     #Algorithm outcome data
+     temperature = db.Column(db.Integer())
+     humidity = db.Column(db.Integer())
+     precipitation = db.Column(db.Integer())
+     soilmoisture = db.Column(db.Integer())
+     radiation = db.Column(db.Integer())
+     
      def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -88,7 +101,7 @@ class report(db.Model):
      def update(self):
         db.session.commit()
 
-class parameters(db.model):
+class parameters(db.Model):
     __tablename__ = 'tbl_parameters'
     id = db.Column(db.Integer(), primary_key=True)
 
