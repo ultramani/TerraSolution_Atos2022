@@ -27,15 +27,20 @@
             <div class="inner">
                 <h2 class="major">Summary of the analisys</h2>
                 <p>
-                    The selected area of approximately {area in square hectares} is feasible for planting {number of plants we have given the ok} types of plants.
+                    The selected area of approximately {area in square hectares} is feasible for planting {number of
+                    plants we have given the ok} types of plants.
                 </p>
                 <p>
-                    The feasibility of these supposed plantations has been based on the prediction of the pillars of plant growth such as temperature, humidity, rainfall in the area, hours of light and a small soil analysis. The prediction is made in terms of the number of months it takes for each type of plant to grow to the point of harvesting,
+                    The feasibility of these supposed plantations has been based on the prediction of the pillars of
+                    plant growth such as temperature, humidity, rainfall in the area, hours of light and a small soil
+                    analysis. The prediction is made in terms of the number of months it takes for each type of plant to
+                    grow to the point of harvesting,
                     basing these predictions on the average of the last 20 years of data.
                 </p>
                 <p>
-                    Plants that are likely to be viable for planting are: {name of plants}. 
-                    The following goes into detail on each of the above pillars as a rough estimate of the benefits to be gained from planting each type of plant.
+                    Plants that are likely to be viable for planting are: {name of plants}.
+                    The following goes into detail on each of the above pillars as a rough estimate of the benefits to
+                    be gained from planting each type of plant.
                 </p>
             </div>
         </section>
@@ -47,14 +52,35 @@
                 <a href="" class="image"><img src="static/image/pic01.jpg" alt="" /></a>
                 <div class="content">
                     <h2 class="major">Temperature analisys</h2>
-                    <p>The prediction of the average temperature in the area for the next {x} months, based of the average temperature over the last 20 years, is {not ideal, somewhat ideal, ideal} for planting one or several types of crops.</p>
+                    <p></p>
+                    <p>The prediction of the average temperature in the area for the next months, based of the
+                        average temperature over the last 20 years, is {not ideal, somewhat ideal, ideal} for planting
+                        one or several types of crops.</p>
                     <!-- Rotar la flecha al abrir el collapse -->
                     <button class="btn shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1"
                         aria-expanded="false" aria-controls="collapse1">
                         <a class="special">Learn More</a>
                     </button>
                     <div class="content collapse" id="collapse1">
-                        <p>La temperattura  {datos}</p>
+                        <!-- Esto se iterara para cada planta -->
+                        <p> {nombre de planta}
+                            {not ideal las temperaturas son muy bajas o muy altas} The prediction is that temperatures
+                            will be too
+                                {low}, this could result in frosts, which could lead to a decrease in weight and size of
+                                growing plants and affect pollination. If crops are exposed to these temperatures for a long
+                                time, they may wilt and die. It is recommended to postpone planting to another month or make
+                                sure to use frost protection fabric, greenhouses or mulch the soil.
+                                {high}, this may result if crops are exposed for long periods of time to withering and death
+                                of the crop. It is recommended to postpone planting to another month or to prepare cooling
+                                systems such as sprinklers.
+                            {somewhat ideal las temperaturas estan rozan la maxima y minima temperatura aceptable pero
+                            sige dentro del rango} Temperatures will be acceptable in the coming months, but caution is
+                            advised because of the possibility of {low. high}
+                            temperatures.
+                            {ideal} Temperatures is forecast to be acceptable and the chance of temperatures falling out
+                            of the acceptable range is low.
+                        </p>
+                        <!-- . -->
                     </div>
                 </div>
             </div>
@@ -66,22 +92,33 @@
                 <a href="#" class="image"><img src="static/image/pic02.jpg" alt="" /></a>
                 <div class="content">
                     <h2 class="major">Precipitation analisys</h2>
-                    <p>The prediction of the average precipitation in the area for the next {x} months, based of the average precipitation over the last 20 years, is {not ideal, somewhat ideal, ideal} for planting one or several types of crops.</p>
+                    <p>The prediction of the average precipitation in the area for the next months of {precipitation
+                        media}, based of the
+                        average precipitation over the last 20 years, is {not ideal, somewhat ideal, ideal} for planting
+                        one or several types of crops.</p>
                     <button class="btn shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse12"
                         aria-expanded="false" aria-controls="collapse12">
                         <a class="special">Learn More</a>
                     </button>
                     <div class="content collapse" id="collapse12">
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
+                        <!-- Esto se iterara para cada planta -->
+                        <p> {nombre de planta}
+                            {not ideal las precipitations son muy bajas o muy altas} The forecast is for rainfall to be
+                            too
+                            {low}, which may lead to drought and poor plant growth or loss of plants. It is recommended
+                            to postpone planting to another month or to make sure to have a good watering system and
+                            large amounts of water available.
+                            {high}, which may lead to flooding of the soil and loss of the plantation or part of it. It
+                            is recommended to postpone planting to another month or to ensure a good drainage system.
+                            {somewhat ideal las precipitations estan rozan la maxima y minima precipitaciones aceptables
+                            pero
+                            sige dentro del rango} Precipitations will be acceptable in the coming months, but caution
+                            is advised because of the possibility of {low. high}
+                            precipitations.
+                            {ideal} Rainfall is forecast to be acceptable and the chance of precipitation falling out of
+                            the acceptable range is low.
+                        </p>
+                        <!-- . -->
                     </div>
                 </div>
             </div>
@@ -93,23 +130,34 @@
                 <a href="#" class="image"><img src="static/image/pic03.jpg" alt="" /></a>
                 <div class="content">
                     <h2 class="major">Light analisys</h2>
-                    <p>The prediction of the average light exposure in the area for the next {x} months, based of the average light exposure over the last 20 years, is {not ideal, somewhat ideal, ideal} for planting one or several types of crops.</p>
+                    <p>
+                        Light provides the energy necessary for the plant to carry out photosynthesis, which produces
+                        the organic matter for its growth and development also
+                        light intensity influences the manufacture of plant food, stem length, leaf color and flowering.
+                        That is why light is one of the pillars of cultivating plants.
+                    </p>
+                    <p>
+                        The prediction of the average light exposure in the area is {average light exposure} for the
+                        next {x} months is {not ideal, somewhat ideal, ideal} for
+                        planting one or several types of crops.
+                    </p>
 
-                        <button class="btn shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse123"
-                        aria-expanded="false" aria-controls="collapse123">
+                    <button class="btn shadow-none" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse123" aria-expanded="false" aria-controls="collapse123">
                         <a class="special">Learn More</a>
                     </button>
                     <div class="content collapse" id="collapse123">
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
+                        <!-- Esto se iterara para cada planta -->
+                        <p> {nombre de planta}
+                            {not ideal la cantidad de luz sera muy bajas o muy altas}
+                            {low},
+                            {high},
+                            {somewhat ideal la cantidad de luz estan rozan la maxima y minima la cantidad de luz
+                            aceptable pero
+                            sige dentro del rango}
+                            {ideal}
+                        </p>
+                        <!-- . -->
                     </div>
                 </div>
             </div>
@@ -123,22 +171,90 @@
                 <a href="#" class="image"><img src="static/image/pic02.jpg" alt="" /></a>
                 <div class="content">
                     <h2 class="major">Wind analisys</h2>
-                    <p>The prediction of the average wind in the area for the next {x} months, based of the average wind over the last 20 years, is {not ideal, somewhat ideal, ideal} for planting one or several types of crops.</p>
-                    <button class="btn shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse124"
-                        aria-expanded="false" aria-controls="collapse124">
+                    <p>Wind is an important factor in the pollination process, so depending on the type of plantation
+                        this can be a crucial factor.</p>
+                    <p>Another point to take into account is that most tree plantations can be damaged by high wind
+                        intensity.</p>
+                    <p>The wind speed forecast is {measured wind speed} for the next months. This favours the
+                        planting of one or more types of plants.</p>
+                    <button class="btn shadow-none" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse124" aria-expanded="false" aria-controls="collapse124">
                         <a class="special">Learn More</a>
                     </button>
                     <div class="content collapse" id="collapse124">
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
+                        <!-- Esto se iterara para cada planta -->
+                        <p> {nombre de planta}
+                            {not ideal la velocidad del viento sera muy baja o muy alta}
+                            {low},
+                            {high},
+                            {somewhat ideal la velocidad del viento estan rozan la maxima y minima lla velocidad del viento
+                            aceptable pero sige dentro del rango}
+                            {ideal}
+                        </p>
+                        <!-- . -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Three -->
+        <section id="three" class="wrapper spotlight style5">
+            <div class="inner">
+                <a href="#" class="image"><img src="static/image/pic03.jpg" alt="" /></a>
+                <div class="content">
+                    <h2 class="major">Humidity analisys</h2>
+                    <p>The prediction of the humidity in the area for the next  months, based of
+                        the average humidity over the last 20 years, is {not ideal, somewhat
+                        ideal, ideal} for planting one or several types of crops.</p>
+                    <button class="btn shadow-none" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse125" aria-expanded="false" aria-controls="collapse125">
+                        <a class="special">Learn More</a>
+                    </button>
+                    <div class="content collapse" id="collapse125">
+                        <!-- Esto se iterara para cada planta -->
+                        <p> {nombre de planta}
+                            {not ideal la humedad sera muy bajas o muy altas} Humidity is predicted to be too
+                                {low}, which may lead to dehydration of the crops, leading to wilting and reduced product
+                                quality. It is recommended to postpone planting to another month or to
+                                increase the amount of water used when watering and to use sprinklers to increase the
+                                relative humidity of the air.
+                                {high}, may lead to poor crop growth, hinder pollination and increase the ease of pest
+                                spread. It is recommended to plant in a different month.
+                            {somewhat ideal la humedad esta rozando la maxima y minima humedad aceptable pero
+                            sige dentro del rango} Precipitations will be acceptable in the coming months for planting
+                            {type of plant}, but caution is advised because of the possibility of {low. high}
+                            humidity.
+                            {ideal} Humidity is forecast to be acceptable and the chance of the humidity falling out of
+                            the acceptable range is low.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Two -->
+        <section id="two" class="wrapper alt spotlight style4">
+            <div class="inner">
+                <a href="#" class="image"><img src="static/image/pic02.jpg" alt="" /></a>
+                <div class="content">
+                    <h2 class="major">Benefit analysis</h2>
+                    <p>In this section we will specify for each plant, viable for planting on the desired land, the
+                        benefit obtainable.
+                        Based on the recommended planting density, the product obtained per hectare and the price per
+                        kilogram of each product.</p>
+                    <button class="btn shadow-none" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse124" aria-expanded="false" aria-controls="collapse124">
+                        <a class="special">Learn More</a>
+                    </button>
+                    <div class="content collapse" id="collapse124">
+                        <!-- se itera por cada planta -->
+                        <p>{plant name}: The price per kilogram of product is {price per kg}, the approximate product
+                            obtainable per hectare is {product per hectare}.
+                            In other words, a total of {hectares * product per hectare * price per kg of product} is
+                            obtained.</p>
+                        <!-- . -->
+                        <p>It should be borne in mind that this profits would be close to the ideal and that to achieve
+                            it, good conditions for the plants must be ensured throughout their life cycle.</p>
                     </div>
                 </div>
             </div>
@@ -150,20 +266,14 @@
                 <a href="#" class="image"><img src="static/image/pic03.jpg" alt="" /></a>
                 <div class="content">
                     <h2 class="major">Soil analisys</h2>
-                    <p>The prediction of the soil moisture and temperature in the area for the next {x} months, based of the average soil moisture and temperatureººº over the last 20 years, is {not ideal, somewhat ideal, ideal} for planting one or several types of crops.</p>
-                        <button class="btn shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse125"
-                        aria-expanded="false" aria-controls="collapse125">
+                    <p>The prediction of the soil moisture and temperature in the area for the next {x} months, based of
+                        the average soil moisture and temperature over the last 20 years, is {not ideal, somewhat
+                        ideal, ideal} for planting one or several types of crops.</p>
+                    <button class="btn shadow-none" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse125" aria-expanded="false" aria-controls="collapse125">
                         <a class="special">Learn More</a>
                     </button>
                     <div class="content collapse" id="collapse125">
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
                         <p>Some placeholder content for the collapse component. This panel is hidden by default but
                             revealed when the user activates the relevant trigger.</p>
                     </div>

@@ -1,13 +1,18 @@
-from app import app
-from flask import  render_template, request, url_for, redirect, Response, send_from_directory
-from flask_login import  current_user, login_user, logout_user, login_required
-from flask import request, flash
+import json
+import os
+
+from flask import (Response, flash, redirect, render_template, request,
+                   send_from_directory, url_for)
+from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.urls import url_parse
-from .forms import LoginForm,RegistrationForm
-from .models import User
+
+from app import app
+
+from .algorithm import *
 from .databaseManager import db
-import json, os
-from  .algorithm import *
+from .forms import LoginForm, RegistrationForm
+from .models import User, parameters
+
 
 @app.route("/")
 @app.route("/home")
@@ -22,7 +27,8 @@ def favicon():
 @app.route("/map")
 @login_required
 def maptool():
-        return render_template('map.html')
+        params = parameters.shortnames()
+        return render_template('map.html', parameters = params)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

@@ -58,47 +58,54 @@ class User(db.Model,UserMixin):
 #     role_id = db.Column(db.Integer(), db.ForeignKey('tbl_roles.id', ondelete='CASCADE'))
 
 class report(db.Model):
-     __tablename__ = 'tbl_reports'
-     id = db.Column(db.Integer(), primary_key=True)
+    __tablename__ = 'tbl_reports'
+    id = db.Column(db.Integer(), primary_key=True)
 
-     name = db.Column(db.String(128),nullable=False)
-     date  = db.Column(db.Date(), nullable=False)
-     location  = db.Column(db.ARRAY(db.Integer, dimensions=4),nullable=False)
-     areaSquareHectare = db.Column(db.Integer())
+    name = db.Column(db.String(128),nullable=False)
+    date  = db.Column(db.Date(), nullable=False)
+    location  = db.Column(db.ARRAY(db.Integer, dimensions=2),nullable=False)
+    polygonLocation = db.Column(db.LargeBinary)
+    areaSquareHectare = db.Column(db.Integer())
+    windDirection =  db.Column(db.String(128),nullable=True)
 
-     #Monthly data
-     avgMonthlytemperature = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgMonthlyprecipitation = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgMonthlyhumidity = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgMonthlysoilmoisture = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgMonthlyradiation = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     #Annual data
-     avgAnnualtemperature = db.Column(db.Integer())
-     avgAnnualprecipitation = db.Column(db.Integer())
-     avgAnnualhumidity = db.Column(db.Integer())
-     avgAnnualsoilmoisture = db.Column(db.Integer())
-     avgAnnualradiation = db.Column(db.Integer())
-     #Money wise data
-     avgTotalIncome = db.Column(db.Integer())
-     avgHectareIncome = db.Column(db.Integer())
-     avgPricePerKg = db.Column(db.Integer())
-     avgKgPerHectare = db.Column(db.Integer())
-     #Algorithm outcome data
-     temperature = db.Column(db.Integer())
-     humidity = db.Column(db.Integer())
-     precipitation = db.Column(db.Integer())
-     soilmoisture = db.Column(db.Integer())
-     radiation = db.Column(db.Integer())
+    #Asociacion a las plantas a las que les hemos dado el ok
+    crops = db.relationship('crop', secondary='tbl_crops_report')
+    #Datos obtenidos
+        #Monthly data
+    avgMonthlyTemperature = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyPrecipitation = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyHumidity = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlySoilmoisture = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlySoiltemperature= db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyRadiation = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyWindDirection = db.Column(db.ARRAY(db.Integer, dimensions=12))
+
+    #Datos del analisis
+        #Numero de palntas a las que le hemso dado el ok
+    numberOfPlants = db.Column(db.Integer())
+        #Media de los datos de los x meses por planta, en la posición cero se enccuentra el id del parametro
+    avgMonthlyTemperaturePlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyPrecipitationPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyHumidityPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlySoilmoisturePlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlySoiltemperaturePlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyRadiationPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyWindDirectionPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+        #Puntuaciones de plantas
+    plantsScore = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    
+
+
      
-     def insert(self):
+    def insert(self):
         db.session.add(self)
         db.session.commit()
 
-     def delete(self):
+    def delete(self):
         db.session.delete(self)
         db.session.commit()
         
-     def update(self):
+    def update(self):
         db.session.commit()
 
 class parameters(db.Model):
@@ -109,6 +116,12 @@ class parameters(db.Model):
     comunity = db.Column(db.String(3))
     longname = db.Column(db.String(64))
     unit = db.Column(db.String(16))
+
+    def shortnames():
+        raw_params = db.session.query(parameters.shortname).all()
+        params = [value for value, in raw_params]
+        return params
+        
     
     def insert(self):
         db.session.add(self)
@@ -128,14 +141,39 @@ class crop(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
 
     name = db.Column(db.String(128),nullable=False)
+    reports = db.relationship("report", secondary="tbl_crops_report")
+    #Nuemro de plantas plantables por hectarea.
+    densityOfPopulation = db.Column(db.Integer())
     #Add a custom domain [tree, bush , grass]
     cropType = db.Column(db.String(128),nullable=False)
     #First array element will be the min value and the second one the max value and the third optimal value
     temperatureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
     humidityRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
     soilmoistureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
+    soiltemperatureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
     precipitationRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
     radiationRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
+    windvelocityRange = db.Column(db.ARRAY(db.Integer, dimensions=3)) 
+    #Money related section
+    pricePerKg = db.Column(db.Integer())
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        
+    def update(self):
+        db.session.commit()
+
+
+class cropReport(db.Model):
+    __tablename__ = 'tbl_crops_report'
+    id = db.Column(db.Integer(), primary_key=True)
+    report_id = db.Column(db.Integer(), db.ForeignKey('tbl_reports.id', ondelete='CASCADE'))
+    crop_id = db.Column(db.Integer(), db.ForeignKey('tbl_crops.id', ondelete='CASCADE'))
 
     def insert(self):
         db.session.add(self)
