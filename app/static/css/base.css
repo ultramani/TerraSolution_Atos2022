@@ -3563,8 +3563,8 @@ body.is-menu-visible #menu .inner {
     background-color: rgba(42, 194, 138, 0.8) !important;
     height: 4.9vh;
     width: 15vh;
-    margin-top: 1vh;
-    margin-bottom: 1vh;
+    margin: 1vh;
+
     align-self: center;
     color: white !important;
 }
@@ -3643,6 +3643,60 @@ body.is-menu-visible #menu .inner {
 
 .button-container .leaflet-pm-actions-container .leaflet-pm-action{
     color: white !important;
+}
+
+.button_wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type="checkbox"]+label:before{
+    outline: 1px solid rgba(42, 194, 138, 0.7); 
+}
+
+/* Popup box BEGIN */
+.hover_msg{
+    background:rgba(0,0,0,.4);
+    cursor:pointer;
+    display:none;
+    height:100%;
+    position:fixed;
+    text-align:center;
+    top:0;
+    width:100%;
+    z-index:10000;
+}
+.hover_msg .helper{
+    display:inline-block;
+    height:100%;
+    vertical-align:middle;
+}
+.hover_msg > div {
+    background-color: rgba(42, 194, 138, 1);
+    box-shadow: 10px 10px 60px #555;
+    display: inline-block;
+    height: auto;
+    max-width: 551px;
+    min-height: 100px;
+    vertical-align: middle;
+    width: 60%;
+    position: relative;
+    border-radius: 8px;
+    padding: 15px 5%;
+}
+
+.hover_msg > div >p {
+    color: white !important;
+}
+
+.trigger_popup_fricc {
+    cursor: pointer;
+    font-size: 20px;
+    margin: 20px;
+    display: inline-block;
+    font-weight: bold;
 }
 
 
