@@ -27,7 +27,7 @@ def favicon():
 @app.route("/map")
 @login_required
 def maptool():
-        params = parameters.shortnames()
+        params = parameters.longnames()
         return render_template('map.html', parameters = params)
 
 @app.route('/register', methods=['GET', 'POST'])
