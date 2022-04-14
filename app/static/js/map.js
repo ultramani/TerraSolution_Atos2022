@@ -40,7 +40,9 @@ map.on('pm:drawstart', function(e) {
 map.on('pm:create', function(e){
     var geoJSON = e.layer.toGeoJSON();
     var center = e.layer.getBounds().getCenter();
-    geoJSON['center']= [center['lat'],center['lng']];
+    var area = getArea(e.layer.getLatLngs()[0])
+    geoJSON['center'] = [center['lat'],center['lng']];
+    geoJSON['area'] = area;
     window.geoJson = geoJSON;
 });
 
@@ -131,6 +133,25 @@ function clearLayer(){
     for(; Object.keys(map._layers).length > 1;) {
         map.removeLayer(map._layers[Object.keys(map._layers)[1]]);
       }
+}
+
+function getArea(latLngs){
+    var pointsCount = latLngs.length,
+				area = 0.0,
+				d2r = Math.PI / 180,
+				p1, p2;
+
+			if (pointsCount > 2) {
+				for (var i = 0; i < pointsCount; i++) {
+					p1 = latLngs[i];
+					p2 = latLngs[(i + 1) % pointsCount];
+					area += ((p2.lng - p1.lng) * d2r) *
+						(2 + Math.sin(p1.lat * d2r) + Math.sin(p2.lat * d2r));
+				}
+				area = area * 6378137.0 * 6378137.0 / 2.0;
+			}
+
+			return Math.abs(area);
 }
 
 function getParcel(){
