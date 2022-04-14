@@ -31,8 +31,17 @@ map.on('pm:drawstart', function(e) {
         if(nVertex >10){
             map.pm.Draw.Polygon._removeLastVertex();
             nVertex -= 1;
-            alert('Max 10 sides');
+            jQuery(function($) {
+                $('.hover_msg').show();
+            }); 
         }
+    });
+});
+
+//Aux pop up method
+$(window).on('load',function () {
+    $('.hover_msg').click(function(){
+        $('.hover_msg').hide();
     });
 });
 
@@ -197,3 +206,4 @@ function finish(){
         }
     });
 }
+
