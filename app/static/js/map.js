@@ -38,7 +38,10 @@ map.on('pm:drawstart', function(e) {
 
 //last polygon drawn
 map.on('pm:create', function(e){
-    window.geoJson = e.layer.toGeoJSON();
+    var geoJSON = e.layer.toGeoJSON();
+    var center = e.layer.getBounds().getCenter();
+    geoJSON['center']= [center['lat'],center['lng']];
+    window.geoJson = geoJSON;
 });
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -109,6 +112,10 @@ function GetCoordinates(lat,lon){
     passData(lat,lon,-1);
 }
 
+function createMarker(lat, lon){
+    L.marker([lat, lon], { pmIgnore: false }).addTo(map);
+}
+
 function passData(lat, lon, location){
     var data = [lat,lon];
     if (location!=-1){
@@ -116,7 +123,7 @@ function passData(lat, lon, location){
     }
     window.geoData = data;
     clearLayer();
-    L.marker([lat, lon], { pmIgnore: false }).addTo(map);
+    createMarker(lat,lon);
     document.getElementById('step-2').click();
 }
 
