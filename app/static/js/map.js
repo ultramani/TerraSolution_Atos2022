@@ -15,10 +15,28 @@ map.pm.addControls({
     drawRectangle: false,
     // drawPolygon: false,
     drawCircleMarker: false,
+    editMode: false,
+    dragMode: false,
+    cutPolygon: false,
+    rotateMode: false,
+
 }); 
 
+//Limit side of polygon
+map.on('pm:drawstart', function(e) {
+    var nVertex = 0;
+    e.workingLayer.on('pm:vertexadded', function(e) {
+        nVertex += 1;
+        if(nVertex >10){
+            map.pm.Draw.Polygon._removeLastVertex();
+            nVertex -= 1;
+            alert('Max 10 sides');
+        }
+    });
+});
+
+//last polygon drawn
 map.on('pm:create', function(e){
-    // last polygon drawn
     window.geoJson = e.layer.toGeoJSON();
 });
 
