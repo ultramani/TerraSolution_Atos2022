@@ -66,12 +66,12 @@ class report(db.Model):
     location  = db.Column(db.ARRAY(db.Integer, dimensions=2),nullable=False)
     polygonLocation = db.Column(db.LargeBinary)
     areaSquareHectare = db.Column(db.Integer())
-    windDirection =  db.Column(db.String(128),nullable=True)
+    
 
     #Asociacion a las plantas a las que les hemos dado el ok
     crops = db.relationship('crop', secondary='tbl_crops_report')
     #Datos obtenidos
-        #Monthly data
+        #Monthly data, en cada posición para cada planta aceptada
     avgMonthlyTemperature = db.Column(db.ARRAY(db.Integer, dimensions=12))
     avgMonthlyPrecipitation = db.Column(db.ARRAY(db.Integer, dimensions=12))
     avgMonthlyHumidity = db.Column(db.ARRAY(db.Integer, dimensions=12))
@@ -79,7 +79,7 @@ class report(db.Model):
     avgMonthlySoiltemperature= db.Column(db.ARRAY(db.Integer, dimensions=12))
     avgMonthlyRadiation = db.Column(db.ARRAY(db.Integer, dimensions=12))
     avgMonthlyWindDirection = db.Column(db.ARRAY(db.Integer, dimensions=12))
-
+    windDirection =  db.Column(db.String(128),nullable=True)
     #Datos del analisis
         #Numero de palntas a las que le hemso dado el ok
     numberOfPlants = db.Column(db.Integer())
@@ -93,10 +93,7 @@ class report(db.Model):
     avgMonthlyWindDirectionPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
         #Puntuaciones de plantas
     plantsScore = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    
-
-
-     
+        
     def insert(self):
         db.session.add(self)
         db.session.commit()
