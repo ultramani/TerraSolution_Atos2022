@@ -3620,6 +3620,7 @@ body.is-menu-visible #menu .inner {
 
 .accordion-button {
     background-color: rgba(42, 194, 138, 0.7) !important;
+    color: white !important;
 }
 
 .blackfont {
@@ -3640,7 +3641,9 @@ body.is-menu-visible #menu .inner {
     box-sizing: border-box;
 }
 
-/* Accordion */
+.button-container .leaflet-pm-actions-container .leaflet-pm-action{
+    color: white !important;
+}
 
 
 /* Banner */

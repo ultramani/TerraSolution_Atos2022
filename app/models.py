@@ -117,8 +117,8 @@ class parameters(db.Model):
     longname = db.Column(db.String(64))
     unit = db.Column(db.String(16))
 
-    def shortnames():
-        raw_params = db.session.query(parameters.shortname).all()
+    def longnames():
+        raw_params = db.session.query(parameters.longname).all()
         params = [value for value, in raw_params]
         return params
         
