@@ -18,6 +18,7 @@ map.pm.addControls({
     editMode: false,
     dragMode: false,
     cutPolygon: false,
+    removalMode: false,
     rotateMode: false,
 
 }); 
