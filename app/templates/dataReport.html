@@ -52,7 +52,8 @@
                 <a href="" class="image"><img src="static/image/pic01.jpg" alt="" /></a>
                 <div class="content">
                     <h2 class="major">Temperature analisys</h2>
-                    <p></p>
+                    <p>Temperature is one of the crucial factors for the correct development of a plant. If the plant is exposed to temperatures outside its acceptable range, 
+                        it will suffer negative consequences, depending on the stage it is in.</p>
                     <p>The prediction of the average temperature in the area for the next months, based of the
                         average temperature over the last 20 years, is {not ideal, somewhat ideal, ideal} for planting
                         one or several types of crops.</p>
@@ -63,15 +64,15 @@
                     </button>
                     <div class="content collapse" id="collapse1">
                         <!-- Esto se iterara para cada planta -->
-                        <p> {nombre de planta}
+                        <p> {nombre de planta}{temperatura media para los x meses de esta planta}
                             {not ideal las temperaturas son muy bajas o muy altas} The prediction is that temperatures
                             will be too
                                 {low}, this could result in frosts, which could lead to a decrease in weight and size of
                                 growing plants and affect pollination. If crops are exposed to these temperatures for a long
                                 time, they may wilt and die. It is recommended to postpone planting to another month or make
                                 sure to use frost protection fabric, greenhouses or mulch the soil.
-                                {high}, this may result if crops are exposed for long periods of time to withering and death
-                                of the crop. It is recommended to postpone planting to another month or to prepare cooling
+                                {high}, this may  affect pollen viability, fertilisation and grain or fruit formation. If crops are exposed for long periods of time to withering and death
+                                of the crop, in conclusion it will reduce the performance potential. It is recommended to postpone planting to another month or to prepare cooling
                                 systems such as sprinklers.
                             {somewhat ideal las temperaturas estan rozan la maxima y minima temperatura aceptable pero
                             sige dentro del rango} Temperatures will be acceptable in the coming months, but caution is
@@ -92,8 +93,9 @@
                 <a href="#" class="image"><img src="static/image/pic02.jpg" alt="" /></a>
                 <div class="content">
                     <h2 class="major">Precipitation analisys</h2>
-                    <p>The prediction of the average precipitation in the area for the next months of {precipitation
-                        media}, based of the
+                    <p>Rainfall is a factor that needs to be known in advance in order to be able to forecast the water consumption needed in the coming months. Too little rainfall means that better preparation is needed to moisten the soil,
+                         and too much rainfall means that drainage systems are needed to prevent flooding of the crops.</p>
+                    <p>The prediction of the average precipitation in the area for the next months, based of the
                         average precipitation over the last 20 years, is {not ideal, somewhat ideal, ideal} for planting
                         one or several types of crops.</p>
                     <button class="btn shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse12"
@@ -203,6 +205,8 @@
                 <a href="#" class="image"><img src="static/image/pic03.jpg" alt="" /></a>
                 <div class="content">
                     <h2 class="major">Humidity analisys</h2>
+                    <p>Relative humidity directly influences the water relations of the plant and indirectly affects leaf growth,
+                         photosynthesis, pollination, disease occurrence.</p>
                     <p>The prediction of the humidity in the area for the next  months, based of
                         the average humidity over the last 20 years, is {not ideal, somewhat
                         ideal, ideal} for planting one or several types of crops.</p>
@@ -227,6 +231,7 @@
                             {ideal} Humidity is forecast to be acceptable and the chance of the humidity falling out of
                             the acceptable range is low.
                         </p>
+                        {% comment %}  {% endcomment %}
                     </div>
                 </div>
             </div>
@@ -237,24 +242,25 @@
             <div class="inner">
                 <a href="#" class="image"><img src="static/image/pic02.jpg" alt="" /></a>
                 <div class="content">
-                    <h2 class="major">Benefit analysis</h2>
-                    <p>In this section we will specify for each plant, viable for planting on the desired land, the
-                        benefit obtainable.
-                        Based on the recommended planting density, the product obtained per hectare and the price per
-                        kilogram of each product.</p>
+                    <h2 class="major">Soil analisys</h2>
+                    <p>This section looks at two key factors of the soil to be cultivated, its humidity and temperature. Warmth induces vegetation development 
+                        in terms of water and nutrient uptake and overall plant growth and the moisture is needed for the plants growth. </p>
+                    <p>The prediction of the soil moisture and temperature in the area for the next {x} months, based of
+                        the average soil moisture and temperature over the last 20 years, is {not ideal, somewhat
+                        ideal, ideal} for planting one or several types of crops.</p>                  
                     <button class="btn shadow-none" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapse124" aria-expanded="false" aria-controls="collapse124">
                         <a class="special">Learn More</a>
                     </button>
                     <div class="content collapse" id="collapse124">
-                        <!-- se itera por cada planta -->
-                        <p>{plant name}: The price per kilogram of product is {price per kg}, the approximate product
-                            obtainable per hectare is {product per hectare}.
-                            In other words, a total of {hectares * product per hectare * price per kg of product} is
-                            obtained.</p>
-                        <!-- . -->
-                        <p>It should be borne in mind that this profits would be close to the ideal and that to achieve
-                            it, good conditions for the plants must be ensured throughout their life cycle.</p>
+                        <p> {nombre de planta}
+                            {not ideal la humedad sera muy bajas o muy altas} 
+                                {low}, 
+                                {high}, 
+                            {somewhat ideal la humedad esta rozando la maxima y minima humedad aceptable pero
+                            sige dentro del rango} 
+                            {ideal} 
+                        </p>
                     </div>
                 </div>
             </div>
@@ -265,17 +271,24 @@
             <div class="inner">
                 <a href="#" class="image"><img src="static/image/pic03.jpg" alt="" /></a>
                 <div class="content">
-                    <h2 class="major">Soil analisys</h2>
-                    <p>The prediction of the soil moisture and temperature in the area for the next {x} months, based of
-                        the average soil moisture and temperature over the last 20 years, is {not ideal, somewhat
-                        ideal, ideal} for planting one or several types of crops.</p>
+                    <h2 class="major">Benefit analysis</h2>
+                    <p>In this section we will specify for each plant, viable for planting on the desired land, the
+                        benefit obtainable.
+                        Based on the recommended planting density, the product obtained per hectare and the price per
+                        kilogram of each product.</p>
                     <button class="btn shadow-none" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapse125" aria-expanded="false" aria-controls="collapse125">
                         <a class="special">Learn More</a>
                     </button>
                     <div class="content collapse" id="collapse125">
-                        <p>Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.</p>
+                        <!-- se itera por cada planta -->
+                        <p>{plant name}: The price per kilogram of product is {price per kg}, the approximate product
+                            obtainable per hectare is {product per hectare}.
+                            In other words, a total of {hectares * product per hectare * price per kg of product} is
+                            obtained.</p>
+                        <!-- . -->
+                        <p>It should be borne in mind that this profits would be close to the ideal and that to achieve
+                            it, good conditions for the plants must be ensured throughout their life cycle.</p>                        
                     </div>
                 </div>
             </div>

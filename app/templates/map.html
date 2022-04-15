@@ -39,6 +39,14 @@
 
 {% endblock %}
 {% block content %}
+
+<div class="hover_msg">
+  <span class="helper"></span>
+  <div>      
+    <p>Maximun number of nodes is 10!</p><p> Try to close the polygon or redo it.</p><p>Click to continue</p> 
+  </div>
+</div>
+
 <div id="map"></div>
 
 <div class="toolbox-wrapper">
@@ -96,8 +104,10 @@
         <div class="accordion-body">
           <div class="card card-body" style="width: 100%;">
               <label for="" style="color: black !important; ">Use the tools in the upper right corner</label>
-              <button class="btnblackDesign" onclick="remove()">Remove</button>
-              <button class="btnblackDesign" onclick="getParcel()">Done</button>
+              <div class="button_wrapper"> 
+                <button class="btn btnblackDesign" onclick="remove()">Remove</button>
+                <button class="btn btnblackDesign"  onclick="getParcel()">Done</button>
+              </div>
           </div>
         </div>
       </div>
@@ -115,10 +125,12 @@
           <div class="card card-body" style="width: 100%;">
             <form id="params">
               {% for i in range(size) %}
-              <div>
+              <ul>
+              <div style="display: flex; flex-direction: column; margin-left:20%; text-align: left; ">
                 <input type="checkbox" id="{{shortparams[i]}}" name="{{shortparams[i]}}">
                 <label for="{{shortparams[i]}}" style="color: black !important; ">{{longparams[i]}}</label>
               </div>
+            </ul>
               {% endfor %}
             </form>
             <button class="btnblackDesign" onclick="finish()">Finish</button>
