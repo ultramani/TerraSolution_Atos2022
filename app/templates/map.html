@@ -78,7 +78,7 @@
               <div class="input-shadow-box">
                 <input class="blackfont" type="number" id="longitude" placeholder="longitude" />
               </div>
-              <button class="btnblackDesign" onclick="GetCoordinates(document.getElementById('latitude').value,document.getElementById('longitude').value)">Accept</button>
+              <button class="btnblackDesign" id="coordsBtn" onclick="GetCoordinates(document.getElementById('latitude').value,document.getElementById('longitude').value)">Accept</button>
             </div>
           </div>
         </div>
@@ -96,7 +96,7 @@
         <div class="accordion-body">
           <div class="card card-body" style="width: 100%;">
               <label for="" style="color: black !important; ">Use the tools in the upper right corner</label>
-              <button class="btnblackDesign" onclick="clearLayer()">Remove</button>
+              <button class="btnblackDesign" onclick="remove()">Remove</button>
               <button class="btnblackDesign" onclick="getParcel()">Done</button>
           </div>
         </div>
@@ -114,10 +114,10 @@
         <div class="accordion-body">
           <div class="card card-body" style="width: 100%;">
             <form id="params">
-              {% for param in parameters %}
+              {% for i in range(size) %}
               <div>
-                <input type="checkbox" id="{{param}}" name="{{param}}">
-                <label for="{{param}}" style="color: black !important; ">{{param}}</label>
+                <input type="checkbox" id="{{shortparams[i]}}" name="{{shortparams[i]}}">
+                <label for="{{shortparams[i]}}" style="color: black !important; ">{{longparams[i]}}</label>
               </div>
               {% endfor %}
             </form>

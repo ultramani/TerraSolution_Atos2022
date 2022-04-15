@@ -6,6 +6,22 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
+//longitude event
+
+var input = document.getElementById("longitude");
+
+// Execute a function when the user releases a key on the keyboard
+input.addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("coordsBtn").click();
+  }
+});
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
 //geoman
 map.pm.addControls({  
     position: 'topright',  
@@ -20,11 +36,15 @@ map.pm.addControls({
     cutPolygon: false,
     removalMode: false,
     rotateMode: false,
-
 }); 
+
+map.pm.Toolbar.setButtonDisabled('drawPolygon', true);
 
 //Limit side of polygon
 map.on('pm:drawstart', function(e) {
+    if(window.polygon !== undefined){
+        map.removeLayer(window.polygon);
+    }
     var nVertex = 0;
     e.workingLayer.on('pm:vertexadded', function(e) {
         nVertex += 1;
@@ -43,6 +63,7 @@ map.on('pm:create', function(e){
     var area = getArea(e.layer.getLatLngs()[0])
     geoJSON['center'] = [center['lat'],center['lng']];
     geoJSON['area'] = area;
+    window.polygon = e.layer;
     window.geoJson = geoJSON;
 });
 
@@ -126,11 +147,19 @@ function passData(lat, lon, location){
     window.geoData = data;
     clearLayer();
     createMarker(lat,lon);
+    map.pm.Toolbar.setButtonDisabled('drawPolygon', false);
     document.getElementById('step-2').click();
+}
+
+function remove(){
+    if(window.polygon !== undefined){
+        map.removeLayer(window.polygon);
+    }
 }
 
 function clearLayer(){
     for(; Object.keys(map._layers).length > 1;) {
+        if(map._layers)
         map.removeLayer(map._layers[Object.keys(map._layers)[1]]);
       }
 }
@@ -155,45 +184,64 @@ function getArea(latLngs){
 }
 
 function getParcel(){
-    $.ajax({
-        url: "polygon", 
-        method: "POST",
-        data : JSON.stringify({Data: window.geoJson}),
-        contentType: 'application/json',
-        success: function (returned_data) { 
-            data = JSON.parse(returned_data);
-            console.log(data);
-        },
-        error: function () {
-          alert('An error occured');
-        }
-    });
-    document.getElementById('step-3').click();
+    if(window.geoData == undefined){
+        alert("follow the steps ;D");
+        document.getElementById('step-1').click();
+    }else if(window.geoJson == undefined){
+        alert("draw the polygon");
+    }else{ 
+        $.ajax({
+            url: "polygon", 
+            method: "POST",
+            data : JSON.stringify({Data: window.geoJson}),
+            contentType: 'application/json',
+            success: function (returned_data) { 
+                data = JSON.parse(returned_data);
+                console.log(data);
+            },
+            error: function () {
+            alert('An error occured');
+            }
+        });
+        document.getElementById('step-3').click();
+    }
 }
 
 function finish(){
-    form = document.getElementById('params');
-    params = []
-    for (var i = 0; i < form.length; i++) {
-        if(form[i].checked){
-            params.push(form[i].name)
+    if(window.geoData == undefined){
+        alert("follow the steps ;D");
+        document.getElementById('step-1').click();
+    }else if(window.geoJson == undefined){
+        alert("follow the steps ;D");
+        document.getElementById('step-2').click();
+    }else{ 
+        form = document.getElementById('params');
+        params = []
+        for (var i = 0; i < form.length; i++) {
+            if(form[i].checked){
+                params.push(form[i].name)
+            }
+        }
+        if (params.length == 0){
+            alert("please select parameters");
+        }else{
+            data =JSON.parse(JSON.stringify(window.geoData));
+            data.push(params);
+            console.log(data);
+            $.ajax({
+                url: "nasa", 
+                headers: {'X-CSRFToken': csrftoken},
+                method: "POST",
+                data : JSON.stringify({Data: data}),
+                contentType: 'application/json',
+                success: function (returned_data) { 
+                    data = JSON.parse(returned_data);
+                    console.log(data);
+                },
+                error: function () {
+                alert('An error occured');
+                }
+            });
         }
     }
-    data =JSON.parse(JSON.stringify(window.geoData));
-    data.push(params);
-    console.log(data);
-    $.ajax({
-        url: "nasa", 
-        headers: {'X-CSRFToken': csrftoken},
-        method: "POST",
-        data : JSON.stringify({Data: data}),
-        contentType: 'application/json',
-        success: function (returned_data) { 
-            data = JSON.parse(returned_data);
-            console.log(data);
-        },
-        error: function () {
-          alert('An error occured');
-        }
-    });
 }
