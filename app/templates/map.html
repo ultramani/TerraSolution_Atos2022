@@ -134,7 +134,26 @@
             </ul>
               {% endfor %}
             </form>
-            <button class="btnblackDesign" onclick="finish()">Finish</button>
+            <button class="btnblackDesign" onclick="params()">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingFour">
+        <button class="accordion-button collapsed" id="step-4" type="button" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+          Confirms data
+        </button>
+      </h2>
+      <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
+        data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">
+          <div class="card card-body" style="width: 100%;">
+              <label for="" style="color: black !important; white-space: pre-line;">*datos*</label>
+              <div class="button_wrapper"> 
+                <button class="btnblackDesign" onclick="finish()">Confirm</button>
+              </div>
           </div>
         </div>
       </div>

@@ -149,7 +149,10 @@ function createMarker(lat, lon){
 }
 
 function passData(lat, lon, location){
-    var data = [lat,lon, location.normalize("NFD").replace(/\p{Diacritic}/gu, "")];
+    if(location != -1){
+        location = location.normalize("NFD").replace(/\p{Diacritic}/gu, "")
+    }
+    var data = [lat,lon, location];
     window.geoData = data;
     clearLayer();
     createMarker(lat,lon);
@@ -212,6 +215,10 @@ function getParcel(){
         });
         document.getElementById('step-3').click();
     }
+}
+
+function params(){
+    document.getElementById('step-4').click();
 }
 
 function finish(){
