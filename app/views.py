@@ -88,7 +88,11 @@ def polygon():
 def solarData():
     if request.method == "POST":
         data = parse_obj(json.loads(request.data))['Data']
-        solarData= getSolarData(data[0], data[1], data[2])
+        if (len(data) == 3):
+            solarData = getSolarData(data[0], data[1], data[2])
+        else:
+            solarData = getSolarData(data[0], data[1], data[3])
+        
         return json.dumps(solarData)
     else:
         return Response('Error')
