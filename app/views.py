@@ -81,18 +81,14 @@ def polygon():
     #Parse Json
     data = parse_obj(json.loads(request.data))['Data']
     #Obtain circumscribed rectangle
-    coords = getRectangle(data)
-    return json.dumps(coords)
+    geoJson = getRectangle(data)
+    return json.dumps(geoJson)
 
 @app.route("/nasa", methods=['POST'])
 def solarData():
     if request.method == "POST":
         data = parse_obj(json.loads(request.data))['Data']
-        if (len(data) == 3):
-            solarData = getSolarData(data[0], data[1], data[2])
-        else:
-            solarData = getSolarData(data[0], data[1], data[3])
-        
+        solarData = getSolarData(data[3], data[4], data[5])
         return json.dumps(solarData)
     else:
         return Response('Error')

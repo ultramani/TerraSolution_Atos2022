@@ -18,12 +18,13 @@ def getRectangle(geoJson):
     minLong = min(long)
     minLat = min(lat)
     bbox = [[minLong,minLat],[maxLong,maxLat]]
-    return bbox
+    geoJson['bbox'] = bbox
+    return geoJson
 
 def getSolarData(lat, lon, params):
     paraStr = ""
     for para in params:
-        paraStr = paraStr + str(para) + ","
+        paraStr += str(para) + ","
     URL = ("https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=%s&community=AG&longitude=%s&latitude=%s&format=JSON" %(paraStr[:-1],lat,lon))
     r = requests.get(URL)
     data = r.json()
