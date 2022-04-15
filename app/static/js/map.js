@@ -163,6 +163,7 @@ function passData(lat, lon, location){
 function remove(){
     if(window.polygon !== undefined){
         map.removeLayer(window.polygon);
+        window.geoJson = undefined;
     }
 }
 
@@ -198,7 +199,11 @@ function getParcel(){
         document.getElementById('step-1').click();
     }else if(window.geoJson == undefined){
         alert("draw the polygon");
-    }else{ 
+    }else if(window.geoJson['area'] > 1500000){
+        console.log(window.geoJson['area']);
+        alert('too large polygon');
+        remove();
+    }else{
         $.ajax({
             url: "polygon", 
             method: "POST",
