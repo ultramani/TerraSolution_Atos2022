@@ -118,6 +118,11 @@ class parameters(db.Model):
         raw_params = db.session.query(parameters.longname).all()
         params = [value for value, in raw_params]
         return params
+    
+    def shortnames():
+        raw_params = db.session.query(parameters.shortname).all()
+        params = [value for value, in raw_params]
+        return params
         
     
     def insert(self):
