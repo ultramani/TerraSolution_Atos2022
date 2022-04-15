@@ -3658,7 +3658,7 @@ input[type="checkbox"]+label:before{
 
 /* Popup box BEGIN */
 .hover_msg{
-    background:rgba(0,0,0,.4);
+    background:rgba(0,0,0,0);
     cursor:pointer;
     display:none;
     height:100%;
