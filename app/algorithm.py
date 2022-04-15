@@ -1,4 +1,5 @@
 import requests, json
+from math import sin, cos, sqrt, atan2, radians
 
 def parse_obj(obj):
     for key in obj:
@@ -8,6 +9,24 @@ def parse_obj(obj):
             obj[key] = list(map(lambda x: x if type(x) != str else x.encode('latin_1').decode('utf-8'), obj[key]))
         pass
     return obj
+
+def sides(bbox):
+    p1, p2, p3 = bbox[0], bbox[1], [bbox[1][0], bbox[0][1]]
+    return [lineLen(p3,p1),lineLen(p3,p2)]
+
+def lineLen(p1, p2):
+    R = 6373.0
+
+    lat1, lon1, lat2, lon2 = radians(p1[0]), radians(p1[1]), radians(p2[0]), radians(p2[1])
+
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    distance = R * c
+    return distance
 
 def getRectangle(geoJson):
     coords = geoJson['geometry']['coordinates'][0]
@@ -19,6 +38,7 @@ def getRectangle(geoJson):
     minLat = min(lat)
     bbox = [[minLong,minLat],[maxLong,maxLat]]
     geoJson['bbox'] = bbox
+    geoJson['bboxSides'] = sides(bbox)
     return geoJson
 
 def getSolarData(lat, lon, params):
