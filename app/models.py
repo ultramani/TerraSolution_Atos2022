@@ -63,8 +63,9 @@ class report(db.Model):
 
     name = db.Column(db.String(128),nullable=False)
     date  = db.Column(db.Date(), nullable=False)
-    location  = db.Column(db.ARRAY(db.Integer, dimensions=2),nullable=False)
-    polygonLocation = db.Column(db.LargeBinary)
+    location  = db.Column(db.ARRAY(db.Integer, dimensions=2))
+    bbox  = db.Column(db.ARRAY(db.Integer, dimensions=4))
+    polygon = db.Column(db.LargeBinary)
     areaSquareHectare = db.Column(db.Integer())
     
 
