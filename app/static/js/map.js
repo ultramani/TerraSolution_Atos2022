@@ -149,10 +149,7 @@ function createMarker(lat, lon){
 }
 
 function passData(lat, lon, location){
-    var data = [lat,lon];
-    if (location!=-1){
-        data.push(location);
-    }
+    var data = [lat,lon, location.normalize("NFD").replace(/\p{Diacritic}/gu, "")];
     window.geoData = data;
     clearLayer();
     createMarker(lat,lon);
@@ -206,7 +203,8 @@ function getParcel(){
             contentType: 'application/json',
             success: function (returned_data) { 
                 data = JSON.parse(returned_data);
-                console.log(data);
+                window.geoJson = data;
+                window.geoData.push(data['center'][0],data['center'][1]);
             },
             error: function () {
             alert('An error occured');
@@ -234,14 +232,12 @@ function finish(){
         if (params.length == 0){
             alert("please select parameters");
         }else{
-            data =JSON.parse(JSON.stringify(window.geoData));
-            data.push(params);
-            console.log(data);
+            window.geoData.push(params);
             $.ajax({
                 url: "nasa", 
                 headers: {'X-CSRFToken': csrftoken},
                 method: "POST",
-                data : JSON.stringify({Data: data}),
+                data : JSON.stringify({Data: window.geoData}),
                 contentType: 'application/json',
                 success: function (returned_data) { 
                     data = JSON.parse(returned_data);
