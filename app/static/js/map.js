@@ -72,6 +72,7 @@ map.on('pm:create', function(e){
     var area = getArea(e.layer.getLatLngs()[0])
     geoJSON['center'] = [center['lat'],center['lng']];
     geoJSON['area'] = area;
+    geoJSON['data'] = window.geoData;
     window.polygon = e.layer;
     window.geoJson = geoJSON;
 });
@@ -212,7 +213,6 @@ function getParcel(){
             success: function (returned_data) { 
                 data = JSON.parse(returned_data);
                 window.geoJson = data;
-                window.geoData.push(data['center'][0],data['center'][1]);
             },
             error: function () {
             alert('An error occured');
@@ -244,12 +244,12 @@ function finish(){
         if (params.length == 0){
             alert("please select parameters");
         }else{
-            window.geoData.push(params);
+            window.geoJson['params'] = params;
             $.ajax({
                 url: "nasa", 
                 headers: {'X-CSRFToken': csrftoken},
                 method: "POST",
-                data : JSON.stringify({Data: window.geoData}),
+                data : JSON.stringify({Data: window.geoJson}),
                 contentType: 'application/json',
                 success: function (returned_data) { 
                     data = JSON.parse(returned_data);
