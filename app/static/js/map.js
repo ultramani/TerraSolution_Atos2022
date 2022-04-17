@@ -72,6 +72,7 @@ map.on('pm:create', function(e){
     var area = getArea(e.layer.getLatLngs()[0])
     geoJSON['center'] = [center['lat'],center['lng']];
     geoJSON['area'] = area;
+    geoJSON['data'] = window.geoData;
     window.polygon = e.layer;
     window.geoJson = geoJSON;
 });
@@ -149,10 +150,10 @@ function createMarker(lat, lon){
 }
 
 function passData(lat, lon, location){
-    var data = [lat,lon];
-    if (location!=-1){
-        data.push(location);
+    if(location != -1){
+        location = location.normalize("NFD").replace(/\p{Diacritic}/gu, "")
     }
+    var data = [lat,lon, location];
     window.geoData = data;
     clearLayer();
     createMarker(lat,lon);
@@ -163,6 +164,7 @@ function passData(lat, lon, location){
 function remove(){
     if(window.polygon !== undefined){
         map.removeLayer(window.polygon);
+        window.geoJson = undefined;
     }
 }
 
@@ -198,7 +200,11 @@ function getParcel(){
         document.getElementById('step-1').click();
     }else if(window.geoJson == undefined){
         alert("draw the polygon");
-    }else{ 
+    }else if(window.geoJson['area'] > 1500000){
+        console.log(window.geoJson['area']);
+        alert('too large polygon');
+        remove();
+    }else{
         $.ajax({
             url: "polygon", 
             method: "POST",
@@ -206,7 +212,7 @@ function getParcel(){
             contentType: 'application/json',
             success: function (returned_data) { 
                 data = JSON.parse(returned_data);
-                console.log(data);
+                window.geoJson = data;
             },
             error: function () {
             alert('An error occured');
@@ -214,6 +220,10 @@ function getParcel(){
         });
         document.getElementById('step-3').click();
     }
+}
+
+function params(){
+    document.getElementById('step-4').click();
 }
 
 function finish(){
@@ -234,18 +244,15 @@ function finish(){
         if (params.length == 0){
             alert("please select parameters");
         }else{
-            data =JSON.parse(JSON.stringify(window.geoData));
-            data.push(params);
-            console.log(data);
+            window.geoJson['params'] = params;
             $.ajax({
-                url: "nasa", 
+                url: "report", 
                 headers: {'X-CSRFToken': csrftoken},
                 method: "POST",
-                data : JSON.stringify({Data: data}),
+                data : JSON.stringify({Data: window.geoJson}),
                 contentType: 'application/json',
                 success: function (returned_data) { 
-                    data = JSON.parse(returned_data);
-                    console.log(data);
+                    console.log(returned_data);
                 },
                 error: function () {
                 alert('An error occured');
