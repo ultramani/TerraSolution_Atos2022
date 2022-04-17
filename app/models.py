@@ -7,6 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from app import login_manager
 
 from .databaseManager import db
+import datetime
 
 
 @login_manager.user_loader
@@ -58,35 +59,105 @@ class User(db.Model,UserMixin):
 #     role_id = db.Column(db.Integer(), db.ForeignKey('tbl_roles.id', ondelete='CASCADE'))
 
 class report(db.Model):
-     __tablename__ = 'tbl_reports'
-     id = db.Column(db.Integer(), primary_key=True)
+    __tablename__ = 'tbl_reports'
+    id = db.Column(db.Integer(), primary_key=True)
 
-     name = db.Column(db.String(128),nullable=False)
-     date  = db.Column(db.Date(), nullable=False)
-     location  = db.Column(db.ARRAY(db.Integer, dimensions=4),nullable=False)
-     #Monthly
-     avgMonthlytemperature = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgMonthlyprecipitation = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgMonthlyhumidity = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgMonthlysoilmoisture = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgMonthlyradiation = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     #Annual
-     avgAnnualtemperature = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgAnnualprecipitation = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgAnnualhumidity = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgAnnualsoilmoisture = db.Column(db.ARRAY(db.Integer, dimensions=12))
-     avgAnnualradiation = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    date = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    location  = db.Column(db.ARRAY(db.Float),nullable=False)
+    name = db.Column(db.String(128))
+    bbox  = db.Column(db.ARRAY(db.Float))
+    polygon = db.Column(db.ARRAY(db.Float))
+    area = db.Column(db.Float)
+    
 
-     def insert(self):
+    #Asociacion a las plantas a las que les hemos dado el ok
+    crops = db.relationship('crop', secondary='tbl_crops_report')
+    #Datos obtenidos
+        #Monthly data, en cada posición para cada planta aceptada
+    avgMonthlyTemperature = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyPrecipitation = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyHumidity = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlySoilmoisture = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlySoiltemperature= db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyRadiation = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyWindDirection = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    windDirection =  db.Column(db.String(128),nullable=True)
+    #Datos del analisis
+        #Numero de palntas a las que le hemso dado el ok
+    numberOfPlants = db.Column(db.Integer())
+        #Media de los datos de los x meses por planta, en la posición cero se enccuentra el id del parametro
+    avgMonthlyTemperaturePlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyPrecipitationPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyHumidityPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlySoilmoisturePlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlySoiltemperaturePlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyRadiationPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyWindDirectionPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+        #Puntuaciones de plantas
+    plantsScore = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    
+    def __init__ (self, location):
+        self.location = location
+
+    def getJson(self):
+        json = {
+            'date':self.date.strftime('%Y-%m-%d %H:%M:%S:%f'),
+            'location': self.location[0],
+            'name': self.name,
+            'bbox': self.bbox[0],
+            'polygon': self.polygon[0],
+            'area' : self.area
+            }
+        return json
+    
+    def getAllJson():
+        reports = report.query.all()
+        all = {'reports': []}
+        for e in reports:
+            all['reports'].append(e.getJson())
+        return all
+
+    def insert(self):
         db.session.add(self)
         db.session.commit()
 
-     def delete(self):
+    def delete(self):
         db.session.delete(self)
         db.session.commit()
         
-     def update(self):
+    def update(self):
         db.session.commit()
+
+class parameters(db.Model):
+    __tablename__ = 'tbl_parameters'
+    id = db.Column(db.Integer(), primary_key=True)
+
+    shortname = db.Column(db.String(32))
+    comunity = db.Column(db.String(3))
+    longname = db.Column(db.String(64))
+    unit = db.Column(db.String(16))
+
+    def longnames():
+        raw_params = db.session.query(parameters.longname).all()
+        params = [value for value, in raw_params]
+        return params
+    
+    def shortnames():
+        raw_params = db.session.query(parameters.shortname).all()
+        params = [value for value, in raw_params]
+        return params
+    
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        
+    def update(self):
+        db.session.commit()
+
 
 
 class crop(db.Model):
@@ -94,14 +165,39 @@ class crop(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
 
     name = db.Column(db.String(128),nullable=False)
+    reports = db.relationship("report", secondary="tbl_crops_report")
+    #Nuemro de plantas plantables por hectarea.
+    densityOfPopulation = db.Column(db.Integer())
     #Add a custom domain [tree, bush , grass]
     cropType = db.Column(db.String(128),nullable=False)
     #First array element will be the min value and the second one the max value and the third optimal value
     temperatureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
     humidityRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
     soilmoistureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
+    soiltemperatureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
     precipitationRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
     radiationRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
+    windvelocityRange = db.Column(db.ARRAY(db.Integer, dimensions=3)) 
+    #Money related section
+    pricePerKg = db.Column(db.Integer())
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        
+    def update(self):
+        db.session.commit()
+
+
+class cropReport(db.Model):
+    __tablename__ = 'tbl_crops_report'
+    id = db.Column(db.Integer(), primary_key=True)
+    report_id = db.Column(db.Integer(), db.ForeignKey('tbl_reports.id', ondelete='CASCADE'))
+    crop_id = db.Column(db.Integer(), db.ForeignKey('tbl_crops.id', ondelete='CASCADE'))
 
     def insert(self):
         db.session.add(self)

@@ -39,6 +39,14 @@
 
 {% endblock %}
 {% block content %}
+
+<div class="hover_msg">
+  <span class="helper"></span>
+  <div>      
+    <p>Maximun number of nodes is 10!</p><p> Try to close the polygon or redo it.</p><p>Click to continue</p> 
+  </div>
+</div>
+
 <div id="map"></div>
 
 <div class="toolbox-wrapper">
@@ -67,7 +75,6 @@
               <div id="findbox">
                 <label for="" style="color: black !important; ">Type your address</label>
               </div>
-              <button class="btnblackDesign" onclick="prueba()">Prueba</button>
             </div>
           </div>
           <div class="collapse collapse-horizontal" id="collapseCoords">
@@ -79,7 +86,7 @@
               <div class="input-shadow-box">
                 <input class="blackfont" type="number" id="longitude" placeholder="longitude" />
               </div>
-              <button class="btnblackDesign" onclick="GetCoordinates(document.getElementById('latitude').value,document.getElementById('longitude').value)">Accept</button>
+              <button class="btnblackDesign" id="coordsBtn" onclick="GetCoordinates(document.getElementById('latitude').value,document.getElementById('longitude').value)">Accept</button>
             </div>
           </div>
         </div>
@@ -96,8 +103,12 @@
         data-bs-parent="#accordionFlushExample">
         <div class="accordion-body">
           <div class="card card-body" style="width: 100%;">
-              <label for="" style="color: black !important; ">Use the tools in the upper right corner</label>
-            <button class="btnblackDesign" onclick="getParcel()">Done</button>
+              <label for="" style="color: black !important; white-space: pre-line;">Use the tool in the upper right corner. 
+                (10 sides maximum)</label>
+              <div class="button_wrapper"> 
+                <button class="btn btnblackDesign" onclick="remove()">Remove</button>
+                <button class="btn btnblackDesign"  onclick="getParcel()">Done</button>
+              </div>
           </div>
         </div>
       </div>
@@ -114,24 +125,35 @@
         <div class="accordion-body">
           <div class="card card-body" style="width: 100%;">
             <form id="params">
-              <div>
-                <input type="checkbox" id="T2M" name="T2M" checked>
-                <label for="T2M" style="color: black !important; ">T2M</label>
+              {% for i in range(size) %}
+              <ul>
+              <div style="display: flex; flex-direction: column; margin-left:20%; text-align: left; ">
+                <input type="checkbox" id="{{shortparams[i]}}" name="{{shortparams[i]}}">
+                <label for="{{shortparams[i]}}" style="color: black !important; ">{{longparams[i]}}</label>
               </div>
-              <div>
-                <input type="checkbox" id="RH2M" name="RH2M" checked>
-                <label for="RH2M" style="color: black !important; ">RH2M</label>
-              </div>
-              <div>
-                <input type="checkbox" id="GWETPROF" name="GWETPROF" checked>
-                <label for="GWETPROF" style="color: black !important; ">GWETPROF</label>
-              </div>
-              <div>
-                <input type="checkbox" id="ALLSKY_SFC_SW_DNI" name="ALLSKY_SFC_SW_DNI" checked>
-                <label for="ALLSKY_SFC_SW_DNI" style="color: black !important; ">ALLSKY_SFC_SW_DNI</label>
-              </div>
+            </ul>
+              {% endfor %}
             </form>
-            <button class="btnblackDesign" onclick="finish()">Finish</button>
+            <button class="btnblackDesign" onclick="params()">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingFour">
+        <button class="accordion-button collapsed" id="step-4" type="button" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+          Confirms data
+        </button>
+      </h2>
+      <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
+        data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">
+          <div class="card card-body" style="width: 100%;">
+              <label for="" style="color: black !important; white-space: pre-line;">*datos*</label>
+              <div class="button_wrapper"> 
+                <button class="btnblackDesign" onclick="finish()">Confirm</button>
+              </div>
           </div>
         </div>
       </div>
