@@ -7,6 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from app import login_manager
 
 from .databaseManager import db
+import datetime
 
 
 @login_manager.user_loader
@@ -61,12 +62,12 @@ class report(db.Model):
     __tablename__ = 'tbl_reports'
     id = db.Column(db.Integer(), primary_key=True)
 
-    name = db.Column(db.String(128),nullable=False)
-    date  = db.Column(db.Date(), nullable=False)
-    location  = db.Column(db.ARRAY(db.Integer, dimensions=2))
-    bbox  = db.Column(db.ARRAY(db.Integer, dimensions=4))
-    polygon = db.Column(db.LargeBinary)
-    areaSquareHectare = db.Column(db.Integer())
+    date = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    location  = db.Column(db.ARRAY(db.Float),nullable=False)
+    name = db.Column(db.String(128))
+    bbox  = db.Column(db.ARRAY(db.Float))
+    polygon = db.Column(db.ARRAY(db.Float))
+    area = db.Column(db.Float)
     
 
     #Asociacion a las plantas a las que les hemos dado el ok
@@ -94,7 +95,28 @@ class report(db.Model):
     avgMonthlyWindDirectionPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
         #Puntuaciones de plantas
     plantsScore = db.Column(db.ARRAY(db.Integer, dimensions=12))
-        
+    
+    def __init__ (self, location):
+        self.location = location
+
+    def getJson(self):
+        json = {
+            'date':self.date.strftime('%Y-%m-%d %H:%M:%S:%f'),
+            'location': self.location[0],
+            'name': self.name,
+            'bbox': self.bbox[0],
+            'polygon': self.polygon[0],
+            'area' : self.area
+            }
+        return json
+    
+    def getAllJson():
+        reports = report.query.all()
+        all = {'reports': []}
+        for e in reports:
+            all['reports'].append(e.getJson())
+        return all
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -124,7 +146,6 @@ class parameters(db.Model):
         raw_params = db.session.query(parameters.shortname).all()
         params = [value for value, in raw_params]
         return params
-        
     
     def insert(self):
         db.session.add(self)

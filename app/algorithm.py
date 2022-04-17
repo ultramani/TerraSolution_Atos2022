@@ -1,4 +1,6 @@
-import requests, json
+from .databaseManager import db
+import requests
+from app.models import report
 from math import sin, cos, sqrt, atan2, radians
 
 def parse_obj(obj):
@@ -32,10 +34,7 @@ def getRectangle(geoJson):
     coords = geoJson['geometry']['coordinates'][0]
     long = [item[0] for item in coords]
     lat = [item[1] for item in coords]
-    maxLong = max(long)
-    maxLat = max(lat)
-    minLong = min(long)
-    minLat = min(lat)
+    maxLong, maxLat, minLong, minLat = max(long), max(lat),min(long), min(lat)
     bbox = [[minLong,minLat],[maxLong,maxLat]]
     geoJson['bbox'] = bbox
     geoJson['bboxSides'] = sides(bbox)
@@ -54,3 +53,18 @@ def getSolarData(lat, lon, params):
     for e in parsed_data:
         e.extend(list(data['properties']['parameter'][e[0]].values())[0:13])
     return parsed_data
+
+def save(gData, pData):
+    location = gData['data'][0:2]
+    data = report((location,))
+    name = gData['data'][2]
+    if name != -1:
+        data.name = name
+    bbox = gData['bbox']
+    data.bbox = ((bbox,))
+    data.polygon = (gData['geometry']['coordinates'][0],)
+    data.area = gData['area']
+    # Create object with values
+    data.insert()
+    message = f"The data for report {location} and {bbox} has been submitted."
+    return message

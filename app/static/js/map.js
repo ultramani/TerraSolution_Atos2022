@@ -246,14 +246,13 @@ function finish(){
         }else{
             window.geoJson['params'] = params;
             $.ajax({
-                url: "nasa", 
+                url: "report", 
                 headers: {'X-CSRFToken': csrftoken},
                 method: "POST",
                 data : JSON.stringify({Data: window.geoJson}),
                 contentType: 'application/json',
                 success: function (returned_data) { 
-                    data = JSON.parse(returned_data);
-                    console.log(data);
+                    console.log(returned_data);
                 },
                 error: function () {
                 alert('An error occured');

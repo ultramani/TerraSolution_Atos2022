@@ -84,11 +84,12 @@ def polygon():
     geoJson = getRectangle(data)
     return json.dumps(geoJson)
 
-@app.route("/nasa", methods=['POST'])
+@app.route("/report", methods=['POST'])
 def solarData():
     if request.method == "POST":
         data = parse_obj(json.loads(request.data))['Data']
         solarData = getSolarData(data['center'][0], data['center'][0], data['params'])
-        return json.dumps(solarData)
+        save = save(data,solarData)
+        return save
     else:
         return Response('Error')
