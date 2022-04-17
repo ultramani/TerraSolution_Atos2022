@@ -86,12 +86,8 @@ def solarData():
         return Response('Error')
 
 # Added by isaac
-
-@app.route("/VegetationBORRAR")
-def vegetationBorrar():
-    return render_template('VegetationBORRAR.html')
-
 @app.route('/mundiLayer', methods=['GET'])
 def main_mundiLayer():
+    #Cambiar por variable bbox
     mundiLayers_json = mundiLayer([['-3.995147736328125','38.99658413918594'],['-3.058563263671875','39.508821688014066']],width=682,height=373)
     return mundiLayers_json
