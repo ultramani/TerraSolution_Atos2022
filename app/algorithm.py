@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import requests, json, urllib.parse
 import urllib.request as ur
 from xml.dom import minidom 
@@ -5,6 +6,12 @@ from datetime import datetime, timezone, date, timedelta
 from io import BytesIO
 from PIL import Image
 import ssl # quitar esto en produccion
+=======
+from .databaseManager import db
+import requests
+from app.models import report
+from math import sin, cos, sqrt, atan2, radians
+>>>>>>> master
 
 def parse_obj(obj):
     for key in obj:
@@ -15,21 +22,38 @@ def parse_obj(obj):
         pass
     return obj
 
+def sides(bbox):
+    p1, p2, p3 = bbox[0], bbox[1], [bbox[1][0], bbox[0][1]]
+    return [lineLen(p3,p1),lineLen(p3,p2)]
+
+def lineLen(p1, p2):
+    R = 6373.0
+
+    lat1, lon1, lat2, lon2 = radians(p1[0]), radians(p1[1]), radians(p2[0]), radians(p2[1])
+
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    distance = R * c
+    return distance
+
 def getRectangle(geoJson):
     coords = geoJson['geometry']['coordinates'][0]
     long = [item[0] for item in coords]
     lat = [item[1] for item in coords]
-    maxLong = max(long)
-    maxLat = max(lat)
-    minLong = min(long)
-    minLat = min(lat)
+    maxLong, maxLat, minLong, minLat = max(long), max(lat),min(long), min(lat)
     bbox = [[minLong,minLat],[maxLong,maxLat]]
-    return bbox
+    geoJson['bbox'] = bbox
+    geoJson['bboxSides'] = sides(bbox)
+    return geoJson
 
 def getSolarData(lat, lon, params):
     paraStr = ""
     for para in params:
-        paraStr = paraStr + str(para) + ","
+        paraStr += str(para) + ","
     URL = ("https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=%s&community=AG&longitude=%s&latitude=%s&format=JSON" %(paraStr[:-1],lat,lon))
     r = requests.get(URL)
     data = r.json()
@@ -157,9 +181,17 @@ def mundiLayer(bbox, width=682, height=373):
   mundiLayers_json = layers(bbox, best_recent_date, width, height)
   return mundiLayers_json
 
-  
-
-#@app.route('/vegetationIndex', methods=['POST'])
-""" def main_vegetationIndex():
-    vegetation_json = mundiLayer(bbox,width=682,height=373)
-    return vegetation_json """
+def save(gData, pData):
+    location = gData['data'][0:2]
+    data = report((location,))
+    name = gData['data'][2]
+    if name != -1:
+        data.name = name
+    bbox = gData['bbox']
+    data.bbox = ((bbox,))
+    data.polygon = (gData['geometry']['coordinates'][0],)
+    data.area = gData['area']
+    # Create object with values
+    data.insert()
+    message = f"The data for report {location} and {bbox} has been submitted."
+    return message
