@@ -1,5 +1,6 @@
 import json
 import os
+from urllib import response
 
 from flask import (Response, flash, redirect, render_template, request,
                    send_from_directory, url_for)
@@ -71,10 +72,14 @@ def logout():
         return redirect('/')
 
         
-@app.route('/report')
+@app.route('/report', methods=['GET','POST'])
 @login_required
 def reportpage():
-    return render_template('dataReport.html')
+    if request.method == "GET":
+        return render_template('dataReport.html')
+    elif request.method == "POST":
+        response = generatePDF()
+        return response
 
 @app.route("/polygon", methods=['POST'])
 def polygon():
@@ -92,3 +97,4 @@ def solarData():
         return json.dumps(solarData)
     else:
         return Response('Error')
+    

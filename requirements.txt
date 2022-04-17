@@ -33,3 +33,4 @@ urllib3==1.26.8
 Werkzeug==2.0.3
 xacro==1.13.3
 WTForms
+pdfkit

@@ -23,5 +23,6 @@ db_drop_and_create_all()
 CORS(app)
 migrate = Migrate(app, db)
 
+
 from .views import *
 

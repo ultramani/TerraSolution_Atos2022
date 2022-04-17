@@ -1,4 +1,7 @@
+from turtle import pd
+from flask import make_response, render_template
 import requests, json
+import pdfkit
 
 def parse_obj(obj):
     for key in obj:
@@ -33,3 +36,17 @@ def getSolarData(lat, lon, params):
     for e in parsed_data:
         e.extend(list(data['properties']['parameter'][e[0]].values())[0:13])
     return parsed_data
+
+# Pdf generator
+
+def generatePDF():
+    rendered = render_template('pdfGenerator.html', prueba='hola')
+    path = r'C:\Users\ultra\Desktop\pdf\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    config = pdfkit.configuration(wkhtmltopdf=path)
+    pdf = pdfkit.from_string(rendered,False,configuration=config)
+    
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'inline; filename=report.pdf'
+    
+    return response

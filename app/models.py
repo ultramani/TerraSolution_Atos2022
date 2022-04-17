@@ -148,16 +148,17 @@ class crop(db.Model):
     densityOfPopulation = db.Column(db.Integer())
     #Add a custom domain [tree, bush , grass]
     cropType = db.Column(db.String(128),nullable=False)
+    waterPerArea = db.Column(db.Integer())
     #First array element will be the min value and the second one the max value and the third optimal value
-    temperatureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
-    humidityRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
-    soilmoistureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
-    soiltemperatureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
-    precipitationRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
-    radiationRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
-    windvelocityRange = db.Column(db.ARRAY(db.Integer, dimensions=3)) 
+    temperatureRange = db.Column(db.ARRAY(db.Float, dimensions=3))
+    humidityRange = db.Column(db.ARRAY(db.Float, dimensions=3))
+    soilmoistureRange = db.Column(db.ARRAY(db.Float, dimensions=3))
+    soiltemperatureRange = db.Column(db.ARRAY(db.Float, dimensions=3))
+    precipitationRange = db.Column(db.ARRAY(db.Float, dimensions=3))
+    radiationRange = db.Column(db.ARRAY(db.Float, dimensions=3))
+    windvelocityRange = db.Column(db.ARRAY(db.Float, dimensions=3)) 
     #Money related section
-    pricePerKg = db.Column(db.Integer())
+    pricePerKg = db.Column(db.Float())
 
     def insert(self):
         db.session.add(self)
