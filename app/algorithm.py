@@ -6,7 +6,6 @@ from io import BytesIO
 from PIL import Image
 import ssl # quitar esto en produccion
 from .databaseManager import db
-import requests
 from app.models import report
 from math import sin, cos, sqrt, atan2, radians
 
