@@ -8,6 +8,7 @@ from app import login_manager
 
 from .databaseManager import db
 import datetime
+from sqlalchemy.dialects.postgresql import JSON
 
 
 @login_manager.user_loader
@@ -73,28 +74,20 @@ class report(db.Model):
     #Asociacion a las plantas a las que les hemos dado el ok
     crops = db.relationship('crop', secondary='tbl_crops_report')
     #Datos obtenidos
-        #Monthly data, en cada posición para cada planta aceptada
-    avgMonthlyTemperature = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyPrecipitation = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyHumidity = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlySoilmoisture = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlySoiltemperature= db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyRadiation = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyWindDirection = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    windDirection =  db.Column(db.String(128),nullable=True)
+    params = db.Column(JSON)
     #Datos del analisis
         #Numero de palntas a las que le hemso dado el ok
     numberOfPlants = db.Column(db.Integer())
         #Media de los datos de los x meses por planta, en la posición cero se enccuentra el id del parametro
-    avgMonthlyTemperaturePlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyPrecipitationPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyHumidityPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlySoilmoisturePlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlySoiltemperaturePlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyRadiationPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyWindDirectionPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyTemperaturePlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlyPrecipitationPlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlyHumidityPlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlySoilmoisturePlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlySoiltemperaturePlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlyRadiationPlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlyWindDirectionPlants = db.Column(db.ARRAY(db.Integer))
         #Puntuaciones de plantas
-    plantsScore = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    plantsScore = db.Column(db.ARRAY(db.Integer))
     
     def __init__ (self, location):
         self.location = location
@@ -106,7 +99,8 @@ class report(db.Model):
             'name': self.name,
             'bbox': self.bbox[0],
             'polygon': self.polygon[0],
-            'area' : self.area
+            'area' : self.area,
+            'params' : self.params
             }
         return json
     

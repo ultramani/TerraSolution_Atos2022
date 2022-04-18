@@ -261,3 +261,17 @@ function finish(){
         }
     }
 }
+
+function test(){
+    $.ajax({
+        url: "test", 
+        method: "POST",
+        success: function (returned_data) { 
+            data = JSON.stringify(returned_data)
+            console.log(data);
+        },
+        error: function () {
+        alert('An error occured');
+        }
+    });
+}

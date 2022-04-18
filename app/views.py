@@ -89,7 +89,15 @@ def solarData():
     if request.method == "POST":
         data = parse_obj(json.loads(request.data))['Data']
         solarData = getSolarData(data['center'][0], data['center'][0], data['params'])
-        save = save(data,solarData)
-        return save
+        data = save(data,solarData)
+        return data
+    else:
+        return Response('Error')
+
+@app.route("/test", methods=['POST'])
+def test():
+    if request.method == "POST":
+        prueba()
+        return Response('ok')
     else:
         return Response('Error')
