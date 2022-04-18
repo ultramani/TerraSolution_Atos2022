@@ -178,11 +178,6 @@ def mundiLayer(bbox, width=682, height=373):
   return mundiLayers_json
 
   
-
-#@app.route('/vegetationIndex', methods=['POST'])
-""" def main_vegetationIndex():
-    vegetation_json = mundiLayer(bbox,width=682,height=373)
-    return vegetation_json """
 def save(gData, pData):
     location = gData['data'][0:2]
     data = report((location,))
