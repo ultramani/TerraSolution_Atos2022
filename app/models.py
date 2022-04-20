@@ -205,3 +205,25 @@ class cropReport(db.Model):
         
     def update(self):
         db.session.commit()
+
+
+class mundiImg(db.Model):
+    __tablename__ = 'tbl_mundi'
+    id = db.Column(db.Integer(), primary_key=True)
+    report_id = db.Column(db.Integer(), db.ForeignKey('tbl_reports.id', ondelete='CASCADE'))
+
+    layerName = db.Column(db.String(48))
+    url = db.Column(db.String(500))
+    colorCount = db.Column(db.ARRAY(db.Integer))
+    pixelColor = db.Column(db.ARRAY(db.String(8)))
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        
+    def update(self):
+        db.session.commit()
