@@ -205,7 +205,9 @@ function getParcel(){
         }); 
         document.getElementById('step-1').click();
     }else if(window.geoJson == undefined){
-        alert("draw the polygon");
+        jQuery(function($) {
+            $('#hover_msg4').show();
+        }); 
     }else{
         $.ajax({
             url: "polygon", 
@@ -225,7 +227,7 @@ function getParcel(){
 }
 
 function params(){
-    form = document.getElementById('params');
+    var form = document.getElementById('params');
         params = []
         for (var i = 0; i < form.length; i++) {
             if(form[i].checked){
@@ -277,8 +279,9 @@ function finish(){
             method: "POST",
             data : JSON.stringify({Data: window.geoJson}),
             contentType: 'application/json',
-            success: function () { 
-                alert('Data saved')
+            success: function (response) { 
+                alert('Data saved');
+                window.location.href = response;
             },
             error: function () {
                 alert('An error occured');

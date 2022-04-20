@@ -63,8 +63,8 @@ def getSolarData(lat, lon, params):
 
 # Pdf generator
 
-def generatePDF():
-    reportobject = report.selectfirst()
+def generatePDF(id):
+    reportobject = report.selectreportbyid(id)
     rendered = render_template('pdfGenerator.html',report=reportobject)
     path = r'C:\Users\ultra\Desktop\pdf\wkhtmltopdf\bin\wkhtmltopdf.exe'
     config = pdfkit.configuration(wkhtmltopdf=path)
@@ -75,6 +75,8 @@ def generatePDF():
     response.headers['Content-Disposition'] = 'inline; filename=report.pdf'
     
     return response
+
+# Report generation
 
 def save(gData, pData):
     location = gData['data'][0:2]
@@ -90,9 +92,8 @@ def save(gData, pData):
     data.area = gData['area']
     data.params = pData
     # Create object with values
-    data.insert()
-    message = f"The data for report {location} and {bbox} has been submitted."
-    return message
+    id = data.insert()
+    return id
 
 def prueba():
     reports = report.query.all()

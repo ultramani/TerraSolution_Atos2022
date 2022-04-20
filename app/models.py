@@ -122,12 +122,13 @@ class report(db.Model):
             all['reports'].append(e.getJson())
         return all
     
-    def selectfirst():
-        return db.session.query(report).order_by(report.id.desc()).first()
+    def selectreportbyid(id):
+        return db.session.query(report).filter_by(id=id).first()
 
     def insert(self):
         db.session.add(self)
         db.session.commit()
+        return self.id
 
     def delete(self):
         db.session.delete(self)

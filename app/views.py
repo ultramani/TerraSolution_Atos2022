@@ -71,10 +71,10 @@ def logout():
         return redirect('/')
 
         
-@app.route('/report', methods=['GET'])
+@app.route('/report/<id>', methods=['GET'])
 @login_required
-def reportpage():
-    report_raw = report.selectfirst()
+def reportpage(id):
+    report_raw = report.selectreportbyid(id)
     return render_template('dataReport.html',report=report_raw)
 
 
@@ -92,15 +92,17 @@ def solarData():
     if request.method == "POST":
         data = parse_obj(json.loads(request.data))['Data']
         solarData = getSolarData(data['center'][0], data['center'][0], data['params'])  
-        outputmsg = save(data,solarData)
-        return outputmsg
+        id = str(save(data,solarData))
+        return url_for('reportpage', id = id)
+        
     else:
         return Response('Error')
  
-@app.route("/pdf", methods=['GET'])
-def generatePdf():
-        response = generatePDF()
+@app.route("/pdf/<id>", methods=['GET'])
+def generatePdf(id):
+        response = generatePDF(id)
         return response
+    
 @app.route("/test", methods=['POST'])
 def test():
     if request.method == "POST":
