@@ -8,6 +8,7 @@ from app import login_manager
 
 from .databaseManager import db
 import datetime
+from sqlalchemy.dialects.postgresql import JSON
 
 
 @login_manager.user_loader
@@ -66,6 +67,7 @@ class report(db.Model):
     location  = db.Column(db.ARRAY(db.Float),nullable=False)
     name = db.Column(db.String(128))
     bbox  = db.Column(db.ARRAY(db.Float))
+    sides  = db.Column(db.ARRAY(db.Float))
     polygon = db.Column(db.ARRAY(db.Float))
     area = db.Column(db.Float)
     
@@ -73,28 +75,20 @@ class report(db.Model):
     #Asociacion a las plantas a las que les hemos dado el ok
     crops = db.relationship('crop', secondary='tbl_crops_report')
     #Datos obtenidos
-        #Monthly data, en cada posición para cada planta aceptada
-    avgMonthlyTemperature = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyPrecipitation = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyHumidity = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlySoilmoisture = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlySoiltemperature= db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyRadiation = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyWindDirection = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    windDirection =  db.Column(db.String(128),nullable=True)
+    params = db.Column(JSON)
     #Datos del analisis
         #Numero de palntas a las que le hemso dado el ok
     numberOfPlants = db.Column(db.Integer())
         #Media de los datos de los x meses por planta, en la posición cero se enccuentra el id del parametro
-    avgMonthlyTemperaturePlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyPrecipitationPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyHumidityPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlySoilmoisturePlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlySoiltemperaturePlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyRadiationPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
-    avgMonthlyWindDirectionPlants = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    avgMonthlyTemperaturePlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlyPrecipitationPlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlyHumidityPlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlySoilmoisturePlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlySoiltemperaturePlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlyRadiationPlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlyWindDirectionPlants = db.Column(db.ARRAY(db.Integer))
         #Puntuaciones de plantas
-    plantsScore = db.Column(db.ARRAY(db.Integer, dimensions=12))
+    plantsScore = db.Column(db.ARRAY(db.Integer))
     
     def __init__ (self, location):
         self.location = location
@@ -105,8 +99,10 @@ class report(db.Model):
             'location': self.location[0],
             'name': self.name,
             'bbox': self.bbox[0],
+            'sides': self.sides[0],
             'polygon': self.polygon[0],
-            'area' : self.area
+            'area' : self.area,
+            'params' : self.params
             }
         return json
     
@@ -209,3 +205,41 @@ class cropReport(db.Model):
         
     def update(self):
         db.session.commit()
+
+
+class mundiImg(db.Model):
+    __tablename__ = 'tbl_mundi'
+    id = db.Column(db.Integer(), primary_key=True)
+    report_id = db.Column(db.Integer(), db.ForeignKey('tbl_reports.id', ondelete='CASCADE'))
+
+    layerName = db.Column(db.String(48))
+    url = db.Column(db.String(500))
+    colorCount = db.Column(db.ARRAY(db.Integer))
+    pixelColor = db.Column(db.ARRAY(db.String(8)))
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        
+    def update(self):
+        db.session.commit()
+
+    def getJson(self):
+        json = {
+            'layerName':self.layerName,
+            'url': self.url,
+            'colorCount': self.colorCount[0],
+            'pixelColor': self.pixelColor[0],
+            }
+        return json
+    
+    def getAllJson():
+        mundiImgs = report.query.all()
+        all = {'mundiImgs': []}
+        for e in mundiImgs:
+            all['mundiImgs'].append(e.getJson())
+        return all

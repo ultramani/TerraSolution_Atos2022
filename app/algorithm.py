@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import requests, json, urllib.parse
 import urllib.request as ur
 from xml.dom import minidom 
@@ -6,12 +6,9 @@ from datetime import datetime, timezone, date, timedelta
 from io import BytesIO
 from PIL import Image
 import ssl # quitar esto en produccion
-=======
 from .databaseManager import db
-import requests
-from app.models import report
+from app.models import report, mundiImg
 from math import sin, cos, sqrt, atan2, radians
->>>>>>> master
 
 def parse_obj(obj):
     for key in obj:
@@ -47,7 +44,7 @@ def getRectangle(geoJson):
     maxLong, maxLat, minLong, minLat = max(long), max(lat),min(long), min(lat)
     bbox = [[minLong,minLat],[maxLong,maxLat]]
     geoJson['bbox'] = bbox
-    geoJson['bboxSides'] = sides(bbox)
+    geoJson['sides'] = sides(bbox)
     return geoJson
 
 def getSolarData(lat, lon, params):
@@ -57,11 +54,13 @@ def getSolarData(lat, lon, params):
     URL = ("https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=%s&community=AG&longitude=%s&latitude=%s&format=JSON" %(paraStr[:-1],lat,lon))
     r = requests.get(URL)
     data = r.json()
-    parsed_data = []
+    parsed_data = {}
     for para in data['parameters']:
-        parsed_data.append([para, data['parameters'][para]['longname'], data['parameters'][para]['units']])
-    for e in parsed_data:
-        e.extend(list(data['properties']['parameter'][e[0]].values())[0:13])
+        parsed_data[para]={
+            'longname': data['parameters'][para]['longname'],
+            'units': data['parameters'][para]['units'],
+            'values' : list(data['properties']['parameter'][para].values())[0:13]
+            }
     return parsed_data
 
 # SENTINEL 2 #
@@ -101,15 +100,15 @@ def check_for_entries(doc):
     return False
 
 #Comprueba que existan imágenes para los parámetros que se quieren encontrar; por ej. CloudCover
-def parameters_exist(coordinates,timeStart,timeEnd,cloudCover=['25','50']):
-    selected_cloudCover = '100'
-    for coverage in cloudCover:
-      doc = open_url(coordinates,timeStart,timeEnd,coverage)
-      isentry = check_for_entries(doc)
-      if isentry is True:
-        selected_cloudCover = coverage
-        break
-    return isentry, coverage
+def parameters_exist(coordinates,timeStart,timeEnd,cloudCover=['25','50','75']):
+  selected_cloudCover = '100'
+  for coverage in cloudCover:
+    doc = open_url(coordinates,timeStart,timeEnd,coverage)
+    isentry = check_for_entries(doc)
+    if isentry is True:
+      selected_cloudCover = coverage
+      break
+  return isentry, coverage
 
 #Selecciona la fecha más reciente de un intervalor de fechas especificado
 def select_recent_date(coordenadas,timeStart,timeEnd,cloudCover):
@@ -145,7 +144,7 @@ def img_analyzer(img, maxcolors=256):
   pixelColorHex = []
   for color in colors:
     count.append(color[0])
-    pixelColorHex.append('0x{:02x}{:02x}{:02x}'.format(color[1][0],color[1][1],color[1][2]))
+    pixelColorHex.append('#{:02x}{:02x}{:02x}'.format(color[1][0],color[1][1],color[1][2]))
   return count, pixelColorHex
 
 #Transforma la información necesaria para analizar la imagen en JSON, para que se pueda trabajar desde el frontend
@@ -167,9 +166,9 @@ def layers(bbox, best_recent_date, width, height):
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
     img_color_count, img_color = img_analyzer(img, maxcolors)
-    img_json = img_to_dict(img_color_count,img_color,url)
-    mundiLayers_dict[layer] = img_json # Añade la capa al diccionario
-  return json.dumps(mundiLayers_dict) 
+    img_dict = img_to_dict(img_color_count,img_color,url)
+    mundiLayers_dict[layer] = img_dict # Añade la capa al diccionario
+  return mundiLayers_dict
 
 #Coordina la selección de la mejor imagen para el análisis, y retorna dicho análisis en formato JSON
 #Devuelve la url de la image y los colores y cuanto se repiten en listas diferentes.
@@ -181,6 +180,25 @@ def mundiLayer(bbox, width=682, height=373):
   mundiLayers_json = layers(bbox, best_recent_date, width, height)
   return mundiLayers_json
 
+def saveMundi(gData):
+  bbox = gData['bbox']
+  sides = gData['sides']
+  width = int(sides[0] * 1000) # To meters
+  height = int(sides[1] * 1000) # To meters
+  mundiInfo = mundiLayer(bbox,width,height)
+  report_id, = report.query.with_entities(report.id).order_by(report.id.desc()).first() # Gets the last Report ID generated
+  print(report_id)
+  for layer in mundiInfo:
+    layer_dict = mundiInfo[layer]
+    mundi = mundiImg()
+    mundi.report_id = report_id 
+    mundi.layerName = layer
+    mundi.url = layer_dict['img_url']
+    mundi.colorCount = ((layer_dict['img_color_count'],))
+    mundi.pixelColor = ((layer_dict['img_color'],))
+    mundi.insert()
+  print("Mundi values added correctly")
+  
 def save(gData, pData):
     location = gData['data'][0:2]
     data = report((location,))
@@ -188,10 +206,70 @@ def save(gData, pData):
     if name != -1:
         data.name = name
     bbox = gData['bbox']
+    sides = gData['sides']
     data.bbox = ((bbox,))
+    data.sides= ((sides,))
     data.polygon = (gData['geometry']['coordinates'][0],)
     data.area = gData['area']
+    data.params = pData
     # Create object with values
     data.insert()
     message = f"The data for report {location} and {bbox} has been submitted."
     return message
+
+def prueba():
+    reports = report.query.all()
+    test = reports[-1].getJson()
+    params = test['params']
+    print(test)
+    print(params)
+    for e in params:
+        # print(e)
+        print("longname = {}, units = {}, values = {}".format(params[e]['longname'],params[e]['units'],params[e]['values']))
+    pass
+
+
+# Las funciones agrupan colores para obtener el estado de la vegetacion en funcion de la imagen: 
+# https://images.ctfassets.net/qfhr9fiom9gi/7JaDAufyzx0KwgnduSNFWX/c9d251df8e13516c57ca85ec71ee2288/image4.jpg
+def pruebaJoinColors(test):
+  """legend = {
+    '#000000': -1.0,
+    '#ff0000': -0.2,
+    '#9a0000': -0.1,
+    '#660000': 0.0,
+    '#ffff33': 0.1,
+    '#cccc33': 0.2,
+    '#666600': 0.3,
+    '#33ffff': 0.4,
+    '#33cccc': 0.5,
+    '#006666': 0.6,
+    '#33ff33': 0.7,
+    '#33cc33': 0.8,
+    '#006600': 0.9 }"""
+
+  color_groups = ['Dead Vegetation','Unhealthy Vegetation','Moderately Healthy Vegetation', 'Very Healthy Vegetation', 'Unknown status']
+  color_count_groups = [0,0,0,0,0]
+  for i in range(len(test["pixelColor"])):
+    color = test["pixelColor"][i]
+    if color in ['#000000','#ff0000','#9a0000','#660000']: #Estos valores se sacan de la leyenda
+      color_count_groups[0] += test["colorCount"][i]
+    elif color in ['#ffff33','#cccc33','#666600']:
+      color_count_groups[1] += test["colorCount"][i]
+    elif color in ['#33ffff','#33cccc','#006666']:
+      color_count_groups[2] += test["colorCount"][i]
+    elif color in ['#33ff33','#33cc33','#006600']:
+      color_count_groups[3] += test["colorCount"][i]
+    else:
+      color_count_groups[4] += test["colorCount"][i]
+  return {
+    'url' : test["url"],
+    'colorCount': color_groups,
+    'pixelColor': color_count_groups
+  }
+
+
+def pruebaMundi():
+  mundi = mundiImg.query.all()
+  test = mundi[-2].getJson()
+  a = pruebaJoinColors(test)
+  return a
