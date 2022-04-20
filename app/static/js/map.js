@@ -75,6 +75,10 @@ map.on('pm:create', function(e){
     geoJSON['data'] = window.geoData;
     window.polygon = e.layer;
     window.geoJson = geoJSON;
+    if(window.geoJson['area'] > 1500000){
+        alert('too large polygon');
+        remove();
+    }
 });
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -200,10 +204,6 @@ function getParcel(){
         document.getElementById('step-1').click();
     }else if(window.geoJson == undefined){
         alert("draw the polygon");
-    }else if(window.geoJson['area'] > 1500000){
-        console.log(window.geoJson['area']);
-        alert('too large polygon');
-        remove();
     }else{
         $.ajax({
             url: "polygon", 
