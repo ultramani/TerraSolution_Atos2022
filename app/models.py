@@ -227,3 +227,19 @@ class mundiImg(db.Model):
         
     def update(self):
         db.session.commit()
+
+    def getJson(self):
+        json = {
+            'layerName':self.layerName,
+            'url': self.url,
+            'colorCount': self.colorCount[0],
+            'pixelColor': self.pixelColor[0],
+            }
+        return json
+    
+    def getAllJson():
+        mundiImgs = report.query.all()
+        all = {'mundiImgs': []}
+        for e in mundiImgs:
+            all['mundiImgs'].append(e.getJson())
+        return all

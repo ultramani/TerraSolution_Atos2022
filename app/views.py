@@ -89,25 +89,29 @@ def solarData():
     if request.method == "POST":
         data = parse_obj(json.loads(request.data))['Data']
         solarData = getSolarData(data['center'][0], data['center'][0], data['params'])
-        data = save(data,solarData)
-        return data
+        dataSolar = save(data,solarData)
+        saveMundi(data) # Saves mundi data inside BBDD, ejecutar siempre después de save
+        return dataSolar
     else:
         return Response('Error')
 
 # Added by isaac
-
 @app.route("/VegetationBORRAR")
-def vegetationBorrar():
+def vegetation():
     return render_template('VegetationBORRAR.html')
 
-@app.route('/mundiLayer', methods=['GET'])
-def main_mundiLayer():
-    mundiLayers_json = mundiLayer([['-3.995147736328125','38.99658413918594'],['-3.058563263671875','39.508821688014066']],width=682,height=373)
-    return mundiLayers_json
+@app.route("/mundiChart", methods=['POST'])
+def testMundi():
+    if request.method == "POST":
+        data = pruebaMundi()
+        return data
+    else:
+        return Response('Error')
+
+# Added by other user    
 @app.route("/test", methods=['POST'])
 def test():
     if request.method == "POST":
-        prueba()
-        return Response('ok')
+        None        
     else:
         return Response('Error')
