@@ -215,7 +215,7 @@ function getParcel(){
                 window.geoJson = data;
             },
             error: function () {
-            alert('An error occured');
+                alert('An error occured');
             }
         });
         document.getElementById('step-3').click();
@@ -251,11 +251,11 @@ function finish(){
                 method: "POST",
                 data : JSON.stringify({Data: window.geoJson}),
                 contentType: 'application/json',
-                success: function (returned_data) { 
-                    console.log(returned_data);
+                success: function () { 
+                    alert('Data saved')
                 },
                 error: function () {
-                alert('An error occured');
+                    alert('An error occured');
                 }
             });
         }
@@ -271,7 +271,7 @@ function test(){
             console.log(data);
         },
         error: function () {
-        alert('An error occured');
+            alert('An error occured');
         }
     });
 }
