@@ -75,6 +75,10 @@ map.on('pm:create', function(e){
     geoJSON['data'] = window.geoData;
     window.polygon = e.layer;
     window.geoJson = geoJSON;
+    if(window.geoJson['area'] > 1500000){
+        alert('too large polygon');
+        remove();
+    }
 });
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -202,10 +206,6 @@ function getParcel(){
         document.getElementById('step-1').click();
     }else if(window.geoJson == undefined){
         alert("draw the polygon");
-    }else if(window.geoJson['area'] > 1500000){
-        console.log(window.geoJson['area']);
-        alert('too large polygon');
-        remove();
     }else{
         $.ajax({
             url: "polygon", 
@@ -217,7 +217,7 @@ function getParcel(){
                 window.geoJson = data;
             },
             error: function () {
-            alert('An error occured');
+                alert('An error occured');
             }
         });
         document.getElementById('step-3').click();
@@ -225,7 +225,35 @@ function getParcel(){
 }
 
 function params(){
-    document.getElementById('step-4').click();
+    form = document.getElementById('params');
+        params = []
+        for (var i = 0; i < form.length; i++) {
+            if(form[i].checked){
+                params.push(form[i].name)
+            }
+        }
+    if(params.length == 0){
+        alert("please select parameters");
+    }else{
+        window.geoJson['params'] = params;
+        document.getElementById('l-confirm').remove();
+        var cbconfirm = document.getElementById('cb-confirm');
+        var newP = document.createElement('p');
+        var text = 'Latitude: ' + window.geoJson["data"][0] + '\nLongitude: ' + window.geoJson["data"][0];
+        if (window.geoJson['data'][2] != -1){
+            text += '\nname: ' + window.geoJson['data'][2];
+        }
+        text += '\nParams:';
+        console.log(params);
+        for (var i = 0; i < params.length; i++) {
+                text += '\n' + params[i]
+        }
+        var NodeT = document.createTextNode(text)
+        newP.style.whiteSpace = 'pre';
+        newP.appendChild(NodeT)
+        cbconfirm.prepend(newP)
+        document.getElementById('step-4').click();
+    }
 }
 
 function finish(){
@@ -239,35 +267,37 @@ function finish(){
             $('#hover_msg2').show();
         }); 
         document.getElementById('step-2').click();
-    }else{ 
-        form = document.getElementById('params');
-        params = []
-        for (var i = 0; i < form.length; i++) {
-            if(form[i].checked){
-                params.push(form[i].name)
-            }
-        }
-        if (params.length == 0){
-            jQuery(function($) {
-                $('#hover_msg3').show();
-            }); 
-            document.getElementById('step-3').click();
-        }else{
-            window.geoJson['params'] = params;
-            $.ajax({
-                url: "report", 
-                headers: {'X-CSRFToken': csrftoken},
-                method: "POST",
-                data : JSON.stringify({Data: window.geoJson}),
-                contentType: 'application/json',
-                success: function (returned_data) { 
-                    console.log(returned_data);
-                },
-                error: function () {
+    }else if(window.geoJson['params'] == undefined){
+        alert("please select parameters");
+        document.getElementById('step-3').click();
+    }else{
+        $.ajax({
+            url: "report", 
+            headers: {'X-CSRFToken': csrftoken},
+            method: "POST",
+            data : JSON.stringify({Data: window.geoJson}),
+            contentType: 'application/json',
+            success: function () { 
+                alert('Data saved')
+            },
+            error: function () {
                 alert('An error occured');
-                }
-            });
-            location.replace("report")
-        }
+            }
+        });
+        
     }
+}
+
+function test(){
+    $.ajax({
+        url: "test", 
+        method: "POST",
+        success: function (returned_data) { 
+            data = JSON.stringify(returned_data)
+            console.log(data);
+        },
+        error: function () {
+            alert('An error occured');
+        }
+    });
 }

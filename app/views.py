@@ -101,3 +101,10 @@ def solarData():
 def generatePdf():
         response = generatePDF()
         return response
+@app.route("/test", methods=['POST'])
+def test():
+    if request.method == "POST":
+        prueba()
+        return Response('ok')
+    else:
+        return Response('Error')
