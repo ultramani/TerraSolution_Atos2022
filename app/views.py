@@ -1,7 +1,6 @@
 import json
 import os
 from urllib import response
-
 from flask import (Response, flash, redirect, render_template, request,
                    send_from_directory, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
