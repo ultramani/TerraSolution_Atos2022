@@ -124,3 +124,11 @@ def test():
         None        
     else:
         return Response('Error')
+
+@app.route("/mundiChart", methods=['POST'])
+def testMundi():
+    if request.method == "POST":
+        data = pruebaMundi()
+        return data
+    else:
+        return Response('Error')
