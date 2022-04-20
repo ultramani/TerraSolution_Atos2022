@@ -1,10 +1,7 @@
 import json
 import os
-<<<<<<< HEAD
-=======
 from urllib import response
 
->>>>>>> master
 from flask import (Response, flash, redirect, render_template, request,
                    send_from_directory, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
@@ -125,10 +122,3 @@ def test():
     else:
         return Response('Error')
 
-@app.route("/mundiChart", methods=['POST'])
-def testMundi():
-    if request.method == "POST":
-        data = pruebaMundi()
-        return data
-    else:
-        return Response('Error')

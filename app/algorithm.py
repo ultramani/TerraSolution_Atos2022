@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 import requests, json, urllib.parse
 import urllib.request as ur
@@ -7,13 +6,11 @@ from datetime import datetime, timezone, date, timedelta
 from io import BytesIO
 from PIL import Image
 import ssl # quitar esto en produccion
-=======
 from turtle import pd
 from flask import make_response, render_template
 from flask_login import current_user
 import requests, json
 import pdfkit
->>>>>>> master
 from .databaseManager import db
 from app.models import report, mundiImg
 from math import sin, cos, sqrt, atan2, radians
@@ -71,7 +68,6 @@ def getSolarData(lat, lon, params):
             }
     return parsed_data
 
-<<<<<<< HEAD
 # SENTINEL 2 #
 # Algoritmo para seleccionar la fecha más reciente con el menor porcentaje de nubes 
 # para una determinada zona.
@@ -208,7 +204,6 @@ def saveMundi(gData):
     mundi.insert()
   print("Mundi values added correctly")
   
-=======
 # Pdf generator
 
 def generatePDF():
@@ -224,7 +219,6 @@ def generatePDF():
     
     return response
 
->>>>>>> master
 def save(gData, pData):
     location = gData['data'][0:2]
     data = report((location,),current_user)
