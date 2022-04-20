@@ -52,7 +52,7 @@ map.on('pm:drawstart', function(e) {
             map.pm.Draw.Polygon._removeLastVertex();
             nVertex -= 1;
             jQuery(function($) {
-                $('.hover_msg').show();
+                $('#hover_msg').show();
             }); 
         }
     });
@@ -200,7 +200,9 @@ function getArea(latLngs){
 
 function getParcel(){
     if(window.geoData == undefined){
-        alert("follow the steps ;D");
+        jQuery(function($) {
+            $('#hover_msg2').show();
+        }); 
         document.getElementById('step-1').click();
     }else if(window.geoJson == undefined){
         alert("draw the polygon");
@@ -256,10 +258,14 @@ function params(){
 
 function finish(){
     if(window.geoData == undefined){
-        alert("follow the steps ;D");
+        jQuery(function($) {
+            $('#hover_msg2').show();
+        }); 
         document.getElementById('step-1').click();
     }else if(window.geoJson == undefined){
-        alert("follow the steps ;D");
+        jQuery(function($) {
+            $('#hover_msg2').show();
+        }); 
         document.getElementById('step-2').click();
     }else if(window.geoJson['params'] == undefined){
         alert("please select parameters");

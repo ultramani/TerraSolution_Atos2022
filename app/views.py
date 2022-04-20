@@ -1,5 +1,10 @@
 import json
 import os
+<<<<<<< HEAD
+=======
+from urllib import response
+
+>>>>>>> master
 from flask import (Response, flash, redirect, render_template, request,
                    send_from_directory, url_for)
 from flask_login import current_user, login_required, login_user, logout_user
@@ -8,11 +13,10 @@ from app import app
 from .algorithm import *
 from .databaseManager import db
 from .forms import LoginForm, RegistrationForm
-from .models import User, parameters
+from .models import User, parameters, report
 
 
 @app.route("/")
-@app.route("/home")
 def home():
     return render_template('home.html')
 
@@ -68,10 +72,13 @@ def logout():
         return redirect('/')
 
         
-@app.route('/report')
+@app.route('/report', methods=['GET'])
 @login_required
 def reportpage():
-    return render_template('dataReport.html')
+    report_raw = report.selectfirst()
+    return render_template('dataReport.html',report=report_raw)
+
+
 
 @app.route("/polygon", methods=['POST'])
 def polygon():
@@ -86,9 +93,9 @@ def solarData():
     if request.method == "POST":
         data = parse_obj(json.loads(request.data))['Data']
         solarData = getSolarData(data['center'][0], data['center'][0], data['params'])
-        dataSolar = save(data,solarData)
+        outputmsg = save(data,solarData)
         saveMundi(data) # Saves mundi data inside BBDD, ejecutar siempre después de save
-        return dataSolar
+        return outputmsg
     else:
         return Response('Error')
 
@@ -105,7 +112,12 @@ def testMundi():
     else:
         return Response('Error')
 
-# Added by other user    
+# Added by other user 
+@app.route("/pdf", methods=['GET'])
+def generatePdf():
+        response = generatePDF()
+        return response   
+
 @app.route("/test", methods=['POST'])
 def test():
     if request.method == "POST":

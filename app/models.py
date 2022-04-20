@@ -13,7 +13,10 @@ from sqlalchemy.dialects.postgresql import JSON
 
 @login_manager.user_loader
 def load_user(id):
-    return User.query.get(int(id))
+    try:
+        return User.query.get(int(id))
+    except:
+        return None
 
 
 class User(db.Model,UserMixin):
@@ -25,7 +28,7 @@ class User(db.Model,UserMixin):
     password_hash = db.Column(db.String(128))
     # #Lista de roles del usuario, por si deseamos tener roles premium o admins
     # roles = db.relationship('Role', secondary='user_roles')
-    reportid = db.Column(db.Integer, db.ForeignKey('tbl_reports.id'))
+    reports =  db.relationship("report", backref="user", lazy='dynamic')
 
     #Función que indica a python como imprimir los objetos de esta clase
     def __repr__(self):
@@ -41,6 +44,9 @@ class User(db.Model,UserMixin):
         
     def update(self):
         db.session.commit()
+        
+    def getAllReports(self):
+        return db.session.query(report).filter_by(id=self.id).all()
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -70,7 +76,9 @@ class report(db.Model):
     sides  = db.Column(db.ARRAY(db.Float))
     polygon = db.Column(db.ARRAY(db.Float))
     area = db.Column(db.Float)
-    
+   
+    user_id = db.Column(db.Integer, db.ForeignKey('tbl_users.id'))
+    userx = db.relationship('User')
 
     #Asociacion a las plantas a las que les hemos dado el ok
     crops = db.relationship('crop', secondary='tbl_crops_report')
@@ -90,8 +98,9 @@ class report(db.Model):
         #Puntuaciones de plantas
     plantsScore = db.Column(db.ARRAY(db.Integer))
     
-    def __init__ (self, location):
+    def __init__ (self, location,user):
         self.location = location
+        self.userx = user
 
     def getJson(self):
         json = {
@@ -112,6 +121,9 @@ class report(db.Model):
         for e in reports:
             all['reports'].append(e.getJson())
         return all
+    
+    def selectfirst():
+        return db.session.query(report).order_by(report.id.desc()).first()
 
     def insert(self):
         db.session.add(self)
@@ -166,16 +178,18 @@ class crop(db.Model):
     densityOfPopulation = db.Column(db.Integer())
     #Add a custom domain [tree, bush , grass]
     cropType = db.Column(db.String(128),nullable=False)
+    #Let us calculate the amount of water necessary for the crops to grow
+    waterPerArea = db.Column(db.Integer())
     #First array element will be the min value and the second one the max value and the third optimal value
-    temperatureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
-    humidityRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
-    soilmoistureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
-    soiltemperatureRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
-    precipitationRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
-    radiationRange = db.Column(db.ARRAY(db.Integer, dimensions=3))
-    windvelocityRange = db.Column(db.ARRAY(db.Integer, dimensions=3)) 
+    temperatureRange = db.Column(db.ARRAY(db.Float))
+    humidityRange = db.Column(db.ARRAY(db.Float))
+    soilmoistureRange = db.Column(db.ARRAY(db.Float))
+    soiltemperatureRange = db.Column(db.ARRAY(db.Float))
+    precipitationRange = db.Column(db.ARRAY(db.Float))
+    radiationRange = db.Column(db.ARRAY(db.Float))
+    windvelocityRange = db.Column(db.ARRAY(db.Float)) 
     #Money related section
-    pricePerKg = db.Column(db.Integer())
+    pricePerKg = db.Column(db.Float())
 
     def insert(self):
         db.session.add(self)

@@ -6,8 +6,7 @@ class DevelopmentConfig(object):
     SECRET_KEY = 'secret'
     DEVELOPMENT = True
     DEBUG = True
-
-
+    
     SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:password@localhost/terraSolution'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False

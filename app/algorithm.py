@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 import requests, json, urllib.parse
 import urllib.request as ur
@@ -6,6 +7,13 @@ from datetime import datetime, timezone, date, timedelta
 from io import BytesIO
 from PIL import Image
 import ssl # quitar esto en produccion
+=======
+from turtle import pd
+from flask import make_response, render_template
+from flask_login import current_user
+import requests, json
+import pdfkit
+>>>>>>> master
 from .databaseManager import db
 from app.models import report, mundiImg
 from math import sin, cos, sqrt, atan2, radians
@@ -63,6 +71,7 @@ def getSolarData(lat, lon, params):
             }
     return parsed_data
 
+<<<<<<< HEAD
 # SENTINEL 2 #
 # Algoritmo para seleccionar la fecha más reciente con el menor porcentaje de nubes 
 # para una determinada zona.
@@ -199,9 +208,26 @@ def saveMundi(gData):
     mundi.insert()
   print("Mundi values added correctly")
   
+=======
+# Pdf generator
+
+def generatePDF():
+    reportobject = report.selectfirst()
+    rendered = render_template('pdfGenerator.html',report=reportobject)
+    path = r'C:\Users\ultra\Desktop\pdf\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    config = pdfkit.configuration(wkhtmltopdf=path)
+    pdf = pdfkit.from_string(rendered,False,configuration=config)
+    
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'inline; filename=report.pdf'
+    
+    return response
+
+>>>>>>> master
 def save(gData, pData):
     location = gData['data'][0:2]
-    data = report((location,))
+    data = report((location,),current_user)
     name = gData['data'][2]
     if name != -1:
         data.name = name
