@@ -37,7 +37,7 @@ def getRectangle(geoJson):
     maxLong, maxLat, minLong, minLat = max(long), max(lat),min(long), min(lat)
     bbox = [[minLong,minLat],[maxLong,maxLat]]
     geoJson['bbox'] = bbox
-    geoJson['bboxSides'] = sides(bbox)
+    geoJson['sides'] = sides(bbox)
     return geoJson
 
 def getSolarData(lat, lon, params):
@@ -63,7 +63,9 @@ def save(gData, pData):
     if name != -1:
         data.name = name
     bbox = gData['bbox']
+    sides = gData['sides']
     data.bbox = ((bbox,))
+    data.sides= ((sides,))
     data.polygon = (gData['geometry']['coordinates'][0],)
     data.area = gData['area']
     data.params = pData

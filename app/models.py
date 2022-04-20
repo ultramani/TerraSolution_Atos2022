@@ -67,6 +67,7 @@ class report(db.Model):
     location  = db.Column(db.ARRAY(db.Float),nullable=False)
     name = db.Column(db.String(128))
     bbox  = db.Column(db.ARRAY(db.Float))
+    sides  = db.Column(db.ARRAY(db.Float))
     polygon = db.Column(db.ARRAY(db.Float))
     area = db.Column(db.Float)
     
@@ -98,6 +99,7 @@ class report(db.Model):
             'location': self.location[0],
             'name': self.name,
             'bbox': self.bbox[0],
+            'sides': self.sides[0],
             'polygon': self.polygon[0],
             'area' : self.area,
             'params' : self.params
