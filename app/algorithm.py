@@ -1,3 +1,8 @@
+from turtle import pd
+from flask import make_response, render_template
+from flask_login import current_user
+import requests, json
+import pdfkit
 from .databaseManager import db
 import requests
 from app.models import report
@@ -56,9 +61,24 @@ def getSolarData(lat, lon, params):
             }
     return parsed_data
 
+# Pdf generator
+
+def generatePDF():
+    reportobject = report.selectfirst()
+    rendered = render_template('pdfGenerator.html',report=reportobject)
+    path = r'C:\Users\ultra\Desktop\pdf\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    config = pdfkit.configuration(wkhtmltopdf=path)
+    pdf = pdfkit.from_string(rendered,False,configuration=config)
+    
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'inline; filename=report.pdf'
+    
+    return response
+
 def save(gData, pData):
     location = gData['data'][0:2]
-    data = report((location,))
+    data = report((location,),current_user)
     name = gData['data'][2]
     if name != -1:
         data.name = name
