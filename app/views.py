@@ -89,8 +89,8 @@ def solarData():
     if request.method == "POST":
         data = parse_obj(json.loads(request.data))['Data']
         solarData = getSolarData(data['center'][0], data['center'][0], data['params'])
-        save = save(data,solarData)
-        return save
+        data = save(data,solarData)
+        return data
     else:
         return Response('Error')
 
@@ -104,3 +104,10 @@ def vegetationBorrar():
 def main_mundiLayer():
     mundiLayers_json = mundiLayer([['-3.995147736328125','38.99658413918594'],['-3.058563263671875','39.508821688014066']],width=682,height=373)
     return mundiLayers_json
+@app.route("/test", methods=['POST'])
+def test():
+    if request.method == "POST":
+        prueba()
+        return Response('ok')
+    else:
+        return Response('Error')

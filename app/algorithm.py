@@ -43,7 +43,7 @@ def getRectangle(geoJson):
     maxLong, maxLat, minLong, minLat = max(long), max(lat),min(long), min(lat)
     bbox = [[minLong,minLat],[maxLong,maxLat]]
     geoJson['bbox'] = bbox
-    geoJson['bboxSides'] = sides(bbox)
+    geoJson['sides'] = sides(bbox)
     return geoJson
 
 def getSolarData(lat, lon, params):
@@ -53,11 +53,13 @@ def getSolarData(lat, lon, params):
     URL = ("https://power.larc.nasa.gov/api/temporal/climatology/point?parameters=%s&community=AG&longitude=%s&latitude=%s&format=JSON" %(paraStr[:-1],lat,lon))
     r = requests.get(URL)
     data = r.json()
-    parsed_data = []
+    parsed_data = {}
     for para in data['parameters']:
-        parsed_data.append([para, data['parameters'][para]['longname'], data['parameters'][para]['units']])
-    for e in parsed_data:
-        e.extend(list(data['properties']['parameter'][e[0]].values())[0:13])
+        parsed_data[para]={
+            'longname': data['parameters'][para]['longname'],
+            'units': data['parameters'][para]['units'],
+            'values' : list(data['properties']['parameter'][para].values())[0:13]
+            }
     return parsed_data
 
 # SENTINEL 2 #
@@ -185,10 +187,24 @@ def save(gData, pData):
     if name != -1:
         data.name = name
     bbox = gData['bbox']
+    sides = gData['sides']
     data.bbox = ((bbox,))
+    data.sides= ((sides,))
     data.polygon = (gData['geometry']['coordinates'][0],)
     data.area = gData['area']
+    data.params = pData
     # Create object with values
     data.insert()
     message = f"The data for report {location} and {bbox} has been submitted."
     return message
+
+def prueba():
+    reports = report.query.all()
+    test = reports[-1].getJson()
+    params = test['params']
+    print(test)
+    print(params)
+    for e in params:
+        # print(e)
+        print("longname = {}, units = {}, values = {}".format(params[e]['longname'],params[e]['units'],params[e]['values']))
+    pass
