@@ -10,8 +10,17 @@
 <body style="margin:8%;">
   <header>
     <h1 style="text-align:center;">Analysis report</h1>
+    <h3> Date: {{report.date}}</h3>
   </header>
   <main>
+    <section>
+      <h2>Location data</h2>
+      <div>
+        <p>Location name: {{report.name}}</p>
+        <p>Location coordinates: {{report.location}}</p>
+        <p>Area: {{report.area}}</p>
+      </div>
+    </section>
     <section>
       <h2>Data tolerance intervals</h2>
       <div>
@@ -23,6 +32,9 @@
   </main>  
   <footer>
     <h3>Contact data</h3>
+    <p>Email: terrasolutions@gmail.com</p>
+    <p>Twitter: @terrasolutions</p>
+    <p>Instagram: @terrasolutions</p>
   </footer>
 </body>
 </html>

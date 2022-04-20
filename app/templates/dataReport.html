@@ -15,8 +15,8 @@
         <div class="inner">
             <h2>Hello {{ current_user.username }} to TerraSolution</h2>
             <p>A web service for crop monitoring , land analisys and more. </p>
-            <form action="/report" method="post">
-                <input type="submit"/>
+            <form action="/pdf" method="get">
+                <input type="submit" value="Download"/>
             </form>
         </div>
     </section>
@@ -31,7 +31,7 @@
             <div class="inner">
                 <h2 class="major">Summary of the analisys</h2>
                 <p>
-                    The selected area of approximately {area in square hectares} is feasible for planting {number of
+                    The selected area of approximately {{report.area}} square meters is feasible for planting {number of
                     plants we have given the ok} types of plants.
                 </p>
                 <p>
@@ -69,6 +69,7 @@
                     <div class="content collapse" id="collapse1">
                         <!-- Esto se iterara para cada planta -->
                         <p> {nombre de planta}{temperatura media para los x meses de esta planta}
+                            
                             {not ideal las temperaturas son muy bajas o muy altas} The prediction is that temperatures
                             will be too
                                 {low}, this could result in frosts, which could lead to a decrease in weight and size of

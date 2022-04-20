@@ -12,11 +12,10 @@ from app import app
 from .algorithm import *
 from .databaseManager import db
 from .forms import LoginForm, RegistrationForm
-from .models import User, parameters
+from .models import User, parameters, report
 
 
 @app.route("/")
-@app.route("/home")
 def home():
     return render_template('home.html')
 
@@ -72,14 +71,13 @@ def logout():
         return redirect('/')
 
         
-@app.route('/report', methods=['GET','POST'])
+@app.route('/report', methods=['GET'])
 @login_required
 def reportpage():
-    if request.method == "GET":
-        return render_template('dataReport.html')
-    elif request.method == "POST":
-        response = generatePDF()
-        return response
+    report_raw = report.selectfirst()
+    return render_template('dataReport.html',report=report_raw)
+
+
 
 @app.route("/polygon", methods=['POST'])
 def polygon():
@@ -93,9 +91,13 @@ def polygon():
 def solarData():
     if request.method == "POST":
         data = parse_obj(json.loads(request.data))['Data']
-        solarData = getSolarData(data['center'][0], data['center'][0], data['params'])
-        save = save(data,solarData)
-        return save
+        solarData = getSolarData(data['center'][0], data['center'][0], data['params'])  
+        outputmsg = save(data,solarData)
+        return outputmsg
     else:
         return Response('Error')
-    
+ 
+@app.route("/pdf", methods=['GET'])
+def generatePdf():
+        response = generatePDF()
+        return response

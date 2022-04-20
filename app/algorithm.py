@@ -1,5 +1,6 @@
 from turtle import pd
 from flask import make_response, render_template
+from flask_login import current_user
 import requests, json
 import pdfkit
 from .databaseManager import db
@@ -61,7 +62,8 @@ def getSolarData(lat, lon, params):
 # Pdf generator
 
 def generatePDF():
-    rendered = render_template('pdfGenerator.html', prueba='hola')
+    reportobject = report.selectfirst()
+    rendered = render_template('pdfGenerator.html',report=reportobject)
     path = r'C:\Users\ultra\Desktop\pdf\wkhtmltopdf\bin\wkhtmltopdf.exe'
     config = pdfkit.configuration(wkhtmltopdf=path)
     pdf = pdfkit.from_string(rendered,False,configuration=config)
@@ -74,15 +76,17 @@ def generatePDF():
 
 def save(gData, pData):
     location = gData['data'][0:2]
-    data = report((location,))
+    data = report((location,),current_user)
     name = gData['data'][2]
     if name != -1:
         data.name = name
     bbox = gData['bbox']
     data.bbox = ((bbox,))
     data.polygon = (gData['geometry']['coordinates'][0],)
-    data.area = gData['area']
+    area = int(gData['area'])
+    data.area = area
     # Create object with values
     data.insert()
     message = f"The data for report {location} and {bbox} has been submitted."
     return message
+
