@@ -220,7 +220,11 @@ class cropReport(db.Model):
     def update(self):
         db.session.commit()
 
-
+"""
+This table is needed because for each report one image per layer will be generated, 
+so a report can have several layers of mundi associated with it. 
+It should have a one-to-many relationship with the report table.
+"""
 class mundiImg(db.Model):
     __tablename__ = 'tbl_mundi'
     id = db.Column(db.Integer(), primary_key=True)

@@ -38,7 +38,7 @@ map.pm.addControls({
     rotateMode: false,
 }); 
 
-map.pm.Toolbar.setButtonDisabled('drawPolygon', true);
+map.pm.Toolbar.setButtonDisabled('drawPolygon', true); 
 
 //Limit side of polygon
 map.on('pm:drawstart', function(e) {

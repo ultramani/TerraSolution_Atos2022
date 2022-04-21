@@ -96,10 +96,11 @@ def solarData():
         return Response('Error')
 
 # Added by isaac
-@app.route("/VegetationBORRAR")
+"""@app.route("/VegetationBORRAR")
 def vegetation():
-    return render_template('VegetationBORRAR.html')
+    return render_template('VegetationBORRAR.html')"""
 
+#This is a test function to return the json values to create the pie chart
 @app.route("/mundiChart", methods=['POST'])
 def testMundi():
     if request.method == "POST":

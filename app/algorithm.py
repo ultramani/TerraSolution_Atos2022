@@ -185,6 +185,9 @@ def mundiLayer(bbox, width=682, height=373):
   mundiLayers_json = layers(bbox, best_recent_date, width, height)
   return mundiLayers_json
 
+#This function is the main function to call, because it calls the needed functions (mundilayer(bbox, width, height)) 
+#and stores the values into the mundi table in the database. These function should be used in the /report route in views
+
 def saveMundi(gData):
   bbox = gData['bbox']
   sides = gData['sides']
@@ -249,8 +252,15 @@ def prueba():
     pass
 
 
-# The functions groups colors to obtain the state of the vegetation according to the image: 
-# https://images.ctfassets.net/qfhr9fiom9gi/7JaDAufyzx0KwgnduSNFWX/c9d251df8e13516c57ca85ec71ee2288/image4.jpg
+""" The functions groups colors to obtain the state of the vegetation (NDVI) according to the image: 
+https://images.ctfassets.net/qfhr9fiom9gi/7JaDAufyzx0KwgnduSNFWX/c9d251df8e13516c57ca85ec71ee2288/image4.jpg
+It is grouped in this way:
+'Dead Vegetation' for these colors: '#000000','#ff0000', '#9a0000'
+'Unhealthy Vegetation' for these colors: '#ffff33','#cccc33','#666600'
+'Moderately Healthy Vegetation' for these colors: '#33ffff','#33cccc','#006666'
+'Very Healthy Vegetation' for these colors: '#33ff33','#33cc33','#006600'
+'Unknown status' for the rest of the colors that could appear
+"""
 def pruebaJoinColors(test):
   """legend = {
     '#000000': -1.0,
@@ -287,9 +297,51 @@ def pruebaJoinColors(test):
     'pixelColor': color_count_groups
   }
 
-
+# It is just a test function. Delete in production
 def pruebaMundi():
   mundi = mundiImg.query.all()
   test = mundi[-2].getJson()
   a = pruebaJoinColors(test)
   return a
+
+
+# IMPORTANT, to create the js pie chart use the following in JS (It is in javaScript):
+""" 
+// For example, once you are in the report you can send this petition to obtain the database data from mundi 
+function munditest(){
+    $.ajax({
+        url: "mundiChart", 
+        method: "POST",
+        success: function (returned_data) { 
+            data = JSON.stringify(returned_data)
+            console.log(data);
+            create_plot(JSON.parse(data));
+        },
+        error: function () {
+            alert('An error occured');
+        }
+    });
+}
+
+
+//ANd with this you would create the chart
+function create_plot(datamundi){
+  const myChart = new Chart(document.getElementById("<id_of_the_canvas_added_in_the_HTML>"), {
+    type: 'pie',
+    data: {
+      labels: datamundi["pixelColor"],
+      datasets: [{
+        label: "Population (millions)",
+        backgroundColor: ["Red","Blue","Yellow","Orange","Green"],
+        data: datamundi["colorCount"]
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Predicted world population (millions) in 2050'
+      }
+    }
+});
+}
+"""
