@@ -26,8 +26,6 @@ class User(db.Model,UserMixin):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    # #Lista de roles del usuario, por si deseamos tener roles premium o admins
-    # roles = db.relationship('Role', secondary='user_roles')
     reports =  db.relationship("report", backref="user", lazy='dynamic')
 
     #Función que indica a python como imprimir los objetos de esta clase
@@ -54,16 +52,6 @@ class User(db.Model,UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-# class Role(db.Model):
-#     __tablename__ = 'tbl_roles'
-#     id = db.Column(db.Integer(), primary_key=True)
-#     name = db.Column(db.String(50), unique=True)
-
-# class UserRoles(db.Model):
-#     __tablename__ = 'tbl_user_roles'
-#     id = db.Column(db.Integer(), primary_key=True)
-#     user_id = db.Column(db.Integer(), db.ForeignKey('tbl_users.id', ondelete='CASCADE'))
-#     role_id = db.Column(db.Integer(), db.ForeignKey('tbl_roles.id', ondelete='CASCADE'))
 
 class report(db.Model):
     __tablename__ = 'tbl_reports'
@@ -203,7 +191,11 @@ class crop(db.Model):
     def update(self):
         db.session.commit()
 
-
+    def getrange(id,param):
+        if param == "T2M":
+            range_raw = db.session.query(crop.temperatureRange).filter_by(id=id).first()
+        return range_raw
+    
 class cropReport(db.Model):
     __tablename__ = 'tbl_crops_report'
     id = db.Column(db.Integer(), primary_key=True)

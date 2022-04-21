@@ -1,3 +1,4 @@
+from datetime import datetime
 from turtle import pd
 from flask import make_response, render_template
 from flask_login import current_user
@@ -5,7 +6,7 @@ import requests, json
 import pdfkit
 from .databaseManager import db
 import requests
-from app.models import report
+from app.models import crop, report
 from math import sin, cos, sqrt, atan2, radians
 
 def parse_obj(obj):
@@ -91,9 +92,25 @@ def save(gData, pData):
     data.polygon = (gData['geometry']['coordinates'][0],)
     data.area = gData['area']
     data.params = pData
+    # for plant in range(10):
+    temperaturescores = temperatureanalysis(1,pData['T2M'],int(datetime.now().strftime("%m")))
+
     # Create object with values
-    id = data.insert()
-    return id
+    ids = data.insert()
+    return ids
+
+def temperatureanalysis(id,data,month):
+    avgtempmonths= []
+    for j in range(2,6):
+        auxavgtemp = 0
+        for i in range(j):
+            auxavgtemp += data['values'][i + month]
+        auxavgtemp = round(auxavgtemp / j, 2)
+        avgtempmonths.append(auxavgtemp)
+    rangex = crop.getrange(id,"T2M")   
+    print(rangex)
+    return None
+
 
 def prueba():
     reports = report.query.all()
