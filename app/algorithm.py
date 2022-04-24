@@ -81,44 +81,196 @@ def generatePDF(id):
 
 def save(gData, pData):
     location = gData['data'][0:2]
-    data = report((location,),current_user)
+    data = report(location,current_user)
     name = gData['data'][2]
     if name != -1:
         data.name = name
     bbox = gData['bbox']
     sides = gData['sides']
-    data.bbox = ((bbox,))
-    data.sides= ((sides,))
+    data.bbox = bbox
+    data.sides= sides
     data.polygon = (gData['geometry']['coordinates'][0],)
-    data.area = gData['area']
+    data.area = round(gData['area'])
     data.params = pData
-    # for plant in range(10):
-    temperaturescores = temperatureanalysis(1,pData['T2M'],int(datetime.now().strftime("%m")))
+    #Process the data from nasa
+    month = int(datetime.now().strftime("%m"))
 
+    avgtempmonths = getavg(pData['T2M'],month)
+    avghumiditymonth = getavg(pData['RH2M'],month)
+    avgrainfallmonth =  getavg(pData['PRECTOTCORR'],month)
+    avgsoiltempmonth  =  getavg(pData['TS'],month)
+    avgsoilmoistmonth   =  getavg(pData['GWETPROF'],month)
+    avgwindmonth  =  getavg(pData['WS2M'],month) 
+    scores = []
+    badges = []
+    wns= []
+    watercost = []
+    profit = []
+    periods = []
+    for plant in range(1,8):
+        monthstogrow = crop.growthrange(plant) 
+        sumscores = 0
+        badgec = []
+        #Calculate data score and badge
+        badge,score = analysisA(plant,avgtempmonths,monthstogrow,'T2M')
+        sumscores += score
+        badgec.append(badge)
+        badge,score = analysisA(plant, avghumiditymonth,monthstogrow,'RH2M')
+        sumscores += score
+        badgec.append(badge)
+        badge,score,waterneeded = analysisB(plant, avgrainfallmonth,monthstogrow,data.area)
+        sumscores += score
+        badgec.append(badge)
+        badge,score = analysisA(plant, avgsoiltempmonth,monthstogrow,'TS')
+        sumscores += score
+        badgec.append(badge)
+        badge,score = analysisA(plant, avgsoilmoistmonth,monthstogrow,'GWETPROF')
+        sumscores += score
+        badgec.append(badge)
+        badge,score = analysisC(plant, avgwindmonth,monthstogrow,'WS2M')
+        sumscores += score
+        badgec.append(badge)        
+        
+        scores.append(sumscores)    
+        badges.append(badgec)
+        wns.append(waterneeded)
+        
+    plantnames = crop.getNames() 
+    print(scores)
+    
+    #Profit calculation section
+    watercost = calcwc(wns)
+    yieldpresqm = crop.getallyields()
+    priceperkg = crop.getallprices()
+    profit = calcprof(watercost,round(data.area),yieldpresqm,priceperkg)
+    periods= crop.getalllifeperiods()
+    
+    #Select the best crops for the area selected
+    scores, badges, plantnames,profit,watercost,wns,periods = selector(scores, badges,plantnames,profit,watercost,wns,periods)
+
+    #Add all the data to the report
+    data.avgMonthlyTemperaturePlants = avgtempmonths
+    data.avgMonthlyPrecipitationPlants = avgrainfallmonth
+    data.avgMonthlyHumidityPlants = avghumiditymonth
+    data.avgMonthlySoilmoisturePlants = avgsoilmoistmonth
+    data.avgMonthlySoiltemperaturePlants = avgsoiltempmonth
+    data.avgMonthlyWindVelocityPlants = avgwindmonth
+    data.watercost = watercost
+    data.waterneeded = wns
+    data.priceperkg = priceperkg
+    data.benefit = profit
+    data.plantsScores = scores
+    data.plantsBadges = badges  
+    data.plantsNames = plantnames
+    data.plantsLifePeriod = periods
+    data.numberOfPlants = len(plantnames)
+    
+    
     # Create object with values
     ids = data.insert()
     return ids
 
-def temperatureanalysis(id,data,month):
-    avgtempmonths= []
-    for j in range(2,6):
-        auxavgtemp = 0
+def calcprof(watercost,area,yieldpresqm,priceperkg):
+    profs = []
+    for i in range(len(watercost)):
+        total = area * yieldpresqm[i] * priceperkg[i]
+        total -= watercost[i]
+        profs.append(round(total))
+    return profs
+
+def calcwc(wns):
+    costs = []
+    for item in wns:
+       costs.append(item * 0.64) 
+    return costs
+
+    
+def selector(scores, badges,plantnames,profit,watercost,wns,periods):
+    aux = scores.copy()
+    aux1 = badges.copy()
+    aux2 = plantnames.copy()
+    aux3 = profit.copy()
+    aux4 = watercost.copy()
+    aux5 = wns.copy()
+    aux6 = periods.copy()
+    print(aux)
+    for score in scores:
+        if score < 35:
+            index = aux.index(score)
+            del aux [index]
+            del aux1 [index]
+            del aux2 [index]
+            del aux3 [index]
+            del aux4 [index]
+            del aux5 [index]
+            del aux6 [index]
+    return aux, aux1,aux2,aux3,aux4,aux5,aux6
+            
+def getavg(data,month):
+    avgmonths= []
+    for j in range(2,7):
+        auxavg = 0
         for i in range(j):
-            auxavgtemp += data['values'][i + month]
-        auxavgtemp = round(auxavgtemp / j, 2)
-        avgtempmonths.append(auxavgtemp)
-    rangex = crop.getrange(id,"T2M")   
-    print(rangex)
-    return None
+            auxavg += data['values'][i + month]
+        auxavg = round(auxavg / j, 2)
+        avgmonths.append(auxavg)
+    return avgmonths
+
+def analysisA(id,avgmonths,monthstogrow,param):
+    
+    rangex = crop.getrange(id  ,param)
+    aux = avgmonths[monthstogrow - 2] 
+    #For further versions the score will be calculated more precisly
+    if (rangex[0] <= aux < rangex[1]) or (rangex[3] < aux <= rangex[4]):
+        return ['Almost ideal',''],5
+    elif rangex[1] <= aux <= rangex[3]:
+        return ['Ideal',''],10
+    else:
+        if  aux < rangex[0]: 
+            return ['Not ideal','low'] ,-3    
+        else:   
+            return ['Not ideal','high'] ,-3
 
 
-def prueba():
-    reports = report.query.all()
-    test = reports[-1].getJson()
-    params = test['params']
-    print(test)
-    print(params)
-    for e in params:
-        # print(e)
-        print("longname = {}, units = {}, values = {}".format(params[e]['longname'],params[e]['units'],params[e]['values']))
-    pass
+def analysisB(id,avgmonths,monthstogrow,area):
+    water_data = crop.getwaterneed(id)
+    aux = avgmonths[monthstogrow - 2]
+    #The total water needed for all the area in a span of time of a week
+    water_needed_period = water_data[0] * area
+    water_obtained_rainfall =  aux * 7
+    water_add_needed = water_needed_period - water_obtained_rainfall
+    if (water_needed_period * 0.75) >= water_add_needed >= 0:
+        return ['Very ideal',''],  6 , water_add_needed
+    elif (water_needed_period * 0.75) <= water_add_needed:
+        return ['Almost ideal',''], 3 , water_add_needed
+    elif -28 <= water_add_needed < 0:
+        return ['Ideal',''], 10, None
+    elif  water_add_needed < -28:
+        return ['Not ideal',''], 0 , water_add_needed
+    
+def analysisC(id,avgmonths,monthstogrow,param):
+    
+    rangex = crop.getrange(id  ,param)
+    aux = avgmonths[monthstogrow - 2] 
+    #For further versions the score will be calculated more precisly
+    if (rangex[1] <= aux < rangex[4] - 5):
+        return ['Almost ideal',''],5
+    elif rangex[0] <= aux <= rangex[1]:
+        return ['ideal',''],10
+    else:
+        if  aux < rangex[0]: 
+            return ['Not ideal','low'] ,0    
+        else:   
+            return ['Not ideal','high'] , -5
+
+
+# def prueba():
+#     reports = report.query.all()
+#     test = reports[-1].getJson()
+#     params = test['params']
+#     print(test)
+#     print(params)
+#     for e in params:
+#         # print(e)
+#         print("longname = {}, units = {}, values = {}".format(params[e]['longname'],params[e]['units'],params[e]['values']))
+#     pass

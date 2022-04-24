@@ -31,8 +31,7 @@
             <div class="inner">
                 <h2 class="major">Summary of the analisys</h2>
                 <p>
-                    The selected area of approximately {{report.area}} square meters is feasible for planting {number of
-                    plants we have given the ok} types of plants.
+                    The selected area of approximately {{report.area}} square meters is feasible for planting {{report.numberOfPlants}} types of plants.
                 </p>
                 <p>
                     The feasibility of these supposed plantations has been based on the prediction of the pillars of
@@ -42,7 +41,12 @@
                     basing these predictions on the average of the last 20 years of data.
                 </p>
                 <p>
-                    Plants that are likely to be viable for planting are: {name of plants}.
+                    Plants that are likely to be viable for planting are:
+                </p>
+                <div class="table">
+
+                </div>
+                <p>
                     The following goes into detail on each of the above pillars as a rough estimate of the benefits to
                     be gained from planting each type of plant.
                 </p>
@@ -57,36 +61,47 @@
                 <div class="content">
                     <h2 class="major">Temperature analisys</h2>
                     <p>Temperature is one of the crucial factors for the correct development of a plant. If the plant is exposed to temperatures outside its acceptable range, 
-                        it will suffer negative consequences, depending on the stage it is in.</p>
-                    <p>The prediction of the average temperature in the area for the next months, based of the
-                        average temperature over the last 20 years, is {not ideal, somewhat ideal, ideal} for planting
-                        one or several types of crops.</p>
+                        it will suffer negative consequences, depending on the stage it is in.
+                    </p>
+                    <p>The prediction of the average temperature in the area for the next months is based of the
+                        average temperature over the last 20 years.
+                    </p>
                     <!-- Rotar la flecha al abrir el collapse -->
                     <button class="btn shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1"
                         aria-expanded="false" aria-controls="collapse1">
                         <a class="special">Learn More</a>
                     </button>
                     <div class="content collapse" id="collapse1">
-                        <!-- Esto se iterara para cada planta -->
-                        <p> {nombre de planta}{temperatura media para los x meses de esta planta}
-                            
-                            {not ideal las temperaturas son muy bajas o muy altas} The prediction is that temperatures
-                            will be too
-                                {low}, this could result in frosts, which could lead to a decrease in weight and size of
+                        {% for i in range(0,report.numberOfPlants) %}
+                        <p> <strong>{{report.plantsNames[i]}}</strong>: The expected temperature for the life span of the plant is {{report.avgMonthlyTemperaturePlants[report.plantsLifePeriod[i] - 2]}} ºC.
+                            {% if (('Not ideal' in  report.plantsBadges[i][0]) and ('low'  in  report.plantsBadges[i][0] ))%}
+                            <p>
+                                This temperatures will be too low
+                                , this could result in frosts, which could lead to a decrease in weight and size of
                                 growing plants and affect pollination. If crops are exposed to these temperatures for a long
                                 time, they may wilt and die. It is recommended to postpone planting to another month or make
                                 sure to use frost protection fabric, greenhouses or mulch the soil.
-                                {high}, this may  affect pollen viability, fertilisation and grain or fruit formation. If crops are exposed for long periods of time to withering and death
-                                of the crop, in conclusion it will reduce the performance potential. It is recommended to postpone planting to another month or to prepare cooling
-                                systems such as sprinklers.
-                            {somewhat ideal las temperaturas estan rozan la maxima y minima temperatura aceptable pero
-                            sige dentro del rango} Temperatures will be acceptable in the coming months, but caution is
-                            advised because of the possibility of {low. high}
-                            temperatures.
-                            {ideal} Temperatures is forecast to be acceptable and the chance of temperatures falling out
-                            of the acceptable range is low.
+                            </p>
+                            {% elif (('Not ideal' in  report.plantsBadges[i][0]) and ('high' in  report.plantsBadges[i][0] )) %}
+                            <p>
+                                This temperatures will be too high
+                                    , this may  affect pollen viability, fertilisation and grain or fruit formation. If crops are exposed for long periods of time to withering and death
+                                    of the crop, in conclusion it will reduce the performance potential. It is recommended to postpone planting to another month or to prepare cooling
+                                    systems such as sprinklers.
+                            </p>
+                            {% elif 'Almost ideal' in  report.plantsBadges[i][0] %}
+                            <p>
+                            Temperatures will be acceptable in the coming months, but caution is
+                            advised because of the possibility of temperatures may be harmful.
+                            </p>
+                            {% else %}
+                            <p>
+                             Temperatures is forecast to be acceptable and the chance of temperatures falling out
+                                of the acceptable range is low.
+                            </p>
+                            {% endif %}
                         </p>
-                        <!-- . -->
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -108,104 +123,40 @@
                         <a class="special">Learn More</a>
                     </button>
                     <div class="content collapse" id="collapse12">
-                        <!-- Esto se iterara para cada planta -->
-                        <p> {nombre de planta}
-                            {not ideal las precipitations son muy bajas o muy altas} The forecast is for rainfall to be
-                            too
-                            {low}, which may lead to drought and poor plant growth or loss of plants. It is recommended
-                            to postpone planting to another month or to make sure to have a good watering system and
-                            large amounts of water available.
-                            {high}, which may lead to flooding of the soil and loss of the plantation or part of it. It
-                            is recommended to postpone planting to another month or to ensure a good drainage system.
-                            {somewhat ideal las precipitations estan rozan la maxima y minima precipitaciones aceptables
-                            pero
-                            sige dentro del rango} Precipitations will be acceptable in the coming months, but caution
-                            is advised because of the possibility of {low. high}
-                            precipitations.
-                            {ideal} Rainfall is forecast to be acceptable and the chance of precipitation falling out of
-                            the acceptable range is low.
+                        {% for i in range(0,report.numberOfPlants) %}
+                        <p><strong>{{report.plantsNames[i]}}</strong>: The expected rainfalls for the life span of the plant is {{report.avgMonthlyPrecipitationPlants[report.plantsLifePeriod[i] - 2]}} mm/day, which can translate to liters per square meter per day.
+                            {% if (('Not ideal' in  report.plantsBadges[i][2]) and ('low'  in  report.plantsBadges[i][2] ))%}
+                            <p>
+                                This rainfall are considered too low, which may lead to drought and poor plant growth or loss of plants. It is recommended
+                                to postpone planting to another month or to make sure to have a good watering system and
+                                large amounts of water available.
+                            </p>
+                            {% elif (('Not ideal' in  report.plantsBadges[i][2]) and ('high' in  report.plantsBadges[i][2] )) %}
+                            <p>
+                                This rainfall are considered too high, which may lead to flooding of the soil and loss of the plantation or part of it. It
+                                is highly recommended to postpone planting to another month or to ensure a good drainage system.
+                            </p>
+                            {% elif 'Almost ideal' in  report.plantsBadges[i][2] %}
+                            <p>
+                                Rainfalls will be acceptable in the coming months, but caution
+                                is advised because of the possibility of 
+                                rainfalls harmfull levels.
+                            </p>
+                            {% else %}
+                            <p>
+                                Rainfall is forecast to be acceptable and the chance of precipitation falling out of
+                                the acceptable range is low.
+                            </p>
+                            {% endif %}
                         </p>
-                        <!-- . -->
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Three -->
-        <section id="three" class="wrapper spotlight style6">
-            <div class="inner">
-                <a href="#" class="image"><img src="static/image/pic03.jpg" alt="" /></a>
-                <div class="content">
-                    <h2 class="major">Light analisys</h2>
-                    <p>
-                        Light provides the energy necessary for the plant to carry out photosynthesis, which produces
-                        the organic matter for its growth and development also
-                        light intensity influences the manufacture of plant food, stem length, leaf color and flowering.
-                        That is why light is one of the pillars of cultivating plants.
-                    </p>
-                    <p>
-                        The prediction of the average light exposure in the area is {average light exposure} for the
-                        next {x} months is {not ideal, somewhat ideal, ideal} for
-                        planting one or several types of crops.
-                    </p>
-
-                    <button class="btn shadow-none" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapse123" aria-expanded="false" aria-controls="collapse123">
-                        <a class="special">Learn More</a>
-                    </button>
-                    <div class="content collapse" id="collapse123">
-                        <!-- Esto se iterara para cada planta -->
-                        <p> {nombre de planta}
-                            {not ideal la cantidad de luz sera muy bajas o muy altas}
-                            {low},
-                            {high},
-                            {somewhat ideal la cantidad de luz estan rozan la maxima y minima la cantidad de luz
-                            aceptable pero
-                            sige dentro del rango}
-                            {ideal}
-                        </p>
-                        <!-- . -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-
-        <!-- Two -->
-        <section id="two" class="wrapper alt spotlight style4">
-            <div class="inner">
-                <a href="#" class="image"><img src="static/image/pic02.jpg" alt="" /></a>
-                <div class="content">
-                    <h2 class="major">Wind analisys</h2>
-                    <p>Wind is an important factor in the pollination process, so depending on the type of plantation
-                        this can be a crucial factor.</p>
-                    <p>Another point to take into account is that most tree plantations can be damaged by high wind
-                        intensity.</p>
-                    <p>The wind speed forecast is {measured wind speed} for the next months. This favours the
-                        planting of one or more types of plants.</p>
-                    <button class="btn shadow-none" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapse124" aria-expanded="false" aria-controls="collapse124">
-                        <a class="special">Learn More</a>
-                    </button>
-                    <div class="content collapse" id="collapse124">
-                        <!-- Esto se iterara para cada planta -->
-                        <p> {nombre de planta}
-                            {not ideal la velocidad del viento sera muy baja o muy alta}
-                            {low},
-                            {high},
-                            {somewhat ideal la velocidad del viento estan rozan la maxima y minima lla velocidad del viento
-                            aceptable pero sige dentro del rango}
-                            {ideal}
-                        </p>
-                        <!-- . -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Three -->
-        <section id="three" class="wrapper spotlight style5">
+        <section id="three" class="wrapper spotlight style4">
             <div class="inner">
                 <a href="#" class="image"><img src="static/image/pic03.jpg" alt="" /></a>
                 <div class="content">
@@ -220,30 +171,89 @@
                         <a class="special">Learn More</a>
                     </button>
                     <div class="content collapse" id="collapse125">
-                        <!-- Esto se iterara para cada planta -->
-                        <p> {nombre de planta}
-                            {not ideal la humedad sera muy bajas o muy altas} Humidity is predicted to be too
-                                {low}, which may lead to dehydration of the crops, leading to wilting and reduced product
+                        {% for i in range(0,report.numberOfPlants) %}
+                        <p><strong>{{report.plantsNames[i]}}</strong>: The expected relative humidity for the life span of the plant is {{report.avgMonthlyHumidityPlants[report.plantsLifePeriod[i] - 2]}}%.
+                            {% if (('Not ideal' in  report.plantsBadges[i][1]) and ('low'  in  report.plantsBadges[i][1] ))%}
+                            <p>
+                                This relative humidity is considered too low, which may lead to dehydration of the crops, leading to wilting and reduced product
                                 quality. It is recommended to postpone planting to another month or to
                                 increase the amount of water used when watering and to use sprinklers to increase the
                                 relative humidity of the air.
-                                {high}, may lead to poor crop growth, hinder pollination and increase the ease of pest
+                            </p>
+                            {% elif (('Not ideal' in  report.plantsBadges[i][1]) and ('high' in  report.plantsBadges[i][1] )) %}
+                            <p>
+                                This relative humidity is considered too high, which may lead to poor crop growth, hinder pollination and increase the ease of pest
                                 spread. It is recommended to plant in a different month.
-                            {somewhat ideal la humedad esta rozando la maxima y minima humedad aceptable pero
-                            sige dentro del rango} Precipitations will be acceptable in the coming months for planting
-                            {type of plant}, but caution is advised because of the possibility of {low. high}
-                            humidity.
-                            {ideal} Humidity is forecast to be acceptable and the chance of the humidity falling out of
-                            the acceptable range is low.
+                            </p>
+                            {% elif 'Almost ideal' in  report.plantsBadges[i][1] %}
+                            <p>
+                                Relative humidity will be acceptable in the coming months, but caution
+                                is advised because of the possibility of 
+                                 harmfull levels of humidity.
+                            </p>
+                            {% else %}
+                            <p>
+                                Relative humidity is forecast to be acceptable and the chance the relative humidity falling out of
+                                the acceptable range is low.
+                            </p>
+                            {% endif %}
                         </p>
-                        
+                        {% endfor %}   
                     </div>
                 </div>
             </div>
         </section>
 
+
+
         <!-- Two -->
-        <section id="two" class="wrapper alt spotlight style4">
+        <section id="two" class="wrapper alt spotlight style5">
+            <div class="inner">
+                <a href="#" class="image"><img src="static/image/pic02.jpg" alt="" /></a>
+                <div class="content">
+                    <h2 class="major">Wind analisys</h2>
+                    <p>Wind is an important factor in the pollination process, so depending on the type of plantation
+                        this can be a crucial factor. Wind increases the turbulence in atmosphere, thus increasing the supply of carbon dioxide to the plants resulting in greater photosynthesis rates.</p>
+                    <p>Another point to take into account is that most tree plantations can be damaged by high wind
+                        intensity as well as any type of plant if the wind velocity reaches really high speeds.</p>
+                    <button class="btn shadow-none" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse124" aria-expanded="false" aria-controls="collapse124">
+                        <a class="special">Learn More</a>
+                    </button>
+                    <div class="content collapse" id="collapse124">
+                        {% for i in range(0,report.numberOfPlants) %}
+                        <p><strong>{{report.plantsNames[i]}}</strong>: The expected wind velocity for the life span of the plant is {{report.avgMonthlyWindVelocityPlants[report.plantsLifePeriod[i] - 2]}}%.
+                            {% if (('Not ideal' in  report.plantsBadges[i][5]) and ('low'  in  report.plantsBadges[i][5] ))%}
+                            <p>
+                                This wind velocity is considered too low, This can lead to a reduction in photosynthesis, plant size and product quality. In extreme cases, plants die because they are too weak to cope with any change.
+                                It is recommended to postpone planting to another month as any artificial method of generating wind in plantations is profitable.
+                            </p>
+                            {% elif (('Not ideal' in  report.plantsBadges[i][5]) and ('high' in  report.plantsBadges[i][5] )) %}
+                            <p>
+                                This wind velocity is considered too high, which may damage the plants and cause their death. It is recommended to postpone planting to another month or in case of tree planting, thinning the canopy of the tree will help to reduce damage. 
+                                In the case of other types of planting, only extremely strong winds will be a problem because the roots and stems will end up failling. 
+                            </p>
+                            {% elif 'Almost ideal' in  report.plantsBadges[i][5] %}
+                            <p>
+                                Wind velocity will be acceptable in the coming months, but caution
+                                is advised because of the possibility of 
+                                 harmfull levels of wind velocity.
+                            </p>
+                            {% else %}
+                            <p>
+                                Wind velocity is forecast to be acceptable and the chance the wind velocity falling out of
+                                the acceptable range is low.
+                            </p>
+                            {% endif %}
+                        </p>
+                        {% endfor %}   
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Three -->
+        <section id="three" class="wrapper spotlight style4">
             <div class="inner">
                 <a href="#" class="image"><img src="static/image/pic02.jpg" alt="" /></a>
                 <div class="content">
@@ -258,21 +268,62 @@
                         <a class="special">Learn More</a>
                     </button>
                     <div class="content collapse" id="collapse124">
-                        <p> {nombre de planta}
-                            {not ideal la humedad sera muy bajas o muy altas} 
-                                {low}, 
-                                {high}, 
-                            {somewhat ideal la humedad esta rozando la maxima y minima humedad aceptable pero
-                            sige dentro del rango} 
-                            {ideal} 
+                        {% for i in range(0,report.numberOfPlants) %}
+                        <p><strong>{{report.plantsNames[i]}}</strong>: The expected soil temperature for the life span of the plant is {{report.avgMonthlySoiltemperaturePlants[report.plantsLifePeriod[i] - 2]}}ºC and the soil moisture is {{report.avgMonthlySoilmoisturePlants[report.plantsLifePeriod[i] - 2]}}.
+                            {% if (('Not ideal' in  report.plantsBadges[i][3]) and ('low'  in  report.plantsBadges[i][3] ))%}
+                            <p>
+                                This soil temperature is considered too low,which can prevent seed germination. In general, the colder the soil, the less nutrients and water accumulate in it, which affects the photosynthesis of the plant and ultimately the product it produces. It can also lead to the death of the plant due to lack of food.
+                                It is recommended to postpone planting or mulch the soil to keep it warm. 
+                            </p>
+                            {% elif (('Not ideal' in  report.plantsBadges[i][3]) and ('high' in  report.plantsBadges[i][3] )) %}
+                            <p>
+                                This soil temperature is considered too high,which can result in stunted plant growth. In adult plants, this can result in root damage, loss of water and nutrients, and ultimately plant death or reduced yield and quality.
+                                It is recommended to postpone planting or to moisten the soil to reduce the temperature by evaporation of water.  
+                            </p>
+                            {% elif 'Almost ideal' in  report.plantsBadges[i][3] %}
+                            <p>
+                                Soil temperature will be acceptable in the coming months, but caution
+                                is advised because of the possibility of 
+                                 harmfull levels of soil temperature.
+                            </p>
+                            {% else %}
+                            <p>
+                                Soil temperature is forecast to be acceptable and the chance the Soil temperature falling out of
+                                the acceptable range is low.
+                            </p>
+                            {% endif %}
+
+                            {% if (('Not ideal' in  report.plantsBadges[i][4]) and ('low'  in  report.plantsBadges[i][4] ))%}
+                            <p>
+                                This soil moisture is considered too low, which can reduce plant growth, photosynthesis, plant and product size.
+                                It is recommended to prepare the soil before planting by moistening it for several weeks.
+                            </p>
+                            {% elif (('Not ideal' in  report.plantsBadges[i][4]) and ('high' in  report.plantsBadges[i][4] )) %}
+                            <p>
+                                This soil moisture is considered too high, this can lead to the growth of other plants that would steal nutrients, increase the likelihood of pests and their spread, rot the roots, reduce the growth rate of the plant, affect the product and even wilt the plant.
+                                It is highly recommended to postpone planting to another month.
+                            </p>
+                            {% elif 'Almost ideal' in  report.plantsBadges[i][4] %}
+                            <p>
+                                Soil moisture will be acceptable in the coming months, but caution
+                                is advised because of the possibility of 
+                                 harmfull levels of soil moisture.
+                            </p>
+                            {% else %}
+                            <p>
+                                Soil moisture is forecast to be acceptable and the chance the soil moisture falling out of
+                                the acceptable range is low.
+                            </p>
+                            {% endif %}
                         </p>
+                        {% endfor %}   
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Three -->
-        <section id="three" class="wrapper spotlight style5">
+        <!-- Two -->
+        <section id="two" class="wrapper alt spotlight style5">
             <div class="inner">
                 <a href="#" class="image"><img src="static/image/pic03.jpg" alt="" /></a>
                 <div class="content">
@@ -286,59 +337,22 @@
                         <a class="special">Learn More</a>
                     </button>
                     <div class="content collapse" id="collapse125">
-                        <!-- se itera por cada planta -->
-                        <p>{plant name}: The price per kilogram of product is {price per kg}, the approximate product
-                            obtainable per hectare is {product per hectare}.
-                            In other words, a total of {hectares * product per hectare * price per kg of product} is
-                            obtained.</p>
-                        <!-- . -->
-                        <p>It should be borne in mind that this profits would be close to the ideal and that to achieve
-                            it, good conditions for the plants must be ensured throughout their life cycle.</p>                        
+                        {% for i in range(0,report.numberOfPlants) %}
+                        <p><strong>{{report.plantsNames[i]}}</strong>: The price per kilogram of product is {{report.priceperkg[i]}}, the approximate profit
+                            obtainable in  total is {{report.benefit[i]}} euros.
+                        </p>
+                        {% endfor %}   
+                            <p>It should be borne in mind that this profits would be close to the ideal and that to achieve
+                            it, good conditions for the plants must be ensured throughout their life cycle.</p> 
+                            <p>
+                                This calculation already includes the price of the water needed, but the price of any extra requirements must be subtracted.
+                            </p>                      
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Four -->
-        <section id="four" class="wrapper alt style1">
-            <div class="inner">
-                <h2 class="major">Image analisys</h2>
-                <p>Cras mattis ante fermentum, malesuada neque vitae, eleifend erat. Phasellus non pulvinar erat. Fusce
-                    tincidunt, nisl eget mattis egestas, purus ipsum consequat orci, sit amet lobortis lorem lacus in
-                    tellus. Sed ac elementum arcu. Quisque placerat auctor laoreet.</p>
-                <section class="features">
-                    <article>
-                        <a href="#" class="image"><img src="static/image/pic04.jpg" alt="" /></a>
-                        <h3 class="major">Sed feugiat lorem</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
-                            ultrices.</p>
-                        <a href="#" class="special">Learn more</a>
-                    </article>
-                    <article>
-                        <a href="#" class="image"><img src="static/image/pic05.jpg" alt="" /></a>
-                        <h3 class="major">Nisl placerat</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
-                            ultrices.</p>
-                        <a href="#" class="special">Learn more</a>
-                    </article>
-                    <article>
-                        <a href="#" class="image"><img src="static/image/pic06.jpg" alt="" /></a>
-                        <h3 class="major">Ante fermentum</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
-                            ultrices.</p>
-                        <a href="#" class="special">Learn more</a>
-                    </article>
-                    <article>
-                        <a href="#" class="image"><img src="static/image/pic07.jpg" alt="" /></a>
-                        <h3 class="major">Fusce consequat</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing vehicula id nulla dignissim dapibus
-                            ultrices.</p>
-                        <a href="#" class="special">Learn more</a>
-                    </article>
-                </section>
-            </div>
-        </section>
-    </section>
+        
 
 
 

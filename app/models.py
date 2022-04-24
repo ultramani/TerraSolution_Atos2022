@@ -67,24 +67,30 @@ class report(db.Model):
    
     user_id = db.Column(db.Integer, db.ForeignKey('tbl_users.id'))
     userx = db.relationship('User')
-
-    #Asociacion a las plantas a las que les hemos dado el ok
-    crops = db.relationship('crop', secondary='tbl_crops_report')
+    
     #Datos obtenidos
     params = db.Column(JSON)
     #Datos del analisis
         #Numero de palntas a las que le hemso dado el ok
     numberOfPlants = db.Column(db.Integer())
         #Media de los datos de los x meses por planta, en la posición cero se enccuentra el id del parametro
-    avgMonthlyTemperaturePlants = db.Column(db.ARRAY(db.Integer))
-    avgMonthlyPrecipitationPlants = db.Column(db.ARRAY(db.Integer))
-    avgMonthlyHumidityPlants = db.Column(db.ARRAY(db.Integer))
-    avgMonthlySoilmoisturePlants = db.Column(db.ARRAY(db.Integer))
-    avgMonthlySoiltemperaturePlants = db.Column(db.ARRAY(db.Integer))
-    avgMonthlyRadiationPlants = db.Column(db.ARRAY(db.Integer))
-    avgMonthlyWindDirectionPlants = db.Column(db.ARRAY(db.Integer))
+    avgMonthlyTemperaturePlants = db.Column(db.ARRAY(db.Float))
+    avgMonthlyPrecipitationPlants = db.Column(db.ARRAY(db.Float))
+    avgMonthlyHumidityPlants = db.Column(db.ARRAY(db.Float))
+    avgMonthlySoilmoisturePlants = db.Column(db.ARRAY(db.Float))
+    avgMonthlySoiltemperaturePlants = db.Column(db.ARRAY(db.Float))
+    avgMonthlyRadiationPlants = db.Column(db.ARRAY(db.Float))
+    avgMonthlyWindVelocityPlants = db.Column(db.ARRAY(db.Float))
         #Puntuaciones de plantas
-    plantsScore = db.Column(db.ARRAY(db.Integer))
+    plantsScores = db.Column(db.ARRAY(db.Integer))
+    plantsNames = db.Column(db.ARRAY(db.String))
+    plantsBadges = db.Column(db.ARRAY(db.String))
+    plantsLifePeriod = db.Column(db.ARRAY(db.Integer))
+    
+    priceperkg = db.Column(db.ARRAY(db.Float)) 
+    waterneeded = db.Column(db.ARRAY(db.Float))
+    watercost = db.Column(db.ARRAY(db.Float))
+    benefit = db.Column(db.ARRAY(db.Float))
     
     def __init__ (self, location,user):
         self.location = location
@@ -162,13 +168,14 @@ class crop(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
 
     name = db.Column(db.String(128),nullable=False)
-    reports = db.relationship("report", secondary="tbl_crops_report")
+    timetogrowmonths= db.Column(db.Integer(), nullable=False)
     #Nuemro de plantas plantables por hectarea.
     densityOfPopulation = db.Column(db.Integer())
     #Add a custom domain [tree, bush , grass]
     cropType = db.Column(db.String(128),nullable=False)
     #Let us calculate the amount of water necessary for the crops to grow
-    waterPerArea = db.Column(db.Integer())
+    waterPerArea = db.Column(db.Float())
+    waterperiod = db.Column(db.Integer)
     #First array element will be the min value and the second one the max value and the third optimal value
     temperatureRange = db.Column(db.ARRAY(db.Float))
     humidityRange = db.Column(db.ARRAY(db.Float))
@@ -179,7 +186,8 @@ class crop(db.Model):
     windvelocityRange = db.Column(db.ARRAY(db.Float)) 
     #Money related section
     pricePerKg = db.Column(db.Float())
-
+    kgspersqm = db.Column(db.Float())
+    
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -191,24 +199,55 @@ class crop(db.Model):
     def update(self):
         db.session.commit()
 
+    def getNames():
+        raw_data = db.session.query(crop.name).all()
+        data = [i[0] for i in raw_data]
+        return data
+    
     def getrange(id,param):
         if param == "T2M":
             range_raw = db.session.query(crop.temperatureRange).filter_by(id=id).first()
-        return range_raw
+        elif param == 'RH2M':
+            range_raw = db.session.query(crop.humidityRange).filter_by(id=id).first()
+        elif param == 'ALLSKY_SFC_PAR_TOT':
+            range_raw = db.session.query(crop.radiationRange).filter_by(id=id).first()
+        elif param == 'PRECTOTCORR':
+            range_raw = db.session.query(crop.precipitationRange).filter_by(id=id).first()
+        elif param == 'TS':
+            range_raw = db.session.query(crop.soiltemperatureRange).filter_by(id=id).first()
+        elif param == 'GWETPROF':
+            range_raw = db.session.query(crop.soilmoistureRange).filter_by(id=id).first()
+        elif param == 'WS2M':
+            range_raw = db.session.query(crop.windvelocityRange).filter_by(id=id).first()
+        else:
+            return None
+        rangex = range_raw[0]
+        return rangex
     
-class cropReport(db.Model):
-    __tablename__ = 'tbl_crops_report'
-    id = db.Column(db.Integer(), primary_key=True)
-    report_id = db.Column(db.Integer(), db.ForeignKey('tbl_reports.id', ondelete='CASCADE'))
-    crop_id = db.Column(db.Integer(), db.ForeignKey('tbl_crops.id', ondelete='CASCADE'))
-
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-        
-    def update(self):
-        db.session.commit()
+    def growthrange(id):
+        rangex = db.session.query(crop.timetogrowmonths).filter_by(id=id).first()
+        rangex = rangex[0]
+        return rangex
+    
+    def getwaterneed(id):
+        data = []
+        raw_data = db.session.query(crop.waterPerArea).filter_by(id=id).first()
+        data.append(raw_data[0])
+        raw_data = db.session.query(crop.waterperiod).filter_by(id=id).first()
+        data.append(raw_data[0])
+        return data
+    
+    def getallyields():
+        raw_data = db.session.query(crop.kgspersqm).all()
+        data = [i[0] for i in raw_data] 
+        return data 
+    
+    def getallprices():
+        raw_data = db.session.query(crop.pricePerKg).all()
+        data = [i[0] for i in raw_data]  
+        return data 
+    
+    def getalllifeperiods():
+        raw_data = db.session.query(crop.timetogrowmonths).all()
+        data = [i[0] for i in raw_data]  
+        return data 
