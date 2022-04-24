@@ -244,7 +244,7 @@ def analysisB(id,avgmonths,monthstogrow,area):
     elif (water_needed_period * 0.75) <= water_add_needed:
         return ['Almost ideal',''], 3 , water_add_needed
     elif -28 <= water_add_needed < 0:
-        return ['Ideal',''], 10, None
+        return ['Ideal',''], 10, 0
     elif  water_add_needed < -28:
         return ['Not ideal',''], 0 , water_add_needed
     
