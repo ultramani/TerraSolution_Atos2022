@@ -1,6 +1,6 @@
 angles==2.0
 boto==2.49.0
-botocore
+botocore==1.24.24
 certifi==2020.4.5.1
 chardet==3.0.4
 click==8.0.4
@@ -11,10 +11,10 @@ Flask-Migrate==2.5.3
 Flask-Script==2.0.6
 Flask-SQLAlchemy==2.5.1
 Flask==2.0.3
-Flask-Login
-flask-wtf
+Flask-Login==0.5.0
+flask-wtf==1.0.0
 greenlet==1.1.2
-gunicorn
+gunicorn==20.0.4
 itsdangerous==2.1.1
 Jinja2==3.0.3
 jose==1.0.0
@@ -32,5 +32,5 @@ SQLAlchemy==1.4.32
 urllib3==1.26.8
 Werkzeug==2.0.3
 xacro==1.13.3
-WTForms
-pdfkit
+WTForms==3.0.1
+pdfkit==1.0.0
