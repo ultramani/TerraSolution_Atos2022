@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import make_response, render_template
 from flask_login import current_user
 import requests
-import pdfkit
+# import pdfkit
 import requests
 from app.models import crop, report
 from math import sin, cos, sqrt, atan2, radians
@@ -60,20 +60,20 @@ def getSolarData(lat, lon, params):
             }
     return parsed_data
 
-# Pdf generator
+# Pdf generator not adapted to UNIX
 
-def generatePDF(id):
-    reportobject = report.selectreportbyid(id)
-    rendered = render_template('pdfGenerator.html',report=reportobject)
-    path = r'C:\Users\ultra\Desktop\pdf\wkhtmltopdf\bin\wkhtmltopdf.exe'
-    config = pdfkit.configuration(wkhtmltopdf=path)
-    pdf = pdfkit.from_string(rendered,False,configuration=config)
+# def generatePDF(id):
+#     reportobject = report.selectreportbyid(id)
+#     rendered = render_template('pdfGenerator.html',report=reportobject)
+#     path = r'.\executables\pdf\wkhtmltopdf\bin\wkhtmltopdf.exe'
+#     config = pdfkit.configuration(wkhtmltopdf=path)
+#     pdf = pdfkit.from_string(rendered,False,configuration=config)
     
-    response = make_response(pdf)
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'inline; filename=report.pdf'
+#     response = make_response(pdf)
+#     response.headers['Content-Type'] = 'application/pdf'
+#     response.headers['Content-Disposition'] = 'inline; filename=report.pdf'
     
-    return response
+#     return response
 
 # Report generation
 
