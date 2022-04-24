@@ -173,7 +173,9 @@ def calcprof(watercost,area,yieldpresqm,priceperkg):
     for i in range(len(watercost)):
         total = area * yieldpresqm[i] * priceperkg[i]
         total -= watercost[i]
-        profs.append(round(total))
+        if total < 0:
+            total == 0
+        profs.append(round(total * 0.8))
     return profs
 
 def calcwc(wns):
