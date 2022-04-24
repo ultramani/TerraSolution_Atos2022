@@ -64,18 +64,18 @@ def getSolarData(lat, lon, params):
 
 # Pdf generator
 
-def generatePDF(id):
-    reportobject = report.selectreportbyid(id)
-    rendered = render_template('pdfGenerator.html',report=reportobject)
-    path = r'C:\Users\ultra\Desktop\pdf\wkhtmltopdf\bin\wkhtmltopdf.exe'
-    config = pdfkit.configuration(wkhtmltopdf=path)
-    pdf = pdfkit.from_string(rendered,False,configuration=config)
+# def generatePDF(id):
+#     reportobject = report.selectreportbyid(id)
+#     rendered = render_template('pdfGenerator.html',report=reportobject)
+#     path = r'C:\Users\ultra\Desktop\pdf\wkhtmltopdf\bin\wkhtmltopdf.exe'
+#     config = pdfkit.configuration(wkhtmltopdf=path)
+#     pdf = pdfkit.from_string(rendered,False,configuration=config)
     
-    response = make_response(pdf)
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'inline; filename=report.pdf'
+#     response = make_response(pdf)
+#     response.headers['Content-Type'] = 'application/pdf'
+#     response.headers['Content-Disposition'] = 'inline; filename=report.pdf'
     
-    return response
+#     return response
 
 # Report generation
 

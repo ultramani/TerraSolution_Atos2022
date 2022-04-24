@@ -98,10 +98,10 @@ def solarData():
     else:
         return Response('Error')
  
-@app.route("/pdf/<id>", methods=['GET'])
-def generatePdf(id):
-        response = generatePDF(id)
-        return response
+# @app.route("/pdf/<id>", methods=['GET'])
+# def generatePdf(id):
+#         response = generatePDF(id)
+#         return response
     
 @app.route("/test", methods=['POST'])
 def test():
