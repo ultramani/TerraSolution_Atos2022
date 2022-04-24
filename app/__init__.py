@@ -1,3 +1,5 @@
+import matplotlib
+import matplotlib.pyplot as plt
 from flask_login import LoginManager
 from .databaseManager import setup_db, db_drop_and_create_all,db
 from .config import APP_CONFIG
@@ -7,7 +9,7 @@ from flask_migrate import Migrate
 
 
 
-
+matplotlib.use('Agg')
 app = Flask(__name__, template_folder='templates')
 #Nos permite cambiar la configuracion con solo cambiar el string
 app.config.from_object(APP_CONFIG["deploy"])

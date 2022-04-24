@@ -1,10 +1,8 @@
 from datetime import datetime
-from turtle import pd
 from flask import make_response, render_template
 from flask_login import current_user
-import requests, json
+import requests
 import pdfkit
-from .databaseManager import db
 import requests
 from app.models import crop, report
 from math import sin, cos, sqrt, atan2, radians

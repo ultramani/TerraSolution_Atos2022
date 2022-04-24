@@ -1,6 +1,5 @@
 import json
 import os
-from urllib import response
 
 from flask import (Response, flash, redirect, render_template, request,
                    send_from_directory, url_for)
