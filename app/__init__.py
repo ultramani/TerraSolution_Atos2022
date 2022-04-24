@@ -10,7 +10,7 @@ from flask_migrate import Migrate
 
 app = Flask(__name__, template_folder='templates')
 #Nos permite cambiar la configuracion con solo cambiar el string
-app.config.from_object(APP_CONFIG["development"])
+app.config.from_object(APP_CONFIG["deploy"])
 #Login manager, manages the login requests
 login_manager = LoginManager()
 login_manager.init_app(app)
